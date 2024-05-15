@@ -1,0 +1,63 @@
+import {
+  AutoStories,
+  CalendarToday,
+  Home,
+  Person,
+  Settings,
+} from "@mui/icons-material"
+import {
+  AppBar,
+  Avatar,
+  Box,
+  IconButton,
+  Stack,
+  Toolbar,
+  Tooltip,
+  Typography,
+} from "@mui/material"
+import { useNavigate } from "react-router-dom"
+
+const navBarItems = [
+  { nome: "Home", componente: <Home />, rota: "/home" },
+  { nome: "Agenda", componente: <CalendarToday />, rota: "/agenda" },
+  { nome: "Clientes", componente: <Person />, rota: "/clientes" },
+  { nome: "Catalogo", componente: <AutoStories />, rota: "/catalogo" },
+  { nome: "Configuração", componente: <Settings />, rota: "/config" },
+]
+const NavBar = () => {
+  const navigate = useNavigate()
+
+  return (
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar position="static" color="bgDark">
+        <Toolbar sx={{ color: "white" }}>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1, color: "white" }}
+          >
+            BarberShop
+          </Typography>
+
+          <Stack direction="row" spacing={2}>
+            {navBarItems.map(item => (
+              <Tooltip title={item.nome} key={item.nome}>
+                <IconButton
+                  size="large"
+                  aria-label={item.nome}
+                  color="inherit"
+                  onClick={() => navigate(item.rota)}
+                >
+                  {item.componente}
+                </IconButton>
+              </Tooltip>
+            ))}
+            <Avatar>A</Avatar>
+          </Stack>
+        </Toolbar>
+      </AppBar>
+    </Box>
+  )
+}
+
+export default NavBar
