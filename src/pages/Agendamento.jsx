@@ -51,7 +51,7 @@ const Agendamento = () => {
       </Box>
       <Container maxWidth="xl" sx={{ mt: "1rem" }}>
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} md={6}>
             <Paper variant="outlined">
               <Stack spacing={2} p={2}>
                 <Stack
@@ -74,7 +74,7 @@ const Agendamento = () => {
               </Stack>
             </Paper>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} md={6}>
             <Paper variant="outlined">
               <Stack spacing={2} p={2}>
                 <Stack
@@ -97,7 +97,7 @@ const Agendamento = () => {
               </Stack>
             </Paper>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} md={6}>
             <Paper variant="outlined">
               <Stack spacing={2} p={2}>
                 <Stack

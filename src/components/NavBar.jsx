@@ -9,8 +9,11 @@ import {
   AppBar,
   Avatar,
   Box,
+  FormControlLabel,
+  FormGroup,
   IconButton,
   Stack,
+  Switch,
   Toolbar,
   Tooltip,
   Typography,
@@ -40,6 +43,20 @@ const NavBar = () => {
           </Typography>
 
           <Stack direction="row" spacing={2}>
+            <FormGroup
+              sx={{
+                alignSelf: "center",
+                bgcolor: "lightgray",
+                p: 0.5,
+                borderRadius: "20px",
+                color: "black",
+              }}
+            >
+              <FormControlLabel
+                control={<Switch defaultChecked />}
+                label="Aberto?"
+              />
+            </FormGroup>
             {navBarItems.map(item => (
               <Tooltip title={item.nome} key={item.nome}>
                 <IconButton
@@ -52,7 +69,7 @@ const NavBar = () => {
                 </IconButton>
               </Tooltip>
             ))}
-            <Avatar>A</Avatar>
+            <Avatar sx={{ alignSelf: "center" }}>A</Avatar>
           </Stack>
         </Toolbar>
       </AppBar>

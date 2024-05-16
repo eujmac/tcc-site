@@ -1,7 +1,6 @@
 import { Box, Container, Grid, Paper, Stack, Typography } from "@mui/material"
 import NavBar from "../components/NavBar"
 import ListaCortes from "../components/ListaCortes"
-
 const Home = () => {
   return (
     <Box>

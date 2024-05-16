@@ -10,6 +10,8 @@ import { BrowserRouter } from "react-router-dom"
 import { App } from "./App"
 
 import { ptBR as ptBRDateFns } from "date-fns/locale"
+import { DrawerProvider } from "./context/DrawerContext"
+import DrawerCheckout from "./components/DrawerCheckout"
 const theme = createTheme({
   palette: {
     primary: {
@@ -30,7 +32,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           adapterLocale={ptBRDateFns}
         >
           <CssBaseline />
-          <App />
+          <DrawerProvider>
+            <DrawerCheckout />
+            <App />
+          </DrawerProvider>
         </LocalizationProvider>
       </ThemeProvider>
     </BrowserRouter>

@@ -24,8 +24,10 @@ export default function CalendarioPopover({ dataAtual, setDataAtual, data }) {
           >
             <DateCalendar
               value={dataAtual}
-              onChange={novaData => setDataAtual(novaData)}
-              sx={{ zIndex: 10 }}
+              onChange={novaData => {
+                setDataAtual(novaData)
+                popupState.close()
+              }}
             ></DateCalendar>
           </Popover>
         </div>
