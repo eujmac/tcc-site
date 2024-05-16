@@ -9,6 +9,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3"
 import { BrowserRouter } from "react-router-dom"
 import { App } from "./App"
 
+import { ptBR as ptBRDateFns } from "date-fns/locale"
 const theme = createTheme({
   palette: {
     primary: {
@@ -24,7 +25,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
       <ThemeProvider theme={theme}>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <LocalizationProvider
+          dateAdapter={AdapterDateFns}
+          adapterLocale={ptBRDateFns}
+        >
           <CssBaseline />
           <App />
         </LocalizationProvider>

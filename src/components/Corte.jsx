@@ -4,9 +4,15 @@ const Corte = () => {
   return (
     <Stack
       direction="row"
-      spacing={1}
       display={"flex"}
       justifyContent={"space-between"}
+      sx={{
+        cursor: "pointer",
+        p: 3,
+        "&:hover": {
+          backgroundColor: "#f8f8fb",
+        },
+      }}
     >
       <Box>
         <Typography color={"gray"}>Ter, 14 mai 2024 18:00</Typography>
@@ -26,7 +32,9 @@ const Corte = () => {
           justifyItems: "center",
         }}
       >
-        <Typography variant="h6">R$ 40</Typography>
+        <Typography variant="h6" alignSelf={"center"} fontWeight={"bold"}>
+          R$ 40
+        </Typography>
       </Box>
     </Stack>
   )

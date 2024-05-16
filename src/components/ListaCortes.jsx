@@ -1,4 +1,3 @@
-import React from "react"
 import Corte from "./Corte"
 import { Divider } from "@mui/material"
 

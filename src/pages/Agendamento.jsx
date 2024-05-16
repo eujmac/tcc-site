@@ -6,12 +6,10 @@ import {
   Container,
   Grid,
   Paper,
-  Popover,
   Stack,
   Typography,
 } from "@mui/material"
 import NavBar from "../components/NavBar"
-import { DateCalendar } from "@mui/x-date-pickers"
 import { useState } from "react"
 import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
@@ -118,7 +116,6 @@ const Agendamento = () => {
                     Selecione um horário de atendimento:
                   </Typography>
                 </Box>
-                refatorando código: removendo duplicidade e criando componentes
                 <GridHorarios />
               </Stack>
             </Paper>

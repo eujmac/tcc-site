@@ -1,12 +1,4 @@
-import {
-  Box,
-  Container,
-  Divider,
-  Grid,
-  Paper,
-  Stack,
-  Typography,
-} from "@mui/material"
+import { Box, Container, Grid, Paper, Stack, Typography } from "@mui/material"
 import NavBar from "../components/NavBar"
 import ListaCortes from "../components/ListaCortes"
 
@@ -18,8 +10,8 @@ const Home = () => {
         <Grid container spacing={2}>
           <Grid item xs={12} lg={6}>
             <Paper variant="outlined">
-              <Stack spacing={2} p={2}>
-                <Typography variant="h6" fontWeight={"bold"}>
+              <Stack>
+                <Typography variant="h6" fontWeight={"bold"} p={3}>
                   Próximos agendamentos de hoje
                 </Typography>
                 <ListaCortes />
@@ -28,8 +20,8 @@ const Home = () => {
           </Grid>
           <Grid item xs={12} lg={6}>
             <Paper variant="outlined">
-              <Stack spacing={2} p={2}>
-                <Typography variant="h6" fontWeight={"bold"}>
+              <Stack>
+                <Typography variant="h6" fontWeight={"bold"} p={3}>
                   Histórico de agendamentos
                 </Typography>
                 <ListaCortes />
@@ -38,8 +30,8 @@ const Home = () => {
           </Grid>
           <Grid item xs={12}>
             <Paper variant="outlined">
-              <Stack spacing={2} p={2}>
-                <Stack display={"flex"} justifyContent={"space-between"}>
+              <Stack>
+                <Stack display={"flex"} justifyContent={"space-between"} p={3}>
                   <Typography variant="h6" fontWeight={"bold"}>
                     Agendamentos recentes
                   </Typography>
