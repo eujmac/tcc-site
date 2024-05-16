@@ -16,6 +16,7 @@ import { useState } from "react"
 import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
 import CalendarioPopover from "../components/CalendarioPopover"
+import GridHorarios from "../components/GridHorarios"
 
 const formataDataPeloTipo = (data, tipo) => {
   switch (tipo) {
@@ -71,75 +72,7 @@ const Agendamento = () => {
                     Selecione um horário de atendimento:
                   </Typography>
                 </Box>
-                <Grid container rowGap={1}>
-                  <Grid item xs={2}>
-                    <Button variant="outlined" disabled>
-                      06:00
-                    </Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined" disabled>
-                      07:00
-                    </Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined" disabled>
-                      08:00
-                    </Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined">09:00</Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined">10:00</Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined" disabled>
-                      11:00
-                    </Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined">12:00</Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined">13:00</Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined" disabled>
-                      14:00
-                    </Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined">15:00</Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined" disabled>
-                      16:00
-                    </Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined">17:00</Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined">18:00</Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined">19:00</Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined">20:00</Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined" disabled>
-                      21:00
-                    </Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined" disabled>
-                      22:00
-                    </Button>
-                  </Grid>
-                </Grid>
+                <GridHorarios />
               </Stack>
             </Paper>
           </Grid>
@@ -162,75 +95,7 @@ const Agendamento = () => {
                     Selecione um horário de atendimento:
                   </Typography>
                 </Box>
-                <Grid container rowGap={1}>
-                  <Grid item xs={2}>
-                    <Button variant="outlined" disabled>
-                      06:00
-                    </Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined" disabled>
-                      07:00
-                    </Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined" disabled>
-                      08:00
-                    </Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined">09:00</Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined">10:00</Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined">11:00</Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined" disabled>
-                      12:00
-                    </Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined" disabled>
-                      13:00
-                    </Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined">14:00</Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined" disabled>
-                      15:00
-                    </Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined">16:00</Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined">17:00</Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined">18:00</Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined">19:00</Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined">20:00</Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined" disabled>
-                      21:00
-                    </Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined" disabled>
-                      22:00
-                    </Button>
-                  </Grid>
-                </Grid>
+                <GridHorarios />
               </Stack>
             </Paper>
           </Grid>
@@ -253,73 +118,8 @@ const Agendamento = () => {
                     Selecione um horário de atendimento:
                   </Typography>
                 </Box>
-                <Grid container rowGap={1}>
-                  <Grid item xs={2}>
-                    <Button variant="outlined" disabled>
-                      06:00
-                    </Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined" disabled>
-                      07:00
-                    </Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined" disabled>
-                      08:00
-                    </Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined">09:00</Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined">10:00</Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined">11:00</Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined">12:00</Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined">13:00</Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined">14:00</Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined" disabled>
-                      15:00
-                    </Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined" disabled>
-                      16:00
-                    </Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined">17:00</Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined">18:00</Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined">19:00</Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined">20:00</Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined" disabled>
-                      21:00
-                    </Button>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <Button variant="outlined" disabled>
-                      22:00
-                    </Button>
-                  </Grid>
-                </Grid>
+                refatorando código: removendo duplicidade e criando componentes
+                <GridHorarios />
               </Stack>
             </Paper>
           </Grid>

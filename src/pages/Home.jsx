@@ -8,6 +8,7 @@ import {
   Typography,
 } from "@mui/material"
 import NavBar from "../components/NavBar"
+import ListaCortes from "../components/ListaCortes"
 
 const Home = () => {
   return (
@@ -21,96 +22,7 @@ const Home = () => {
                 <Typography variant="h6" fontWeight={"bold"}>
                   Próximos agendamentos de hoje
                 </Typography>
-                <Stack
-                  direction="row"
-                  spacing={1}
-                  display={"flex"}
-                  justifyContent={"space-between"}
-                >
-                  <Box>
-                    <Typography color={"gray"}>
-                      Ter, 14 mai 2024 18:00
-                    </Typography>
-                    <Typography fontWeight={"bold"}>Corte de cabelo</Typography>
-                  </Box>
-                  <Box>
-                    <Typography>
-                      <b>Cliente</b>: João
-                    </Typography>
-                    <Typography>
-                      <b>Barbeiro</b>: Pedro
-                    </Typography>
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyItems: "center",
-                    }}
-                  >
-                    <Typography variant="h6">R$ 40</Typography>
-                  </Box>
-                </Stack>
-                <Divider />
-                <Stack
-                  direction="row"
-                  spacing={1}
-                  display={"flex"}
-                  justifyContent={"space-between"}
-                >
-                  <Box>
-                    <Typography color={"gray"}>
-                      Ter, 14 mai 2024 18:00
-                    </Typography>
-                    <Typography fontWeight={"bold"}>Corte de cabelo</Typography>
-                  </Box>
-                  <Box>
-                    <Typography>
-                      <b>Cliente</b>: João
-                    </Typography>
-                    <Typography>
-                      <b>Barbeiro</b>: Pedro
-                    </Typography>
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyItems: "center",
-                    }}
-                  >
-                    <Typography variant="h6">R$ 40</Typography>
-                  </Box>
-                </Stack>
-                <Divider />
-                <Stack
-                  direction="row"
-                  spacing={1}
-                  display={"flex"}
-                  justifyContent={"space-between"}
-                >
-                  <Box>
-                    <Typography color={"gray"}>
-                      Ter, 14 mai 2024 18:00
-                    </Typography>
-                    <Typography fontWeight={"bold"}>Corte de cabelo</Typography>
-                  </Box>
-                  <Box>
-                    <Typography>
-                      <b>Cliente</b>: João
-                    </Typography>
-                    <Typography>
-                      <b>Barbeiro</b>: Pedro
-                    </Typography>
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyItems: "center",
-                    }}
-                  >
-                    <Typography variant="h6">R$ 40</Typography>
-                  </Box>
-                </Stack>
-                <Divider />
+                <ListaCortes />
               </Stack>
             </Paper>
           </Grid>
@@ -120,96 +32,7 @@ const Home = () => {
                 <Typography variant="h6" fontWeight={"bold"}>
                   Histórico de agendamentos
                 </Typography>
-                <Stack
-                  direction="row"
-                  spacing={1}
-                  display={"flex"}
-                  justifyContent={"space-between"}
-                >
-                  <Box>
-                    <Typography color={"gray"}>
-                      Ter, 14 mai 2024 18:00
-                    </Typography>
-                    <Typography fontWeight={"bold"}>Corte de cabelo</Typography>
-                  </Box>
-                  <Box>
-                    <Typography>
-                      <b>Cliente</b>: João
-                    </Typography>
-                    <Typography>
-                      <b>Barbeiro</b>: Pedro
-                    </Typography>
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyItems: "center",
-                    }}
-                  >
-                    <Typography variant="h6">R$ 40</Typography>
-                  </Box>
-                </Stack>
-                <Divider />
-                <Stack
-                  direction="row"
-                  spacing={1}
-                  display={"flex"}
-                  justifyContent={"space-between"}
-                >
-                  <Box>
-                    <Typography color={"gray"}>
-                      Ter, 14 mai 2024 18:00
-                    </Typography>
-                    <Typography fontWeight={"bold"}>Corte de cabelo</Typography>
-                  </Box>
-                  <Box>
-                    <Typography>
-                      <b>Cliente</b>: João
-                    </Typography>
-                    <Typography>
-                      <b>Barbeiro</b>: Pedro
-                    </Typography>
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyItems: "center",
-                    }}
-                  >
-                    <Typography variant="h6">R$ 40</Typography>
-                  </Box>
-                </Stack>
-                <Divider />
-                <Stack
-                  direction="row"
-                  spacing={1}
-                  display={"flex"}
-                  justifyContent={"space-between"}
-                >
-                  <Box>
-                    <Typography color={"gray"}>
-                      Ter, 14 mai 2024 18:00
-                    </Typography>
-                    <Typography fontWeight={"bold"}>Corte de cabelo</Typography>
-                  </Box>
-                  <Box>
-                    <Typography>
-                      <b>Cliente</b>: João
-                    </Typography>
-                    <Typography>
-                      <b>Barbeiro</b>: Pedro
-                    </Typography>
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyItems: "center",
-                    }}
-                  >
-                    <Typography variant="h6">R$ 40</Typography>
-                  </Box>
-                </Stack>
-                <Divider />
+                <ListaCortes />
               </Stack>
             </Paper>
           </Grid>
