@@ -3,10 +3,18 @@ import { createContext, useContext, useState } from "react"
 const DrawerContext = createContext()
 
 const DrawerProvider = ({ children }) => {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+  const [isDrawerCheckoutOpen, setIsDrawerCheckoutOpen] = useState(false)
+  const [isDrawerAgendarOpen, setIsDrawerAgendarOpen] = useState(false)
 
   return (
-    <DrawerContext.Provider value={{ isDrawerOpen, setIsDrawerOpen }}>
+    <DrawerContext.Provider
+      value={{
+        isDrawerCheckoutOpen,
+        isDrawerAgendarOpen,
+        setIsDrawerCheckoutOpen,
+        setIsDrawerAgendarOpen,
+      }}
+    >
       {children}
     </DrawerContext.Provider>
   )

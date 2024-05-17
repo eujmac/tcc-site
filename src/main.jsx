@@ -12,6 +12,7 @@ import { App } from "./App"
 import { ptBR as ptBRDateFns } from "date-fns/locale"
 import { DrawerProvider } from "./context/DrawerContext"
 import DrawerCheckout from "./components/DrawerCheckout"
+import DrawerAgendar from "./components/DrawerAgendar"
 const theme = createTheme({
   palette: {
     primary: {
@@ -19,6 +20,9 @@ const theme = createTheme({
     },
     bgDark: {
       main: "#0d1619",
+    },
+    cinza: {
+      main: "#a9a9a9",
     },
   },
 })
@@ -34,6 +38,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <CssBaseline />
           <DrawerProvider>
             <DrawerCheckout />
+            <DrawerAgendar />
             <App />
           </DrawerProvider>
         </LocalizationProvider>

@@ -1,10 +1,4 @@
-import {
-  AutoStories,
-  CalendarToday,
-  Home,
-  Person,
-  Settings,
-} from "@mui/icons-material"
+import { CalendarToday, Home, Person, Settings } from "@mui/icons-material"
 import {
   AppBar,
   Avatar,
@@ -24,7 +18,6 @@ const navBarItems = [
   { nome: "Home", componente: <Home />, rota: "/home" },
   { nome: "Agenda", componente: <CalendarToday />, rota: "/agenda" },
   { nome: "Clientes", componente: <Person />, rota: "/clientes" },
-  { nome: "Catalogo", componente: <AutoStories />, rota: "/catalogo" },
   { nome: "Configuração", componente: <Settings />, rota: "/config" },
 ]
 const NavBar = () => {

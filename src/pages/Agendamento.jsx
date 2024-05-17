@@ -15,6 +15,7 @@ import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
 import CalendarioPopover from "../components/CalendarioPopover"
 import GridHorarios from "../components/GridHorarios"
+import { useEffect } from "react"
 
 const formataDataPeloTipo = (data, tipo) => {
   switch (tipo) {
@@ -24,15 +25,56 @@ const formataDataPeloTipo = (data, tipo) => {
       break
   }
 }
+
+const CardBarbeiro = ({ nome, isLoading }) => {
+  return (
+    <Grid item xs={12} md={6}>
+      <Paper variant="outlined">
+        <Stack spacing={2} p={2}>
+          <Stack
+            sx={{
+              py: 2,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Avatar sx={{ width: 50, height: 50 }}>J</Avatar>
+            <Typography variant="h5">{nome}</Typography>
+          </Stack>
+          <Box>
+            <Typography variant="body1">
+              Selecione um horário de atendimento:
+            </Typography>
+          </Box>
+          <GridHorarios isLoading={isLoading} />
+        </Stack>
+      </Paper>
+    </Grid>
+  )
+}
 const Agendamento = () => {
   const [dataAtual, setDataAtual] = useState(new Date())
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    setIsLoading(true)
+    const timeout = setTimeout(() => {
+      setIsLoading(false)
+    }, 1000)
+
+    return () => {
+      clearTimeout(timeout)
+    }
+  }, [dataAtual])
 
   return (
-    <Box sx={{ zIndex: 1 }}>
+    <Box>
       <NavBar />
+      {/* Header com calendário */}
       <Box
         sx={{
-          bgcolor: "lightgray",
+          bgcolor: "cinza.main",
           width: "100%",
           height: "60px",
           display: "flex",
@@ -40,7 +82,7 @@ const Agendamento = () => {
           alignItems: "center",
         }}
       >
-        <ButtonGroup bgcolor="white" variant="contained">
+        <ButtonGroup variant="contained">
           <Button onClick={() => setDataAtual(new Date())}>Hoje</Button>
           <CalendarioPopover
             dataAtual={dataAtual}
@@ -49,77 +91,12 @@ const Agendamento = () => {
           />
         </ButtonGroup>
       </Box>
-      <Container maxWidth="xl" sx={{ mt: "1rem" }}>
+      {/* Grid com os barbeiros e os horários */}
+      <Container maxWidth="xl" sx={{ mt: 2 }}>
         <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
-            <Paper variant="outlined">
-              <Stack spacing={2} p={2}>
-                <Stack
-                  sx={{
-                    py: 2,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Avatar sx={{ width: 50, height: 50 }}>J</Avatar>
-                  <Typography variant="h5">João marcos</Typography>
-                </Stack>
-                <Box>
-                  <Typography variant="body1">
-                    Selecione um horário de atendimento:
-                  </Typography>
-                </Box>
-                <GridHorarios />
-              </Stack>
-            </Paper>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Paper variant="outlined">
-              <Stack spacing={2} p={2}>
-                <Stack
-                  sx={{
-                    py: 2,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Avatar sx={{ width: 50, height: 50 }}>P</Avatar>
-                  <Typography variant="h5">Pedro Henrique</Typography>
-                </Stack>
-                <Box>
-                  <Typography variant="body1">
-                    Selecione um horário de atendimento:
-                  </Typography>
-                </Box>
-                <GridHorarios />
-              </Stack>
-            </Paper>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Paper variant="outlined">
-              <Stack spacing={2} p={2}>
-                <Stack
-                  sx={{
-                    py: 2,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Avatar sx={{ width: 50, height: 50 }}>L</Avatar>
-                  <Typography variant="h5">Lucas Fernando</Typography>
-                </Stack>
-                <Box>
-                  <Typography variant="body1">
-                    Selecione um horário de atendimento:
-                  </Typography>
-                </Box>
-                <GridHorarios />
-              </Stack>
-            </Paper>
-          </Grid>
+          <CardBarbeiro nome="João Marcos" isLoading={isLoading} />
+          <CardBarbeiro nome="Pedro Henrique" isLoading={isLoading} />
+          <CardBarbeiro nome="John Snow" isLoading={isLoading} />
         </Grid>
       </Container>
     </Box>

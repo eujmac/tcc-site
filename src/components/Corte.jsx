@@ -2,7 +2,7 @@ import { Box, Stack, Typography } from "@mui/material"
 import { useDrawer } from "../context/DrawerContext"
 
 const Corte = () => {
-  const { setIsDrawerOpen } = useDrawer()
+  const { setIsDrawerCheckoutOpen } = useDrawer()
 
   return (
     <Stack
@@ -16,7 +16,7 @@ const Corte = () => {
           backgroundColor: "#f8f8fb",
         },
       }}
-      onClick={() => setIsDrawerOpen(true)}
+      onClick={() => setIsDrawerCheckoutOpen(true)}
     >
       <Box>
         <Typography color={"gray"}>Ter, 14 mai 2024 18:00</Typography>
