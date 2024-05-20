@@ -12,7 +12,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 
 const navBarItems = [
   { nome: "Home", componente: <Home />, rota: "/home" },
@@ -22,7 +22,6 @@ const navBarItems = [
 ]
 const NavBar = () => {
   const navigate = useNavigate()
-
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" color="bgDark">
@@ -55,7 +54,11 @@ const NavBar = () => {
                 <IconButton
                   size="large"
                   aria-label={item.nome}
-                  color="inherit"
+                  color={
+                    location.pathname.includes(item.rota)
+                      ? "primary"
+                      : "inherit"
+                  }
                   onClick={() => navigate(item.rota)}
                 >
                   {item.componente}

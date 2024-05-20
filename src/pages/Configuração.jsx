@@ -1,10 +1,14 @@
 import { Box, Container, Divider, Grid, Paper, Typography } from "@mui/material"
 import NavBar from "../components/NavBar"
 import { ArrowForwardIosSharp } from "@mui/icons-material"
-import { Outlet, useNavigate } from "react-router-dom"
+import { Outlet, useLocation, useNavigate } from "react-router-dom"
 
 const CardConfig = ({ titulo, subtitulo, nav }) => {
   const navigate = useNavigate()
+  const location = useLocation()
+  const color = location.pathname.includes(nav) ? "primary" : "inherit"
+
+  console.log(location, color)
   return (
     <Box
       direction="row"
@@ -27,7 +31,12 @@ const CardConfig = ({ titulo, subtitulo, nav }) => {
         <Typography variant="subtitle2">{subtitulo}</Typography>
       </Box>
       <Box>
-        <ArrowForwardIosSharp sx={{ alignSelf: "center", color: "orange" }} />
+        <ArrowForwardIosSharp
+          sx={{
+            alignSelf: "center",
+          }}
+          color={color}
+        />
       </Box>
     </Box>
   )
