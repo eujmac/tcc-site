@@ -1,5 +1,5 @@
 import { ResponsiveLine } from "@nivo/line"
-import { dados } from "../utils/dadosGrafico"
+import { dados } from "../utils/dados"
 
 const GraficoLinha = () => {
   return (

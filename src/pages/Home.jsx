@@ -105,7 +105,7 @@ const Home = () => {
                   <Typography>
                     Agendamentos: <b>20</b>
                   </Typography>
-                  <Box height="50vh">
+                  <Box height="450px">
                     <GraficoLinha />
                   </Box>
                 </Stack>

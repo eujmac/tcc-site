@@ -1,10 +1,10 @@
-import { Box, Button, Chip, CircularProgress, Grid } from "@mui/material"
+import { Box, Button, Chip, CircularProgress } from "@mui/material"
 import { useDrawer } from "../context/DrawerContext"
 const GridHora = ({ hora, status }) => {
   const { setIsDrawerCheckoutOpen, setIsDrawerAgendarOpen } = useDrawer()
 
   return (
-    <Grid item xs={3} sm={2}>
+    <Box>
       {status === "negado" && (
         <Button variant="outlined" disabled>
           {hora}
@@ -28,7 +28,7 @@ const GridHora = ({ hora, status }) => {
           {hora}
         </Button>
       )}
-    </Grid>
+    </Box>
   )
 }
 const GridHorarios = ({ isLoading }) => {
@@ -38,8 +38,7 @@ const GridHorarios = ({ isLoading }) => {
         <CircularProgress color="primary" sx={{ alignSelf: "center" }} />
       ) : (
         <>
-          {" "}
-          <Grid container rowGap={1}>
+          <Box display="flex" flexWrap="wrap" gap={2}>
             <GridHora hora="07:00" status="livre" />
             <GridHora hora="08:00" status="agendado" />
             <GridHora hora="09:00" status="negado" />
@@ -56,7 +55,7 @@ const GridHorarios = ({ isLoading }) => {
             <GridHora hora="20:00" status="agendado" />
             <GridHora hora="21:00" status="negado" />
             <GridHora hora="22:00" status="livre" />
-          </Grid>
+          </Box>
           <Box display="flex" gap={2}>
             <Chip label="Indisponível" size="small" sx={{ fontSize: 12 }} />
             <Chip

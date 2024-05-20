@@ -176,7 +176,7 @@ export default function DrawerCheckout() {
             </Grid>
           </Grid>
           <Box display={"flex"} gap={2} mt={3}>
-            <Tooltip title="Cancelar">
+            <Tooltip title="Cancelar Corte">
               <Button variant="contained" color="error">
                 <DeleteForever onClick={() => setIsDrawerCheckoutOpen(false)} />
               </Button>

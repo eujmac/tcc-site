@@ -8,11 +8,14 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3"
 
 import { BrowserRouter } from "react-router-dom"
 import { App } from "./App"
-
 import { ptBR as ptBRDateFns } from "date-fns/locale"
+import { ptBR } from "@mui/x-data-grid/locales"
+import { ptBR as pickersptBR } from "@mui/x-date-pickers/locales"
+import { ptBR as coreBgBG } from "@mui/material/locale"
 import { DrawerProvider } from "./context/DrawerContext"
 import DrawerCheckout from "./components/DrawerCheckout"
 import DrawerAgendar from "./components/DrawerAgendar"
+import DrawerAdicionar from "./components/DrawerAdicionarCliente"
 const theme = createTheme({
   palette: {
     primary: {
@@ -25,6 +28,9 @@ const theme = createTheme({
       main: "#a9a9a9",
     },
   },
+  ptBR,
+  pickersptBR,
+  coreBgBG,
 })
 
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -39,6 +45,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <DrawerProvider>
             <DrawerCheckout />
             <DrawerAgendar />
+            <DrawerAdicionar />
             <App />
           </DrawerProvider>
         </LocalizationProvider>
