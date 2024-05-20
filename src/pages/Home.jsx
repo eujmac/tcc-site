@@ -1,6 +1,69 @@
-import { Box, Container, Grid, Paper, Stack, Typography } from "@mui/material"
+import {
+  Box,
+  Container,
+  Divider,
+  Grid,
+  Paper,
+  Stack,
+  Typography,
+} from "@mui/material"
 import NavBar from "../components/NavBar"
-import ListaCortes from "../components/ListaCortes"
+import { useDrawer } from "../context/DrawerContext"
+import { ArrowForwardIosSharp } from "@mui/icons-material"
+import GraficoLinha from "../components/GraficoLinha"
+
+const Corte = () => {
+  const { setIsDrawerCheckoutOpen } = useDrawer()
+
+  return (
+    <Stack
+      direction="row"
+      display="flex"
+      justifyContent="space-between"
+      alignItems="center"
+      sx={{
+        cursor: "pointer",
+        p: 3,
+        "&:hover": {
+          backgroundColor: "#f8f8fb",
+        },
+      }}
+      onClick={() => setIsDrawerCheckoutOpen(true)}
+    >
+      <Box>
+        <Typography color={"gray"}>Ter, 14 mai 2024 18:00</Typography>
+        <Typography fontWeight={"bold"}>Corte de cabelo</Typography>
+      </Box>
+      <Box>
+        <Typography>
+          <b>Cliente</b>: João
+        </Typography>
+        <Typography>
+          <b>Barbeiro</b>: Pedro
+        </Typography>
+      </Box>
+      <Box display="flex" gap="10px">
+        <Typography variant="h6" fontWeight={"bold"}>
+          R$ 40
+        </Typography>
+        <ArrowForwardIosSharp sx={{ alignSelf: "center" }} />
+      </Box>
+    </Stack>
+  )
+}
+const ListaCortes = () => {
+  return (
+    <>
+      <Corte />
+      <Divider />
+      <Corte />
+      <Divider />
+      <Corte />
+      <Divider />
+    </>
+  )
+}
+
 const Card = ({ titulo }) => {
   return (
     <Paper variant="outlined">
@@ -42,7 +105,9 @@ const Home = () => {
                   <Typography>
                     Agendamentos: <b>20</b>
                   </Typography>
-                  <Box>**GRÁFICO AQUI**</Box>
+                  <Box height="50vh">
+                    <GraficoLinha />
+                  </Box>
                 </Stack>
               </Stack>
             </Paper>
