@@ -51,6 +51,7 @@ export const columns = [
     type: "number",
     headerAlign: "left",
     align: "left",
+    flex: 1,
   },
   { field: "celular", headerName: "Celular", flex: 1 },
   {

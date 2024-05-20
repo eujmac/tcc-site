@@ -21,10 +21,14 @@ const Clientes = () => {
   return (
     <Box>
       <NavBar />
-      <Container maxWidth="xl" sx={{ mt: "2rem" }}>
+      <Container maxWidth="xl" sx={{ mt: 3 }}>
         <Paper variant="outlined">
           <Stack spacing={2} p={2}>
-            <Box display={"flex"} justifyContent={"space-between"}>
+            <Box
+              display={"flex"}
+              justifyContent={"space-between"}
+              alignItems="center"
+            >
               <Box>
                 <Typography variant="h5" fontWeight={"bold"}>
                   Lista de Clientes <Chip label="18" variant="outlined" />
@@ -33,7 +37,7 @@ const Clientes = () => {
                   Visualizar, adicionar, editar e excluir dados dos clientes.
                 </Typography>
               </Box>
-              <Box alignSelf={"center"}>
+              <Box>
                 <Button
                   variant="contained"
                   onClick={() => setIsDrawerAdicionarOpen(true)}

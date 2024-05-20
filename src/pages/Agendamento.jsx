@@ -92,7 +92,7 @@ const Agendamento = () => {
         </ButtonGroup>
       </Box>
       {/* Grid com os barbeiros e os horários */}
-      <Container maxWidth="xl" sx={{ mt: 2 }}>
+      <Container maxWidth="xl" sx={{ mt: 3 }}>
         <Grid container spacing={2}>
           <CardBarbeiro nome="João Marcos" isLoading={isLoading} />
           <CardBarbeiro nome="Pedro Henrique" isLoading={isLoading} />
