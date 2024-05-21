@@ -12,7 +12,7 @@ import {
 import NavBar from "../components/NavBar"
 import { DataGrid } from "@mui/x-data-grid"
 import { Search } from "@mui/icons-material"
-import { columns, rows } from "../utils/dados"
+import { colunasCliente, linhasCliente } from "../utils/dados"
 import { useDrawer } from "../context/DrawerContext"
 
 const Clientes = () => {
@@ -64,8 +64,8 @@ const Clientes = () => {
             </Box>
             <Box sx={{ height: "70vh", width: "100%" }}>
               <DataGrid
-                rows={rows}
-                columns={columns}
+                rows={linhasCliente}
+                columns={colunasCliente}
                 disableRowSelectionOnClick
                 hideFooter
               />

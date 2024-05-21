@@ -1,9 +1,9 @@
 import { Delete, Edit } from "@mui/icons-material"
 import { Box, IconButton, Tooltip } from "@mui/material"
 
-export const dados = [
+export const dadosGrafico = [
   {
-    id: "japan",
+    id: "cortes",
     color: "hsl(106, 70%, 50%)",
     data: [
       {
@@ -37,8 +37,7 @@ export const dados = [
     ],
   },
 ]
-
-export const columns = [
+export const colunasCliente = [
   {
     field: "nome",
     headerName: "Nome Completo",
@@ -76,8 +75,7 @@ export const columns = [
     },
   },
 ]
-
-export const rows = [
+export const linhasCliente = [
   {
     id: 1,
     nome: "Jon Snow",
@@ -203,5 +201,125 @@ export const rows = [
     idade: 65,
     email: "teste@gmail.com",
     celular: "(21) 99999-9999",
+  },
+]
+export const colunasServicos = [
+  {
+    field: "nome",
+    headerName: "Nome",
+    flex: 1,
+  },
+  {
+    field: "preco",
+    headerName: "Preço",
+    flex: 1,
+    valueFormatter: value => {
+      if (value == null) {
+        return ""
+      }
+      return `R$ ${value.toLocaleString()}`
+    },
+  },
+  {
+    field: "acoes",
+    headerName: "Ações",
+    flex: 1,
+    renderCell: () => {
+      return (
+        <Box>
+          <Tooltip title="Editar Serviço">
+            <IconButton variant="contained" color="success" onClick={() => {}}>
+              <Edit />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Excluir Serviço">
+            <IconButton variant="contained" color="error" onClick={() => {}}>
+              <Delete />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      )
+    },
+  },
+]
+export const linhasServicos = [
+  {
+    id: 1,
+    nome: "Corte Maquina",
+    preco: 30,
+  },
+  {
+    id: 2,
+    nome: "Corte Maquina + tesoura",
+    preco: 40,
+  },
+  {
+    id: 3,
+    nome: "Barba",
+    preco: 20,
+  },
+  {
+    id: 4,
+    nome: "Corte + Barba",
+    preco: 50,
+  },
+]
+export const colunasEquipe = [
+  {
+    field: "nome",
+    headerName: "Nome",
+    flex: 1,
+  },
+  {
+    field: "email",
+    headerName: "Email",
+    flex: 1,
+  },
+  {
+    field: "senha",
+    headerName: "Senha",
+    flex: 1,
+  },
+  {
+    field: "acoes",
+    headerName: "Ações",
+    flex: 1,
+    renderCell: () => {
+      return (
+        <Box>
+          <Tooltip title="Editar Barbeiro">
+            <IconButton variant="contained" color="success" onClick={() => {}}>
+              <Edit />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Excluir Barbeiro">
+            <IconButton variant="contained" color="error" onClick={() => {}}>
+              <Delete />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      )
+    },
+  },
+]
+
+export const linhasEquipe = [
+  {
+    id: 1,
+    nome: "João Marcos",
+    email: "joao@teste.com",
+    senha: "123456",
+  },
+  {
+    id: 2,
+    nome: "Pedro Henrique",
+    email: "pedro@teste.com",
+    senha: "pedro12345",
+  },
+  {
+    id: 3,
+    nome: "Jon Snow",
+    email: "jonsnow@teste.com",
+    senha: "123456789",
   },
 ]

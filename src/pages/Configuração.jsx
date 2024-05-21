@@ -57,8 +57,9 @@ const Configuração = () => {
                   Gerencie todas as configurações em um só lugar.
                 </Typography>
               </Box>
+              <Divider />
               <CardConfig
-                titulo="Dados da empresa"
+                titulo="Empresa"
                 subtitulo="Gerencie definições como o nome da barbearia, horários e dias de
           funcionamento"
                 nav="dados"
@@ -78,9 +79,9 @@ const Configuração = () => {
               <Divider />
             </Paper>
           </Grid>
-          <Grid item xs={12} lg={8}>
-            <Paper variant="outlined" sx={{ height: "90vh" }}>
-              <Box p={3}>
+          <Grid item xs={12} lg={8} mb={2}>
+            <Paper variant="outlined">
+              <Box>
                 <Outlet />
               </Box>
             </Paper>

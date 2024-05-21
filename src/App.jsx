@@ -5,9 +5,9 @@ import Agendamento from "./pages/Agendamento"
 import Clientes from "./pages/Clientes"
 import Configuração from "./pages/Configuração"
 import PaginaNaoEncontrada from "./pages/PaginaNaoEncontrada"
-import Dados from "./pages/Dados"
 import Servicos from "./pages/Servicos"
 import Equipe from "./pages/Equipe"
+import DadosEmpresa from "./pages/DadosEmpresa"
 
 export const App = () => {
   return (
@@ -18,8 +18,8 @@ export const App = () => {
         <Route path="/agenda" element={<Agendamento />}></Route>
         <Route path="/clientes" element={<Clientes />}></Route>
         <Route path="/config" element={<Configuração />}>
-          <Route index element={<Dados />}></Route>
-          <Route path="dados" element={<Dados />}></Route>
+          <Route index element={<DadosEmpresa />}></Route>
+          <Route path="dados" element={<DadosEmpresa />}></Route>
           <Route path="servicos" element={<Servicos />}></Route>
           <Route path="equipe" element={<Equipe />}></Route>
         </Route>

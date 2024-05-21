@@ -12,7 +12,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material"
-import { useLocation, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 const navBarItems = [
   { nome: "Home", componente: <Home />, rota: "/home" },

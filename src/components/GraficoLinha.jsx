@@ -1,10 +1,10 @@
 import { ResponsiveLine } from "@nivo/line"
-import { dados } from "../utils/dados"
+import { dadosGrafico } from "../utils/dados"
 
 const GraficoLinha = () => {
   return (
     <ResponsiveLine
-      data={dados}
+      data={dadosGrafico}
       margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
       xScale={{ type: "point" }}
       yScale={{
