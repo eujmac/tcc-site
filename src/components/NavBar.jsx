@@ -23,8 +23,8 @@ const navBarItems = [
 const NavBar = () => {
   const navigate = useNavigate()
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" color="bgDark">
+    <Box sx={{ flexGrow: 1, mb: 8 }}>
+      <AppBar position="fixed" color="bgDark">
         <Toolbar sx={{ color: "white" }}>
           <Typography
             variant="h6"

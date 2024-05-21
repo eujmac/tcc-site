@@ -76,7 +76,7 @@ const Agendamento = () => {
         sx={{
           bgcolor: "cinza.main",
           width: "100%",
-          height: "60px",
+          p: 2,
           display: "flex",
           justifyContent: "center",
           alignItems: "center",

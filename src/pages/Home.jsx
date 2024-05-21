@@ -80,7 +80,7 @@ const Home = () => {
   return (
     <Box>
       <NavBar />
-      <Container maxWidth="xl" sx={{ mt: 3 }}>
+      <Container maxWidth="xl" sx={{ mt: 10 }}>
         <Grid container spacing={2}>
           {/* Card próximos agendamento */}
           <Grid item xs={12} lg={6}>

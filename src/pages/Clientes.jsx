@@ -21,7 +21,7 @@ const Clientes = () => {
   return (
     <Box>
       <NavBar />
-      <Container maxWidth="xl" sx={{ mt: 3 }}>
+      <Container maxWidth="xl" sx={{ mt: 10 }}>
         <Paper variant="outlined">
           <Stack spacing={2} p={2}>
             <Box

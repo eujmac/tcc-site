@@ -45,7 +45,7 @@ const Configuração = () => {
   return (
     <Box>
       <NavBar />
-      <Container maxWidth="xl" sx={{ mt: 3 }}>
+      <Container maxWidth="xl" sx={{ mt: 10 }}>
         <Grid container spacing={2}>
           <Grid item xs={12} lg={4}>
             <Paper variant="outlined" sx={{ height: "90vh" }}>
