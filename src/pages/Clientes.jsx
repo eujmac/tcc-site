@@ -15,9 +15,10 @@ import { Search } from "@mui/icons-material"
 import { colunasCliente, linhasCliente } from "../utils/dados"
 import { useDrawer } from "../context/DrawerContext"
 import DialogExcluir from "../components/DialogExcluir"
+import DrawerTabela from "../components/DrawerTabela"
 
 const Clientes = () => {
-  const { isDrawerAdicionarOpen, setIsDrawerAdicionarOpen } = useDrawer()
+  const { isDrawerTabelaOpen, setIsDrawerTabelaOpen } = useDrawer()
 
   return (
     <Box>
@@ -26,6 +27,7 @@ const Clientes = () => {
         titulo={"Excluir Cliente?"}
         mensagem={"Você tem certeza que deseja excluir o cliente?"}
       />
+
       <Container maxWidth="xl" sx={{ mt: 10 }}>
         <Paper variant="outlined">
           <Stack spacing={2} p={2}>
@@ -45,7 +47,7 @@ const Clientes = () => {
               <Box>
                 <Button
                   variant="contained"
-                  onClick={() => setIsDrawerAdicionarOpen(true)}
+                  onClick={() => setIsDrawerTabelaOpen(true)}
                 >
                   Adicionar
                 </Button>

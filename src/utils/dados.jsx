@@ -1,6 +1,7 @@
 import { Delete, Edit } from "@mui/icons-material"
 import { Box, IconButton, Tooltip } from "@mui/material"
 import { useDialog } from "../context/DialogContext"
+import { useDrawer } from "../context/DrawerContext"
 
 export const dadosGrafico = [
   {
@@ -60,6 +61,7 @@ export const colunasCliente = [
     flex: 1,
     renderCell: () => {
       const { setIsDialogOpen } = useDialog()
+      const { setIsDrawerTabelaOpen } = useDrawer()
 
       return (
         <Box>
@@ -68,7 +70,7 @@ export const colunasCliente = [
               variant="contained"
               color="success"
               onClick={() => {
-                setIsDialogOpen(true)
+                setIsDrawerTabelaOpen(true)
               }}
             >
               <Edit />
@@ -241,6 +243,7 @@ export const colunasServicos = [
     flex: 1,
     renderCell: () => {
       const { setIsDialogOpen } = useDialog()
+      const { setIsDrawerTabelaOpen } = useDrawer()
 
       return (
         <Box>
@@ -249,7 +252,7 @@ export const colunasServicos = [
               variant="contained"
               color="success"
               onClick={() => {
-                setIsDialogOpen(true)
+                setIsDrawerTabelaOpen(true)
               }}
             >
               <Edit />
@@ -315,6 +318,8 @@ export const colunasEquipe = [
     flex: 1,
     renderCell: () => {
       const { setIsDialogOpen } = useDialog()
+      const { setIsDrawerTabelaOpen } = useDrawer()
+
       return (
         <Box>
           <Tooltip title="Editar Barbeiro">
@@ -322,7 +327,7 @@ export const colunasEquipe = [
               variant="contained"
               color="success"
               onClick={() => {
-                setIsDialogOpen(true)
+                setIsDrawerTabelaOpen(true)
               }}
             >
               <Edit />

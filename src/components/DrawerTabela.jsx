@@ -29,15 +29,15 @@ const initialValues = {
   email: "",
   celular: "",
 }
-export default function DrawerAdicionar() {
-  const { isDrawerAdicionarOpen, setIsDrawerAdicionarOpen } = useDrawer()
+export default function DrawerTabela({ titulo }) {
+  const { isDrawerTabelaOpen, setIsDrawerTabelaOpen } = useDrawer()
   const handleFormSubmit = () => {}
   return (
     <Drawer
       variant="temporary"
       anchor="right"
-      open={isDrawerAdicionarOpen}
-      onClose={() => setIsDrawerAdicionarOpen(false)}
+      open={isDrawerTabelaOpen}
+      onClose={() => setIsDrawerTabelaOpen(false)}
       height={"100%"}
     >
       <Box width="50vw" role="presentation">
@@ -53,7 +53,7 @@ export default function DrawerAdicionar() {
         >
           <Box>
             <Typography variant="h4" color="white">
-              Adicionar novo cliente
+              {titulo}
             </Typography>
           </Box>
         </Box>
@@ -122,7 +122,7 @@ export default function DrawerAdicionar() {
                     fullWidth
                     color="bgDark"
                     sx={{ color: "white" }}
-                    onClick={() => setIsDrawerAdicionarOpen(false)}
+                    onClick={() => setIsDrawerTabelaOpen(false)}
                   >
                     Adicionar
                   </Button>

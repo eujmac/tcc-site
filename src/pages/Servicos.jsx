@@ -2,7 +2,10 @@ import { Box, Button, Divider, Typography } from "@mui/material"
 import { DataGrid } from "@mui/x-data-grid"
 import { linhasServicos, colunasServicos } from "../utils/dados"
 import DialogExcluir from "../components/DialogExcluir"
+import { useDrawer } from "../context/DrawerContext"
 const Servicos = () => {
+  const { setIsDrawerTabelaOpen } = useDrawer()
+
   return (
     <>
       <DialogExcluir
@@ -20,7 +23,14 @@ const Servicos = () => {
       >
         <Typography variant="h4">Catalogo de Serviços</Typography>
         <Box display="flex" gap={2}>
-          <Button variant="contained">adicionar</Button>
+          <Button
+            variant="contained"
+            onClick={() => {
+              setIsDrawerTabelaOpen(true)
+            }}
+          >
+            adicionar
+          </Button>
           <Button variant="contained">SALVAR</Button>
         </Box>
       </Box>

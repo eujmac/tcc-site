@@ -15,8 +15,8 @@ import { ptBR as coreBgBG } from "@mui/material/locale"
 import { DrawerProvider } from "./context/DrawerContext"
 import DrawerCheckout from "./components/DrawerCheckout"
 import DrawerAgendar from "./components/DrawerAgendar"
-import DrawerAdicionar from "./components/DrawerAdicionarCliente"
 import { DialogProvider } from "./context/DialogContext"
+import DrawerTabela from "./components/DrawerTabela"
 const theme = createTheme({
   palette: {
     primary: {
@@ -46,7 +46,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <DrawerProvider>
             <DrawerCheckout />
             <DrawerAgendar />
-            <DrawerAdicionar />
+            <DrawerTabela titulo={"Adicionar um novo cliente"} />
             <DialogProvider>
               <App />
             </DialogProvider>

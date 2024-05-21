@@ -5,7 +5,7 @@ const DrawerContext = createContext()
 const DrawerProvider = ({ children }) => {
   const [isDrawerCheckoutOpen, setIsDrawerCheckoutOpen] = useState(false)
   const [isDrawerAgendarOpen, setIsDrawerAgendarOpen] = useState(false)
-  const [isDrawerAdicionarOpen, setIsDrawerAdicionarOpen] = useState(false)
+  const [isDrawerTabelaOpen, setIsDrawerTabelaOpen] = useState(false)
 
   return (
     <DrawerContext.Provider
@@ -14,8 +14,8 @@ const DrawerProvider = ({ children }) => {
         setIsDrawerCheckoutOpen,
         isDrawerAgendarOpen,
         setIsDrawerAgendarOpen,
-        isDrawerAdicionarOpen,
-        setIsDrawerAdicionarOpen,
+        isDrawerTabelaOpen,
+        setIsDrawerTabelaOpen,
       }}
     >
       {children}
