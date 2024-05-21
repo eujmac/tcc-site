@@ -1,9 +1,14 @@
 import { Box, Button, Divider, Typography } from "@mui/material"
 import { DataGrid } from "@mui/x-data-grid"
 import { linhasServicos, colunasServicos } from "../utils/dados"
+import DialogExcluir from "../components/DialogExcluir"
 const Servicos = () => {
   return (
     <>
+      <DialogExcluir
+        titulo={"Excluir Serviço?"}
+        mensagem={"Você tem certeza que deseja excluir esse serviço?"}
+      />
       <Box
         sx={{
           height: "136px",

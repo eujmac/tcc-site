@@ -14,6 +14,7 @@ import { DataGrid } from "@mui/x-data-grid"
 import { Search } from "@mui/icons-material"
 import { colunasCliente, linhasCliente } from "../utils/dados"
 import { useDrawer } from "../context/DrawerContext"
+import DialogExcluir from "../components/DialogExcluir"
 
 const Clientes = () => {
   const { isDrawerAdicionarOpen, setIsDrawerAdicionarOpen } = useDrawer()
@@ -21,6 +22,10 @@ const Clientes = () => {
   return (
     <Box>
       <NavBar />
+      <DialogExcluir
+        titulo={"Excluir Cliente?"}
+        mensagem={"Você tem certeza que deseja excluir o cliente?"}
+      />
       <Container maxWidth="xl" sx={{ mt: 10 }}>
         <Paper variant="outlined">
           <Stack spacing={2} p={2}>

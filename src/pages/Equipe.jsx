@@ -1,9 +1,14 @@
 import { Box, Button, Divider, Typography } from "@mui/material"
 import { DataGrid } from "@mui/x-data-grid"
 import { linhasEquipe, colunasEquipe } from "../utils/dados"
+import DialogExcluir from "../components/DialogExcluir"
 const Equipe = () => {
   return (
     <>
+      <DialogExcluir
+        titulo={"Excluir Colaborador?"}
+        mensagem={"Você tem certeza que deseja excluir esse colaborador?"}
+      />
       <Box
         sx={{
           height: "136px",

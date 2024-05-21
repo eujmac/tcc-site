@@ -1,5 +1,6 @@
 import { Delete, Edit } from "@mui/icons-material"
 import { Box, IconButton, Tooltip } from "@mui/material"
+import { useDialog } from "../context/DialogContext"
 
 export const dadosGrafico = [
   {
@@ -58,15 +59,29 @@ export const colunasCliente = [
     headerName: "Ações",
     flex: 1,
     renderCell: () => {
+      const { setIsDialogOpen } = useDialog()
+
       return (
         <Box>
           <Tooltip title="Editar Cliente">
-            <IconButton variant="contained" color="success" onClick={() => {}}>
+            <IconButton
+              variant="contained"
+              color="success"
+              onClick={() => {
+                setIsDialogOpen(true)
+              }}
+            >
               <Edit />
             </IconButton>
           </Tooltip>
           <Tooltip title="Excluir Cliente">
-            <IconButton variant="contained" color="error" onClick={() => {}}>
+            <IconButton
+              variant="contained"
+              color="error"
+              onClick={() => {
+                setIsDialogOpen(true)
+              }}
+            >
               <Delete />
             </IconButton>
           </Tooltip>
@@ -225,15 +240,29 @@ export const colunasServicos = [
     headerName: "Ações",
     flex: 1,
     renderCell: () => {
+      const { setIsDialogOpen } = useDialog()
+
       return (
         <Box>
           <Tooltip title="Editar Serviço">
-            <IconButton variant="contained" color="success" onClick={() => {}}>
+            <IconButton
+              variant="contained"
+              color="success"
+              onClick={() => {
+                setIsDialogOpen(true)
+              }}
+            >
               <Edit />
             </IconButton>
           </Tooltip>
           <Tooltip title="Excluir Serviço">
-            <IconButton variant="contained" color="error" onClick={() => {}}>
+            <IconButton
+              variant="contained"
+              color="error"
+              onClick={() => {
+                setIsDialogOpen(true)
+              }}
+            >
               <Delete />
             </IconButton>
           </Tooltip>
@@ -285,15 +314,28 @@ export const colunasEquipe = [
     headerName: "Ações",
     flex: 1,
     renderCell: () => {
+      const { setIsDialogOpen } = useDialog()
       return (
         <Box>
           <Tooltip title="Editar Barbeiro">
-            <IconButton variant="contained" color="success" onClick={() => {}}>
+            <IconButton
+              variant="contained"
+              color="success"
+              onClick={() => {
+                setIsDialogOpen(true)
+              }}
+            >
               <Edit />
             </IconButton>
           </Tooltip>
           <Tooltip title="Excluir Barbeiro">
-            <IconButton variant="contained" color="error" onClick={() => {}}>
+            <IconButton
+              variant="contained"
+              color="error"
+              onClick={() => {
+                setIsDialogOpen(true)
+              }}
+            >
               <Delete />
             </IconButton>
           </Tooltip>
@@ -302,7 +344,6 @@ export const colunasEquipe = [
     },
   },
 ]
-
 export const linhasEquipe = [
   {
     id: 1,

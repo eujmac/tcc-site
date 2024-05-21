@@ -16,6 +16,7 @@ import { DrawerProvider } from "./context/DrawerContext"
 import DrawerCheckout from "./components/DrawerCheckout"
 import DrawerAgendar from "./components/DrawerAgendar"
 import DrawerAdicionar from "./components/DrawerAdicionarCliente"
+import { DialogProvider } from "./context/DialogContext"
 const theme = createTheme({
   palette: {
     primary: {
@@ -46,7 +47,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <DrawerCheckout />
             <DrawerAgendar />
             <DrawerAdicionar />
-            <App />
+            <DialogProvider>
+              <App />
+            </DialogProvider>
           </DrawerProvider>
         </LocalizationProvider>
       </ThemeProvider>

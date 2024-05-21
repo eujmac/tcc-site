@@ -8,7 +8,6 @@ const CardConfig = ({ titulo, subtitulo, nav }) => {
   const location = useLocation()
   const color = location.pathname.includes(nav) ? "primary" : "inherit"
 
-  console.log(location, color)
   return (
     <Box
       direction="row"
