@@ -1,5 +1,4 @@
-import { Box, Button, IconButton, Stack, Typography } from "@mui/material"
-import { useDrawer } from "../context/DrawerContext"
+import { IconButton, Stack, Typography } from "@mui/material"
 import { Delete } from "@mui/icons-material"
 
 const Servico = () => {

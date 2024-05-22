@@ -15,7 +15,6 @@ import { Search } from "@mui/icons-material"
 import { colunasCliente, linhasCliente } from "../utils/dados"
 import { useDrawer } from "../context/DrawerContext"
 import DialogExcluir from "../components/DialogExcluir"
-import DrawerTabela from "../components/DrawerTabela"
 
 const Clientes = () => {
   const { isDrawerTabelaOpen, setIsDrawerTabelaOpen } = useDrawer()
@@ -74,6 +73,7 @@ const Clientes = () => {
                 rows={linhasCliente}
                 columns={colunasCliente}
                 disableRowSelectionOnClick
+                disableColumnFilter
                 hideFooter
               />
             </Box>

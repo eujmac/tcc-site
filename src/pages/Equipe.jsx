@@ -40,6 +40,7 @@ const Equipe = () => {
           rows={linhasEquipe}
           columns={colunasEquipe}
           disableRowSelectionOnClick
+          disableColumnFilter
           hideFooter
         />
       </Box>
