@@ -47,7 +47,7 @@ const Configuração = () => {
       <Container maxWidth="xl" sx={{ mt: 10 }}>
         <Grid container spacing={2}>
           <Grid item xs={12} lg={4}>
-            <Paper variant="outlined" sx={{ height: "90vh" }}>
+            <Paper variant="outlined">
               <Box p={3}>
                 <Typography variant="h5" fontWeight={"bold"}>
                   Configurações da empresa
@@ -75,7 +75,6 @@ const Configuração = () => {
                 subtitulo="Cadastre, edite e exclua os colaboradores da barbearia"
                 nav="equipe"
               />
-              <Divider />
             </Paper>
           </Grid>
           <Grid item xs={12} lg={8} mb={2}>
