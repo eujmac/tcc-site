@@ -8,33 +8,75 @@ import Configuração from "../pages/Configuração"
 import DadosEmpresa from "../pages/DadosEmpresa"
 import Servicos from "../pages/Servicos"
 import Equipe from "../pages/Equipe"
+import Protected from "../components/Protected"
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <Login />,
-    errorElement: <PaginaNaoEncontrada />,
+    errorElement: (
+      <Protected>
+        <PaginaNaoEncontrada />
+      </Protected>
+    ),
   },
   {
     path: "/home",
-    element: <Home />,
+    element: (
+      <Protected>
+        <Home />
+      </Protected>
+    ),
   },
   {
     path: "/agenda",
-    element: <Agendamento />,
+    element: (
+      <Protected>
+        <Agendamento />
+      </Protected>
+    ),
   },
   {
     path: "/clientes",
-    element: <Clientes />,
+    element: (
+      <Protected>
+        <Clientes />
+      </Protected>
+    ),
   },
   {
     path: "/config",
-    element: <Configuração />,
+    element: (
+      <Protected>
+        <Configuração />
+      </Protected>
+    ),
     children: [
       { element: <Navigate replace to={"/config/dados"} />, index: true },
-      { path: "/config/dados", element: <DadosEmpresa /> },
-      { path: "/config/servicos", element: <Servicos /> },
-      { path: "/config/equipe", element: <Equipe /> },
+      {
+        path: "/config/dados",
+        element: (
+          <Protected>
+            <DadosEmpresa />
+          </Protected>
+        ),
+      },
+      {
+        path: "/config/servicos",
+        element: (
+          <Protected>
+            <Servicos />
+          </Protected>
+        ),
+      },
+      {
+        path: "/config/equipe",
+        element: (
+          <Protected>
+            <Equipe />
+          </Protected>
+        ),
+      },
     ],
   },
 ])

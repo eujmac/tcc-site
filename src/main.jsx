@@ -1,7 +1,6 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
 import CssBaseline from "@mui/material/CssBaseline"
-import { ThemeProvider } from "@emotion/react"
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3"
 import { RouterProvider } from "react-router-dom"
@@ -14,6 +13,8 @@ import { DialogProvider } from "./context/DialogContext"
 import DrawerTabela from "./components/DrawerTabela"
 import { router } from "./utils/rotas"
 import { theme } from "./utils/theme"
+import { AuthContext } from "./context/AuthContext"
+import { ThemeProvider } from "@mui/material"
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -28,7 +29,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <DrawerAgendar />
           <DrawerTabela titulo={"Adicionar um novo cliente"} />
           <DialogProvider>
-            <RouterProvider router={router} />
+            <AuthContext>
+              <RouterProvider router={router} />
+            </AuthContext>
           </DialogProvider>
         </DrawerProvider>
       </LocalizationProvider>
