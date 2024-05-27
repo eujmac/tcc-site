@@ -12,12 +12,13 @@ import { signInWithEmailAndPassword } from "firebase/auth"
 import { auth } from "../services/firebase"
 import { useAuth } from "../context/AuthContext"
 import { useForm } from "react-hook-form"
+import { useSnackbarGlobal } from "../context/SnackbarGlobalContext"
 
 export default function Login() {
   const navigate = useNavigate()
   const { user } = useAuth()
   const [isLoading, setIsLoading] = useState(false)
-  const [isError, setIsError] = useState(null)
+  const { handleClick, dispatch } = useSnackbarGlobal()
 
   const {
     register,
@@ -28,8 +29,6 @@ export default function Login() {
   const login = async data => {
     try {
       setIsLoading(true)
-      setIsError(null)
-
       await signInWithEmailAndPassword(auth, data.email, data.senha)
 
       // setar o tipo do user aki
@@ -37,9 +36,9 @@ export default function Login() {
       setIsLoading(false)
       navigate("/home")
     } catch (error) {
-      console.log(error)
       setIsLoading(false)
-      setIsError("Credenciais inválidas")
+      dispatch("login.error")
+      handleClick()
     }
   }
   return (
@@ -48,17 +47,7 @@ export default function Login() {
         <Navigate to="/home" />
       ) : (
         <Grid container component="main" sx={{ height: "100vh" }}>
-          <Grid
-            item
-            xs={false}
-            md={7}
-            sx={{
-              backgroundImage: "url(./login-bg2.jpg)",
-              backgroundRepeat: "no-repeat",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }}
-          />
+          <GridItemImagem />
           <Grid item xs={12} md={5} component={Paper} elevation={6} square>
             <Box
               sx={{
@@ -121,9 +110,6 @@ export default function Login() {
                     type="password"
                     autoComplete="password"
                   />
-                  {isError && (
-                    <Alert severity="error">Credenciais inválidas</Alert>
-                  )}
                   <Button
                     type="submit"
                     fullWidth
@@ -147,5 +133,20 @@ export default function Login() {
         </Grid>
       )}
     </>
+  )
+}
+const GridItemImagem = () => {
+  return (
+    <Grid
+      item
+      xs={false}
+      md={7}
+      sx={{
+        backgroundImage: "url(./login-bg2.jpg)",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    />
   )
 }

@@ -15,6 +15,9 @@ import { router } from "./utils/rotas"
 import { theme } from "./utils/theme"
 import { AuthContext } from "./context/AuthContext"
 import { ThemeProvider } from "@mui/material"
+import { SnackbarGlobalProvider } from "./context/SnackbarGlobalContext"
+import SnackbarGlobal from "./components/SnackbarGlobal"
+import { BarbeariaContext } from "./context/BarbeariaContext"
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -24,16 +27,21 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         adapterLocale={ptBRDateFns}
       >
         <CssBaseline />
-        <DrawerProvider>
-          <DrawerCheckout />
-          <DrawerAgendar />
-          <DrawerTabela titulo={"Adicionar um novo cliente"} />
-          <DialogProvider>
-            <AuthContext>
-              <RouterProvider router={router} />
-            </AuthContext>
-          </DialogProvider>
-        </DrawerProvider>
+        <BarbeariaContext>
+          <DrawerProvider>
+            <DrawerCheckout />
+            <DrawerAgendar />
+            <DrawerTabela titulo={"Adicionar um novo cliente"} />
+            <DialogProvider>
+              <AuthContext>
+                <SnackbarGlobalProvider>
+                  <SnackbarGlobal />
+                  <RouterProvider router={router} />
+                </SnackbarGlobalProvider>
+              </AuthContext>
+            </DialogProvider>
+          </DrawerProvider>
+        </BarbeariaContext>
       </LocalizationProvider>
     </ThemeProvider>
   </React.StrictMode>

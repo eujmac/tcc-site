@@ -1,10 +1,10 @@
 import {
-  Alert,
   Autocomplete,
   Box,
   Button,
+  Chip,
+  CircularProgress,
   Divider,
-  Snackbar,
   TextField,
   Typography,
 } from "@mui/material"
@@ -14,248 +14,240 @@ import {
   updateEmail,
   updatePassword,
 } from "firebase/auth"
-import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useAuth } from "../context/AuthContext"
-
-const dias = [
-  { dia: "Segunda" },
-  { dia: "Terça" },
-  { dia: "Quarta" },
-  { dia: "Quinta" },
-  { dia: "Sexta" },
-  { dia: "Sábado" },
-  { dia: "Domingo" },
-]
-const horas = [
-  { hora: "07:00" },
-  { hora: "08:00" },
-  { hora: "09:00" },
-  { hora: "10:00" },
-  { hora: "11:00" },
-  { hora: "12:00" },
-  { hora: "13:00" },
-  { hora: "14:00" },
-  { hora: "15:00" },
-  { hora: "16:00" },
-  { hora: "17:00" },
-  { hora: "18:00" },
-  { hora: "19:00" },
-  { hora: "20:00" },
-  { hora: "21:00" },
-  { hora: "22:00" },
-]
+import { useEffect, useState } from "react"
+import { useSnackbarGlobal } from "../context/SnackbarGlobalContext"
+import { useBarbearia } from "../context/BarbeariaContext"
+import { ref, update } from "firebase/database"
+import { db } from "../services/firebase"
+import { diasOptions, horasOptions } from "../utils/dados"
 
 const DadosEmpresa = () => {
   const { user } = useAuth()
+  const [isLoading, setIsLoading] = useState(false)
+  const [novosDias, setNovosDias] = useState([])
+  const [novasHoras, setNovasHoras] = useState([])
+  const { handleClick, dispatch } = useSnackbarGlobal()
+  const { nomeBarbeariaRealTime, diasRealTime, horasRealTime } = useBarbearia()
   const {
+    setValue,
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm()
+  } = useForm({})
 
-  const [open, setOpen] = useState(false)
-  const [isError, setIsError] = useState(false)
-  const [errorMessage, setErrorMessage] = useState(false)
-  const handleClick = () => {
-    setOpen(true)
+  useEffect(() => {
+    setValue("nome", nomeBarbeariaRealTime)
+    setNovosDias(diasRealTime)
+    setNovasHoras(horasRealTime)
+  }, [])
+
+  const mostraSnackbar = tipoDispatch => {
+    setIsLoading(false)
+    dispatch(tipoDispatch)
+    handleClick()
   }
 
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return
-    }
-
-    setOpen(false)
+  const salvar = async dados => {
+    update(ref(db, "barbearia/-NyuqtGr_WyCGrmZk_oz"), {
+      nome: dados.nome,
+      diasFuncionamento: novosDias,
+      horasFuncionamento: novasHoras,
+    })
+    mostraSnackbar("sucesso")
   }
 
-  const checkSenha = async dados => {
-    // criando uma credencial para ser testada
-    const cred = EmailAuthProvider.credential(user.email, dados.senhaAntiga)
-
-    try {
-      const autenticado = await reauthenticateWithCredential(user, cred)
-
-      if (autenticado && dados.email === "" && dados.senhaNova === "") {
-        throw new Error("vazio")
-      }
-    } catch (error) {
-      if (error.code === "auth/invalid-credential") {
-        setErrorMessage("Senha antiga incorreta!")
-        setIsError(true)
-        handleClick()
-      }
-      if (error.message === "vazio") {
-        setErrorMessage("Campos email e senha estão vazios!")
-        setIsError(true)
-        handleClick()
-      }
-    }
-  }
   const trocaEmailSenha = async dados => {
     try {
-      if (dados.email !== "") {
-        await updateEmail(user, dados.email)
+      const cred = EmailAuthProvider.credential(user.email, dados.senhaAtual)
+      const auth = await reauthenticateWithCredential(user, cred)
+      if (auth) {
+        if (dados.email !== "") {
+          await updateEmail(user, dados.email)
+        }
+        if (dados.senhaNova !== "") {
+          await updatePassword(user, dados.senhaNova)
+        }
+        mostraSnackbar("sucesso")
       }
-      if (dados.senhaNova !== "") {
-        await updatePassword(user, dados.senhaNova)
-      }
-      setIsError(false)
-
-      handleClick()
     } catch (error) {
+      if (error.code === "auth/wrong-password") {
+        mostraSnackbar("dadosEmpresa.errorSenhaAtual")
+      }
+
       console.log(error.code)
     }
   }
   const handleForm = async dados => {
-    // testar ver se todos os campos estão vazios
-    if (Object.values(dados).every(val => val === "")) return
-
-    // se senha antiga for digitado
-    if (dados.senhaAntiga !== "") {
-      checkSenha(dados)
-    }
-    if (
-      dados.senhaAntiga !== "" &&
-      (dados.email !== "" || dados.senhaNova !== "")
-    ) {
+    if (dados.senhaAtual.length > 1) {
       trocaEmailSenha(dados)
     }
+    salvar(dados)
   }
   return (
-    <>
-      <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
-        <Alert
-          onClose={handleClose}
-          severity={isError ? "error" : "success"}
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          {isError ? `${errorMessage}` : "Informações salvas com sucesso!"}
-        </Alert>
-      </Snackbar>
-      <Box component={"form"} onSubmit={handleSubmit(handleForm)} noValidate>
-        <Box
-          sx={{
-            height: 136,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            mx: 3,
-          }}
-        >
-          <Typography variant="h4">Dados da Empresa</Typography>
-          <Button type="submit" variant="contained">
-            SALVAR
-          </Button>
-        </Box>
-        <Divider />
-        <Box>
-          <Box m={3}>
-            <Typography variant="h6" fontWeight="bold">
-              Informações da empresa
-            </Typography>
-            <Typography variant="subtitle2">
-              O nome da sua empresa é exibido em diversas áreas, incluindo na
-              barra de navegação, na aba do navegador, e dentro do aplicativo.
-            </Typography>
-
-            <TextField
-              sx={{ my: 2 }}
-              fullWidth
-              type="text"
-              label="Nome da Empresa"
-              name="nomeDaEmpresa"
+    <Box component={"form"} onSubmit={handleSubmit(handleForm)} noValidate>
+      <Box
+        sx={{
+          height: 136,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          mx: 3,
+        }}
+      >
+        <Typography variant="h4">Dados da Empresa</Typography>
+        <Button type="submit" variant="contained">
+          {isLoading ? (
+            <CircularProgress
+              color="inherit"
+              size={24.5}
+              sx={{ width: "40px" }}
             />
-          </Box>
-        </Box>
-        <Divider />
+          ) : (
+            "Salvar"
+          )}
+        </Button>
+      </Box>
+      <Divider />
+      <Box>
         <Box m={3}>
-          <Typography variant="h6" fontWeight="bold">
-            Configurações de dias e horas de funcionamento
-          </Typography>
-          <Typography variant="subtitle2">
-            Escolha as horas e os dias onde a barbearia ira funcionar.
-          </Typography>
-
-          <Autocomplete
-            multiple
-            id="dias"
-            options={dias}
-            getOptionLabel={option => option.dia}
-            filterSelectedOptions
-            renderInput={params => (
-              <TextField sx={{ my: 2 }} {...params} label="Dias da Semana" />
-            )}
-          />
-          <Autocomplete
-            multiple
-            id="horas"
-            options={horas}
-            getOptionLabel={option => option.hora}
-            filterSelectedOptions
-            renderInput={params => (
-              <TextField sx={{ my: 2 }} {...params} label="Horas Abertas" />
-            )}
-          />
-        </Box>
-        <Divider />
-        <Box m={3}>
-          <Typography variant="h6" fontWeight="bold">
-            Configurações do login gerente
-          </Typography>
-          <Typography variant="subtitle2">
-            Para a troca de email ou senha do login gerente é preciso entrar com
-            a senha antiga, para validação.
-          </Typography>
-          <TextField
-            {...register("senhaAntiga", {
-              required: false,
-              minLength: {
-                value: 6,
-                message: "A senha deve conter no mínimo 6 dígitos",
-              },
-            })}
-            error={!!errors.senhaAntiga}
-            helperText={errors.senhaAntiga?.message}
-            sx={{ my: 2 }}
-            fullWidth
-            required
-            type="password"
-            label="Senha Antiga"
+          <TituloSubtitulo
+            titulo="Informações da empresa"
+            subtitulo="O nome da sua empresa é exibido em diversas áreas, incluindo na
+            barra de navegação, na aba do navegador, e dentro do aplicativo."
           />
           <TextField
-            {...register("email", {
+            {...register("nome", {
               required: false,
-              pattern: {
-                value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                message: "E-mail inválido",
-              },
             })}
-            error={!!errors.email}
-            helperText={errors.email?.message}
+            placeholder={nomeBarbeariaRealTime}
             sx={{ my: 2 }}
             fullWidth
             type="text"
-            label="Novo Email"
-          />
-          <TextField
-            {...register("senhaNova", {
-              required: false,
-              minLength: {
-                value: 6,
-                message: "A senha deve conter no mínimo 6 dígitos",
-              },
-            })}
-            error={!!errors.senhaNova}
-            helperText={errors.senhaNova?.message}
-            sx={{ my: 2 }}
-            fullWidth
-            type="password"
-            label="Nova Senha"
+            label="Nome da Empresa"
           />
         </Box>
       </Box>
+      <Divider />
+      <Box m={3}>
+        <TituloSubtitulo
+          titulo="Configurações de dias e horas de funcionamento"
+          subtitulo="Escolha as horas e os dias onde a barbearia ira funcionar."
+        />
+        {/*
+          1 - do contexto vai vir os dias que estão no banco
+          2 - com esse dias eu deve por no autocomplete ao carregar
+          3 - onchange eu deve alterar um state local com os novos dias
+          4 - ao salvar eu altero no banco
+
+        */}
+        <Autocomplete
+          sx={{ my: 2 }}
+          multiple
+          value={novosDias}
+          filterSelectedOptions
+          onChange={(event, newValue) => {
+            setNovosDias(newValue)
+          }}
+          options={diasOptions}
+          getOptionLabel={option => option}
+          isOptionEqualToValue={(option, value) => option === value}
+          renderInput={params => (
+            <TextField {...params} label="Dias da semana" />
+          )}
+          renderTags={(tagValue, getTagProps) =>
+            tagValue.map((option, index) => {
+              const { key, ...rest } = getTagProps({ index })
+              return <Chip label={option} {...rest} key={key} />
+            })
+          }
+        />
+        <Autocomplete
+          sx={{ my: 2 }}
+          multiple
+          value={novasHoras}
+          filterSelectedOptions
+          onChange={(event, newValue) => {
+            setNovasHoras(newValue)
+          }}
+          options={horasOptions}
+          getOptionLabel={option => option}
+          isOptionEqualToValue={(option, value) => option === value}
+          renderInput={params => <TextField {...params} label="Horas" />}
+          renderTags={(tagValue, getTagProps) =>
+            tagValue.map((option, index) => {
+              const { key, ...rest } = getTagProps({ index })
+              return <Chip label={option} {...rest} key={key} />
+            })
+          }
+        />
+      </Box>
+      <Divider />
+      <Box m={3}>
+        <TituloSubtitulo
+          titulo="Configurações do login gerente"
+          subtitulo="Para a troca de email ou senha do login gerente é preciso entrar com a
+          senha Atual, para validação."
+        />
+        <TextField
+          {...register("senhaAtual", {
+            required: false,
+            minLength: {
+              value: 6,
+              message: "A senha deve conter no mínimo 6 dígitos",
+            },
+          })}
+          error={!!errors.senhaAtual}
+          helperText={errors.senhaAtual?.message}
+          sx={{ my: 2 }}
+          fullWidth
+          required
+          type="password"
+          label="Senha Atual"
+        />
+        <TextField
+          {...register("email", {
+            required: false,
+            pattern: {
+              value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+              message: "E-mail inválido",
+            },
+          })}
+          error={!!errors.email}
+          helperText={errors.email?.message}
+          sx={{ my: 2 }}
+          fullWidth
+          type="text"
+          label="Novo Email"
+        />
+        <TextField
+          {...register("senhaNova", {
+            required: false,
+            minLength: {
+              value: 6,
+              message: "A senha deve conter no mínimo 6 dígitos",
+            },
+          })}
+          error={!!errors.senhaNova}
+          helperText={errors.senhaNova?.message}
+          sx={{ my: 2 }}
+          fullWidth
+          type="password"
+          label="Nova Senha"
+        />
+      </Box>
+    </Box>
+  )
+}
+
+const TituloSubtitulo = ({ titulo, subtitulo }) => {
+  return (
+    <>
+      <Typography variant="h6" fontWeight="bold">
+        {titulo}
+      </Typography>
+      <Typography variant="subtitle2">{subtitulo}</Typography>
     </>
   )
 }

@@ -25,7 +25,9 @@ import {
 import { signOut } from "firebase/auth"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { auth } from "../services/firebase"
+import { auth, db } from "../services/firebase"
+import { useBarbearia } from "../context/BarbeariaContext"
+import { ref, update } from "firebase/database"
 
 const navBarItems = [
   { nome: "Home", componente: <Home />, rota: "/home" },
@@ -35,6 +37,7 @@ const navBarItems = [
 const NavBar = () => {
   const navigate = useNavigate()
 
+  const { nomeBarbeariaRealTime, abertoRealtime, idBarbearia } = useBarbearia()
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
 
@@ -43,6 +46,16 @@ const NavBar = () => {
   }
   const handleClose = () => {
     setAnchorEl(null)
+  }
+  // const mostraSnackbar = tipoDispatch => {
+  //   setIsLoading(false)
+  //   dispatch(tipoDispatch)
+  //   handleClick()
+  // }
+  const handleChange = () => {
+    update(ref(db, `barbearia/${idBarbearia}`), {
+      aberto: abertoRealtime ? false : true,
+    })
   }
   const sairDaConta = async () => {
     try {
@@ -60,7 +73,7 @@ const NavBar = () => {
             component="div"
             sx={{ flexGrow: 1, color: "white" }}
           >
-            BarberShop
+            {nomeBarbeariaRealTime}
           </Typography>
 
           <Stack direction="row" spacing={2}>
@@ -74,7 +87,13 @@ const NavBar = () => {
               }}
             >
               <FormControlLabel
-                control={<Switch defaultChecked />}
+                control={
+                  <Switch
+                    defaultChecked
+                    checked={abertoRealtime}
+                    onChange={handleChange}
+                  />
+                }
                 label="Aberto?"
               />
             </FormGroup>
@@ -142,7 +161,7 @@ const NavBar = () => {
               anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
             >
               <MenuItem>
-                <Avatar /> Profile
+                <Avatar /> Gerente
               </MenuItem>
               <Divider />
               <MenuItem
