@@ -55,7 +55,6 @@ const DadosEmpresa = () => {
       diasFuncionamento: novosDias,
       horasFuncionamento: novasHoras,
     })
-    mostraSnackbar("sucesso")
   }
 
   const trocaEmailSenha = async dados => {
@@ -70,6 +69,7 @@ const DadosEmpresa = () => {
           await updatePassword(user, dados.senhaNova)
         }
         mostraSnackbar("sucesso")
+        salvar(dados)
       }
     } catch (error) {
       if (error.code === "auth/wrong-password") {
@@ -82,8 +82,10 @@ const DadosEmpresa = () => {
   const handleForm = async dados => {
     if (dados.senhaAtual.length > 1) {
       trocaEmailSenha(dados)
+    } else {
+      salvar(dados)
+      mostraSnackbar("sucesso")
     }
-    salvar(dados)
   }
   return (
     <Box component={"form"} onSubmit={handleSubmit(handleForm)} noValidate>
