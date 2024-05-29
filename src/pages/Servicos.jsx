@@ -1,17 +1,22 @@
 import { Box, Button, Divider, Typography } from "@mui/material"
 import { DataGrid } from "@mui/x-data-grid"
-import { linhasServicos, colunasServicos } from "../utils/dados"
-import DialogExcluir from "../components/DialogExcluir"
+import { colunasServicos } from "../utils/dados"
 import { useDrawer } from "../context/DrawerContext"
-const Servicos = () => {
-  const { setIsDrawerTabelaOpen } = useDrawer()
+import { useServicos } from "../context/ServicosContext"
 
+const Servicos = () => {
+  const linhasServicos = []
+  const { setIsDrawerAdicionarServicoOpen } = useDrawer()
+  const { servicosRealTime } = useServicos()
+
+  servicosRealTime.forEach(e => {
+    const key = Object.entries(e)[0]
+    const lista = Object.entries(e)[0][1]
+    lista.id = key[0]
+    linhasServicos.push(lista)
+  })
   return (
     <>
-      <DialogExcluir
-        titulo={"Excluir Serviço?"}
-        mensagem={"Você tem certeza que deseja excluir esse serviço?"}
-      />
       <Box
         sx={{
           height: "136px",
@@ -26,12 +31,11 @@ const Servicos = () => {
           <Button
             variant="contained"
             onClick={() => {
-              setIsDrawerTabelaOpen(true)
+              setIsDrawerAdicionarServicoOpen(true)
             }}
           >
             adicionar
           </Button>
-          <Button variant="contained">SALVAR</Button>
         </Box>
       </Box>
       <Divider />

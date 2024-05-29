@@ -11,15 +11,30 @@ const reducer = (state, action) => {
   switch (action) {
     case "sucesso":
       return initialState
+    case "sucessoEditar":
+      return {
+        tipo: "success",
+        mensagem: "Item editado com sucesso!",
+      }
+    case "sucessoAdicionar":
+      return {
+        tipo: "success",
+        mensagem: "Item adicionado com sucesso!",
+      }
+    case "sucessoExcluir":
+      return {
+        tipo: "success",
+        mensagem: "Item excluído com sucesso!",
+      }
     case "login.error":
       return {
         tipo: "error",
         mensagem: "Credenciais Inválidas!",
       }
-    case "dadosEmpresa.errorNenhumCampo":
+    case "dadosEmpresa.errorNomeVazio":
       return {
         tipo: "error",
-        mensagem: "Nenhum campo alterado!",
+        mensagem: "O campo nome deve ser preenchido!",
       }
     case "dadosEmpresa.errorSenhaAtual":
       return {

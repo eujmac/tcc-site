@@ -88,11 +88,7 @@ const NavBar = () => {
             >
               <FormControlLabel
                 control={
-                  <Switch
-                    defaultChecked
-                    checked={abertoRealtime}
-                    onChange={handleChange}
-                  />
+                  <Switch checked={abertoRealtime} onChange={handleChange} />
                 }
                 label="Aberto?"
               />

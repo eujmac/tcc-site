@@ -1,7 +1,7 @@
 import { Box, Button, Divider, Typography } from "@mui/material"
 import { DataGrid } from "@mui/x-data-grid"
 import { linhasEquipe, colunasEquipe } from "../utils/dados"
-import DialogExcluir from "../components/DialogExcluir"
+import DialogExcluir from "../components/DialogExcluirServico"
 import { useDrawer } from "../context/DrawerContext"
 const Equipe = () => {
   const { setIsDrawerTabelaOpen } = useDrawer()

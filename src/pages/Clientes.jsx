@@ -14,7 +14,7 @@ import { DataGrid } from "@mui/x-data-grid"
 import { Search } from "@mui/icons-material"
 import { colunasCliente, linhasCliente } from "../utils/dados"
 import { useDrawer } from "../context/DrawerContext"
-import DialogExcluir from "../components/DialogExcluir"
+import DialogExcluir from "../components/DialogExcluirServico"
 
 const Clientes = () => {
   const { isDrawerTabelaOpen, setIsDrawerTabelaOpen } = useDrawer()

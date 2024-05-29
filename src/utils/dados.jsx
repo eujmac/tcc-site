@@ -2,6 +2,7 @@ import { Delete, Edit } from "@mui/icons-material"
 import { Box, IconButton, Tooltip } from "@mui/material"
 import { useDialog } from "../context/DialogContext"
 import { useDrawer } from "../context/DrawerContext"
+import { useId } from "../context/IdContext"
 export const diasOptions = [
   "Segunda",
   "Terça",
@@ -253,6 +254,11 @@ export const colunasServicos = [
     flex: 1,
   },
   {
+    field: "tipo",
+    headerName: "Tipo",
+    flex: 1,
+  },
+  {
     field: "preco",
     headerName: "Preço",
     flex: 1,
@@ -267,10 +273,10 @@ export const colunasServicos = [
     field: "acoes",
     headerName: "Ações",
     flex: 1,
-    renderCell: () => {
+    renderCell: params => {
       const { setIsDialogOpen } = useDialog()
-      const { setIsDrawerTabelaOpen } = useDrawer()
-
+      const { setIsDrawerEditarServicoOpen } = useDrawer()
+      const { setId } = useId()
       return (
         <Box>
           <Tooltip title="Editar Serviço">
@@ -278,7 +284,8 @@ export const colunasServicos = [
               variant="contained"
               color="success"
               onClick={() => {
-                setIsDrawerTabelaOpen(true)
+                setId(params.id)
+                setIsDrawerEditarServicoOpen(true)
               }}
             >
               <Edit />
@@ -289,6 +296,7 @@ export const colunasServicos = [
               variant="contained"
               color="error"
               onClick={() => {
+                setId(params.id)
                 setIsDialogOpen(true)
               }}
             >
@@ -298,28 +306,6 @@ export const colunasServicos = [
         </Box>
       )
     },
-  },
-]
-export const linhasServicos = [
-  {
-    id: 1,
-    nome: "Corte Maquina",
-    preco: 30,
-  },
-  {
-    id: 2,
-    nome: "Corte Maquina + tesoura",
-    preco: 40,
-  },
-  {
-    id: 3,
-    nome: "Barba",
-    preco: 20,
-  },
-  {
-    id: 4,
-    nome: "Corte + Barba",
-    preco: 50,
   },
 ]
 export const colunasEquipe = [

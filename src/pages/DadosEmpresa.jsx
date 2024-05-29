@@ -25,26 +25,25 @@ import { diasOptions, horasOptions } from "../utils/dados"
 
 const DadosEmpresa = () => {
   const { user } = useAuth()
-  const [isLoading, setIsLoading] = useState(false)
   const [novosDias, setNovosDias] = useState([])
   const [novasHoras, setNovasHoras] = useState([])
   const { handleClick, dispatch } = useSnackbarGlobal()
-  const { nomeBarbeariaRealTime, diasRealTime, horasRealTime } = useBarbearia()
+  const { nomeBarbeariaRealTime, diasRealTime, horasRealTime, isLoading } =
+    useBarbearia()
   const {
-    setValue,
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({})
 
   useEffect(() => {
-    setValue("nome", nomeBarbeariaRealTime)
+    reset({ nome: nomeBarbeariaRealTime })
     setNovosDias(diasRealTime)
     setNovasHoras(horasRealTime)
-  }, [])
+  }, [nomeBarbeariaRealTime, isLoading])
 
   const mostraSnackbar = tipoDispatch => {
-    setIsLoading(false)
     dispatch(tipoDispatch)
     handleClick()
   }
@@ -82,11 +81,14 @@ const DadosEmpresa = () => {
   const handleForm = async dados => {
     if (dados.senhaAtual.length > 1) {
       trocaEmailSenha(dados)
+    } else if (dados.nome.length === 0) {
+      mostraSnackbar("dadosEmpresa.errorNomeVazio")
     } else {
       salvar(dados)
       mostraSnackbar("sucesso")
     }
   }
+
   return (
     <Box component={"form"} onSubmit={handleSubmit(handleForm)} noValidate>
       <Box
@@ -123,8 +125,7 @@ const DadosEmpresa = () => {
             {...register("nome", {
               required: false,
             })}
-            placeholder={nomeBarbeariaRealTime}
-            sx={{ my: 2 }}
+            margin="normal"
             fullWidth
             type="text"
             label="Nome da Empresa"
@@ -137,13 +138,6 @@ const DadosEmpresa = () => {
           titulo="Configurações de dias e horas de funcionamento"
           subtitulo="Escolha as horas e os dias onde a barbearia ira funcionar."
         />
-        {/*
-          1 - do contexto vai vir os dias que estão no banco
-          2 - com esse dias eu deve por no autocomplete ao carregar
-          3 - onchange eu deve alterar um state local com os novos dias
-          4 - ao salvar eu altero no banco
-
-        */}
         <Autocomplete
           sx={{ my: 2 }}
           multiple
