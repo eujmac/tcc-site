@@ -3,7 +3,7 @@ import { Autocomplete, Box, Button, TextField, Typography } from "@mui/material"
 import { useDrawer } from "../context/DrawerContext"
 import { NumericFormat } from "react-number-format"
 import { Controller, useForm } from "react-hook-form"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { db } from "../services/firebase"
 import { get, ref, update } from "firebase/database"
 import { useSnackbarGlobal } from "../context/SnackbarGlobalContext"
@@ -18,13 +18,11 @@ import { useId } from "../context/IdContext"
 export default function DrawerEditarServico() {
   const { isDrawerEditarServicoOpen, setIsDrawerEditarServicoOpen } =
     useDrawer()
-  const [tipo, setTipo] = useState(null)
 
   const {
     control,
-    register,
+    setValue,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm()
 
@@ -43,23 +41,24 @@ export default function DrawerEditarServico() {
       if (snapshot.exists()) {
         // popula os campos
         const obj = snapshot.val()
-        reset({ nomeServico: obj.nome, preco: obj.preco })
-        setTipo(obj.tipo)
+        setValue("nome", obj.nome)
+        setValue("preco", obj.preco)
+        setValue("tipo", obj.tipo)
       }
     }
     getServico(id)
-  }, [id, reset])
+  }, [id, setValue])
 
   const editar = dados => {
     try {
       const servicoRef = ref(db, `servicos/${id}`)
       update(servicoRef, {
-        nome: dados.nomeServico,
+        nome: dados.nome,
         preco: dados.preco,
-        tipo,
+        tipo: dados.tipo,
       })
-      mostraSnackbar("sucessoEditar")
       setIsDrawerEditarServicoOpen(false)
+      mostraSnackbar("sucessoEditar")
     } catch (error) {
       console.log(error)
     }
@@ -71,8 +70,6 @@ export default function DrawerEditarServico() {
       open={isDrawerEditarServicoOpen}
       onClose={() => {
         setIsDrawerEditarServicoOpen(false)
-        reset({ nomeServico: "", preco: "0" })
-        setTipo(null)
       }}
       height={"100%"}
     >
@@ -98,42 +95,63 @@ export default function DrawerEditarServico() {
           <Typography variant="subtitle2">
             Edite nome de serviço, tipo e o seu preço.
           </Typography>
-          <TextField
-            {...register("nomeServico", {
-              required: "Digite o nome do serviço",
-              minLength: {
-                value: 5,
-                message: "O nome do serviço deve ter no mínimo 5 dígitos",
-              },
-            })}
-            error={!!errors.nomeServico}
-            helperText={errors.nomeServico?.message}
-            fullWidth
-            type="text"
-            label="Nome"
-            margin="normal"
-          />
-          <Autocomplete
-            value={tipo}
-            onChange={(event, newValue) => {
-              setTipo(newValue)
-            }}
-            options={tipos}
-            renderInput={params => (
-              <TextField {...params} label="Tipo do serviço" margin="normal" />
+          <Controller
+            name="nome"
+            control={control}
+            rules={{ required: "Digite o nome do serviço" }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                fullWidth
+                label="Nome"
+                margin="normal"
+                error={!!errors.nome}
+                helperText={errors.nome ? errors.nome.message : ""}
+              />
             )}
           />
           <Controller
+            name="tipo"
             control={control}
+            rules={{ required: "Selecione um tipo" }}
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
+              <Autocomplete
+                options={tipos}
+                value={value}
+                onChange={(event, newValue) => onChange(newValue)}
+                renderInput={params => (
+                  <TextField
+                    margin="normal"
+                    {...params}
+                    label="Tipo do serviço"
+                    error={!!error}
+                    helperText={error ? error.message : ""}
+                  />
+                )}
+              />
+            )}
+          />
+          <Controller
             name="preco"
-            render={({ field: { onChange, onBlur, value, errors } }) => (
+            control={control}
+            defaultValue=""
+            rules={{
+              required: "Digite um preço",
+              min: {
+                value: 1,
+                message: "Digite um preço",
+              },
+            }}
+            render={({
+              field: { onChange, onBlur, value },
+              fieldState: { error },
+            }) => (
               <NumericFormat
                 customInput={TextField}
                 value={value}
-                onValueChange={v => {
-                  onChange(parseFloat(v.value))
+                onValueChange={values => {
+                  onChange(values.value)
                 }}
-                // helperText={errors.nomeServico?.message}
                 onBlur={onBlur}
                 label="Preço"
                 margin="normal"
@@ -142,6 +160,8 @@ export default function DrawerEditarServico() {
                 prefix="R$ "
                 decimalScale={2}
                 decimalSeparator="."
+                error={!!error}
+                helperText={error ? error.message : ""}
               />
             )}
           />
@@ -152,7 +172,6 @@ export default function DrawerEditarServico() {
             fullWidth
             color="bgDark"
             sx={{ color: "white", mt: 2 }}
-            // onClick={() => setIsDrawerTabelaOpen(false)}
           >
             salvar
           </Button>

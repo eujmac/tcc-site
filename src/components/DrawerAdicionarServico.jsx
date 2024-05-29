@@ -17,10 +17,8 @@ import { useSnackbarGlobal } from "../context/SnackbarGlobalContext"
 export default function DrawerAdicionarServico() {
   const { isDrawerAdicionarServicoOpen, setIsDrawerAdicionarServicoOpen } =
     useDrawer()
-  const [tipo, setTipo] = useState(null)
   const {
     control,
-    register,
     handleSubmit,
     reset,
     formState: { errors },
@@ -34,23 +32,21 @@ export default function DrawerAdicionarServico() {
   }
 
   useEffect(() => {
-    reset({ nomeServico: "", preco: "0" })
-    setTipo(null)
+    reset({ nome: "", preco: "", tipo: "" })
   }, [])
 
   const adicionar = dados => {
-    // verificar se o produto já existe
     try {
+      // verificar se o produto já existe
       const servicosListRef = ref(db, "servicos")
       const newServicosRef = push(servicosListRef)
       set(newServicosRef, {
-        nome: dados.nomeServico,
+        nome: dados.nome,
         preco: dados.preco,
-        tipo,
+        tipo: dados.tipo,
       })
       setIsDrawerAdicionarServicoOpen(false)
-      reset({ nomeServico: "", preco: "0" })
-      setTipo(null)
+      reset({ nome: "", preco: "", tipo: "" })
       mostraSnackbar("sucessoAdicionar")
     } catch (error) {
       console.log(error)
@@ -63,8 +59,7 @@ export default function DrawerAdicionarServico() {
       open={isDrawerAdicionarServicoOpen}
       onClose={() => {
         setIsDrawerAdicionarServicoOpen(false)
-        reset({ nomeServico: "", preco: "0" })
-        setTipo(null)
+        reset({ nome: "", preco: "", tipo: "" })
       }}
       height={"100%"}
     >
@@ -96,42 +91,63 @@ export default function DrawerAdicionarServico() {
             Adicione um nome de serviço, escolha o seu tipo e digite o seu
             preço.
           </Typography>
-          <TextField
-            {...register("nomeServico", {
-              required: "Digite o nome do serviço",
-              minLength: {
-                value: 5,
-                message: "O nome do serviço deve ter no mínimo 5 dígitos",
-              },
-            })}
-            error={!!errors.nomeServico}
-            helperText={errors.nomeServico?.message}
-            fullWidth
-            type="text"
-            label="Nome"
-            margin="normal"
-          />
-          <Autocomplete
-            value={tipo}
-            onChange={(event, newValue) => {
-              setTipo(newValue)
-            }}
-            options={tipos}
-            renderInput={params => (
-              <TextField {...params} label="Tipo do serviço" margin="normal" />
+          <Controller
+            name="nome"
+            control={control}
+            rules={{ required: "Digite o nome do serviço" }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                fullWidth
+                label="Nome"
+                margin="normal"
+                error={!!errors.nome}
+                helperText={errors.nome ? errors.nome.message : ""}
+              />
             )}
           />
           <Controller
+            name="tipo"
             control={control}
+            rules={{ required: "Selecione um tipo" }}
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
+              <Autocomplete
+                options={tipos}
+                value={value}
+                onChange={(event, newValue) => onChange(newValue)}
+                renderInput={params => (
+                  <TextField
+                    margin="normal"
+                    {...params}
+                    label="Tipo do serviço"
+                    error={!!error}
+                    helperText={error ? error.message : ""}
+                  />
+                )}
+              />
+            )}
+          />
+          <Controller
             name="preco"
-            render={({ field: { onChange, onBlur, value, errors } }) => (
+            control={control}
+            defaultValue=""
+            rules={{
+              required: "Digite um preço",
+              min: {
+                value: 1,
+                message: "Digite um preço",
+              },
+            }}
+            render={({
+              field: { onChange, onBlur, value },
+              fieldState: { error },
+            }) => (
               <NumericFormat
                 customInput={TextField}
                 value={value}
-                onValueChange={v => {
-                  onChange(parseFloat(v.value))
+                onValueChange={values => {
+                  onChange(values.value)
                 }}
-                // helperText={errors.nomeServico?.message}
                 onBlur={onBlur}
                 label="Preço"
                 margin="normal"
@@ -140,6 +156,8 @@ export default function DrawerAdicionarServico() {
                 prefix="R$ "
                 decimalScale={2}
                 decimalSeparator="."
+                error={!!error}
+                helperText={error ? error.message : ""}
               />
             )}
           />
