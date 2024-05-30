@@ -31,7 +31,6 @@ const Equipe = () => {
           >
             adicionar
           </Button>
-          <Button variant="contained">SALVAR</Button>
         </Box>
       </Box>
       <Divider />

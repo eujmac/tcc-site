@@ -47,11 +47,6 @@ const NavBar = () => {
   const handleClose = () => {
     setAnchorEl(null)
   }
-  // const mostraSnackbar = tipoDispatch => {
-  //   setIsLoading(false)
-  //   dispatch(tipoDispatch)
-  //   handleClick()
-  // }
   const handleChange = () => {
     update(ref(db, `barbearia/${idBarbearia}`), {
       aberto: abertoRealtime ? false : true,
@@ -82,13 +77,17 @@ const NavBar = () => {
                 alignSelf: "center",
                 bgcolor: "lightgray",
                 p: 0.5,
-                borderRadius: "20px",
+                pl: 2,
+                borderRadius: "10px",
                 color: "black",
               }}
             >
               <FormControlLabel
                 control={
-                  <Switch checked={abertoRealtime} onChange={handleChange} />
+                  <Switch
+                    checked={abertoRealtime || false}
+                    onChange={handleChange}
+                  />
                 }
                 label="Aberto?"
               />

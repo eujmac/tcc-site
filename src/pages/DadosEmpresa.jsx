@@ -14,9 +14,9 @@ import {
   updateEmail,
   updatePassword,
 } from "firebase/auth"
-import { useForm } from "react-hook-form"
+import { Controller, useForm } from "react-hook-form"
 import { useAuth } from "../context/AuthContext"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useSnackbarGlobal } from "../context/SnackbarGlobalContext"
 import { useBarbearia } from "../context/BarbeariaContext"
 import { ref, update } from "firebase/database"
@@ -25,23 +25,22 @@ import { diasOptions, horasOptions } from "../utils/dados"
 
 const DadosEmpresa = () => {
   const { user } = useAuth()
-  const [novosDias, setNovosDias] = useState([])
-  const [novasHoras, setNovasHoras] = useState([])
   const { handleClick, dispatch } = useSnackbarGlobal()
   const { nomeBarbeariaRealTime, diasRealTime, horasRealTime, isLoading } =
     useBarbearia()
   const {
     register,
+    control,
     handleSubmit,
-    reset,
+    setValue,
     formState: { errors },
   } = useForm({})
 
   useEffect(() => {
-    reset({ nome: nomeBarbeariaRealTime })
-    setNovosDias(diasRealTime)
-    setNovasHoras(horasRealTime)
-  }, [nomeBarbeariaRealTime, isLoading])
+    setValue("nome", nomeBarbeariaRealTime)
+    setValue("dias", diasRealTime)
+    setValue("horas", horasRealTime)
+  }, [nomeBarbeariaRealTime, diasRealTime, horasRealTime, setValue])
 
   const mostraSnackbar = tipoDispatch => {
     dispatch(tipoDispatch)
@@ -51,8 +50,8 @@ const DadosEmpresa = () => {
   const salvar = async dados => {
     update(ref(db, "barbearia/-NyuqtGr_WyCGrmZk_oz"), {
       nome: dados.nome,
-      diasFuncionamento: novosDias,
-      horasFuncionamento: novasHoras,
+      diasFuncionamento: dados.dias,
+      horasFuncionamento: dados.horas,
     })
   }
 
@@ -121,14 +120,21 @@ const DadosEmpresa = () => {
             subtitulo="O nome da sua empresa é exibido em diversas áreas, incluindo na
             barra de navegação, na aba do navegador, e dentro do aplicativo."
           />
-          <TextField
-            {...register("nome", {
-              required: false,
-            })}
-            margin="normal"
-            fullWidth
-            type="text"
-            label="Nome da Empresa"
+          <Controller
+            name="nome"
+            control={control}
+            rules={{ required: false }}
+            render={({ field: { onChange, value } }) => (
+              <TextField
+                fullWidth
+                onChange={onChange}
+                value={value || ""}
+                label="Nome da Empresa"
+                margin="normal"
+                error={!!errors.nome}
+                helperText={errors.nome ? errors.nome.message : ""}
+              />
+            )}
           />
         </Box>
       </Box>
@@ -138,45 +144,59 @@ const DadosEmpresa = () => {
           titulo="Configurações de dias e horas de funcionamento"
           subtitulo="Escolha as horas e os dias onde a barbearia ira funcionar."
         />
-        <Autocomplete
-          sx={{ my: 2 }}
-          multiple
-          value={novosDias}
-          filterSelectedOptions
-          onChange={(event, newValue) => {
-            setNovosDias(newValue)
-          }}
-          options={diasOptions}
-          getOptionLabel={option => option}
-          isOptionEqualToValue={(option, value) => option === value}
-          renderInput={params => (
-            <TextField {...params} label="Dias da semana" />
+        <Controller
+          name="dias"
+          control={control}
+          rules={{ required: false }}
+          render={({ field: { onChange, value } }) => (
+            <Autocomplete
+              multiple
+              filterSelectedOptions
+              options={diasOptions}
+              value={value || []}
+              getOptionLabel={option => option}
+              isOptionEqualToValue={(option, value) => option === value}
+              renderTags={(tagValue, getTagProps) =>
+                tagValue.map((option, index) => {
+                  const { key, ...rest } = getTagProps({ index })
+                  return <Chip label={option} {...rest} key={key} />
+                })
+              }
+              onChange={(event, newValue) => {
+                onChange(newValue)
+              }}
+              renderInput={params => (
+                <TextField {...params} label="Dias da semana" margin="normal" />
+              )}
+            />
           )}
-          renderTags={(tagValue, getTagProps) =>
-            tagValue.map((option, index) => {
-              const { key, ...rest } = getTagProps({ index })
-              return <Chip label={option} {...rest} key={key} />
-            })
-          }
         />
-        <Autocomplete
-          sx={{ my: 2 }}
-          multiple
-          value={novasHoras}
-          filterSelectedOptions
-          onChange={(event, newValue) => {
-            setNovasHoras(newValue)
-          }}
-          options={horasOptions}
-          getOptionLabel={option => option}
-          isOptionEqualToValue={(option, value) => option === value}
-          renderInput={params => <TextField {...params} label="Horas" />}
-          renderTags={(tagValue, getTagProps) =>
-            tagValue.map((option, index) => {
-              const { key, ...rest } = getTagProps({ index })
-              return <Chip label={option} {...rest} key={key} />
-            })
-          }
+        <Controller
+          name="horas"
+          control={control}
+          rules={{ required: false }}
+          render={({ field: { onChange, value } }) => (
+            <Autocomplete
+              multiple
+              filterSelectedOptions
+              options={horasOptions}
+              value={value || []}
+              getOptionLabel={option => option}
+              isOptionEqualToValue={(option, value) => option === value}
+              renderTags={(tagValue, getTagProps) =>
+                tagValue.map((option, index) => {
+                  const { key, ...rest } = getTagProps({ index })
+                  return <Chip label={option} {...rest} key={key} />
+                })
+              }
+              onChange={(event, newValue) => {
+                onChange(newValue)
+              }}
+              renderInput={params => (
+                <TextField {...params} label="Horas" margin="normal" />
+              )}
+            />
+          )}
         />
       </Box>
       <Divider />

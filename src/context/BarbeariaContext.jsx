@@ -10,11 +10,10 @@ export const BarbeariaContext = ({ children }) => {
   const [diasRealTime, setDiasRealTime] = useState([])
   const [horasRealTime, setHorasRealTime] = useState([])
   const [abertoRealtime, setAbertoRealtime] = useState(null)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const getDados = async () => {
-      setIsLoading(true)
       const barbeariaRef = ref(db, `barbearia/${idBarbearia}`)
       onValue(barbeariaRef, snapshot => {
         const data = snapshot.val()

@@ -64,9 +64,20 @@ const SnackbarGlobalProvider = ({ children }) => {
 
     setOpen(false)
   }
+  const mostraSnackbar = tipoDispatch => {
+    dispatch(tipoDispatch)
+    handleClick()
+  }
   return (
     <SnackbarGlobalContext.Provider
-      value={{ state, dispatch, open, handleClick, handleClose }}
+      value={{
+        state,
+        dispatch,
+        open,
+        handleClick,
+        handleClose,
+        mostraSnackbar,
+      }}
     >
       {children}
     </SnackbarGlobalContext.Provider>

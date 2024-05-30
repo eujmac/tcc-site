@@ -1,6 +1,6 @@
 import { Box, Container, Divider, Grid, Paper, Typography } from "@mui/material"
 import NavBar from "../components/NavBar"
-import { ArrowForwardIosSharp } from "@mui/icons-material"
+import { ArrowForwardIosSharp, KeyboardArrowDown } from "@mui/icons-material"
 import { Outlet, useLocation, useNavigate } from "react-router-dom"
 
 const CardConfig = ({ titulo, subtitulo, nav }) => {
@@ -10,28 +10,51 @@ const CardConfig = ({ titulo, subtitulo, nav }) => {
 
   return (
     <Box
-      direction="row"
       display="flex"
       justifyContent="space-between"
       alignItems="center"
       sx={{
         cursor: "pointer",
         p: 3,
+        flex: { xs: 1, lg: 0 },
         "&:hover": {
           backgroundColor: "#f8f8fb",
         },
       }}
       onClick={() => navigate(nav)}
     >
-      <Box>
+      <Box
+        sx={{
+          display: { xs: " flex ", lg: "block" },
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <Typography variant="h6" fontWeight="bold">
           {titulo}
         </Typography>
-        <Typography variant="subtitle2">{subtitulo}</Typography>
+        <KeyboardArrowDown
+          fontSize="large"
+          sx={{
+            alignSelf: "center",
+            display: { xs: "block ", lg: "none" },
+          }}
+          color={color}
+        />
+        <Typography
+          variant="subtitle2"
+          sx={{
+            display: { xs: "none", lg: "block" },
+          }}
+        >
+          {subtitulo}
+        </Typography>
       </Box>
       <Box>
         <ArrowForwardIosSharp
           sx={{
+            display: { xs: "none", lg: "block" },
+
             alignSelf: "center",
           }}
           color={color}
@@ -52,29 +75,40 @@ const Configuração = () => {
                 <Typography variant="h5" fontWeight={"bold"}>
                   Configurações da empresa
                 </Typography>
-                <Typography variant="subtitle1">
+                <Typography
+                  variant="subtitle1"
+                  sx={{
+                    display: { xs: "none", lg: "block" },
+                  }}
+                >
                   Gerencie todas as configurações em um só lugar.
                 </Typography>
               </Box>
               <Divider />
-              <CardConfig
-                titulo="Empresa"
-                subtitulo="Gerencie definições como o nome da barbearia, horários e dias de
+              <Box
+                sx={{
+                  display: { xs: "flex", lg: "block" },
+                }}
+              >
+                <CardConfig
+                  titulo="Empresa"
+                  subtitulo="Gerencie definições como o nome da barbearia, horários e dias de
           funcionamento"
-                nav="dados"
-              />
-              <Divider />
-              <CardConfig
-                titulo="Serviços"
-                subtitulo="Cadastre, edite e exclua os tipos de serviços disponíveis"
-                nav="servicos"
-              />
-              <Divider />
-              <CardConfig
-                titulo="Equipe"
-                subtitulo="Cadastre, edite e exclua os colaboradores da barbearia"
-                nav="equipe"
-              />
+                  nav="dados"
+                />
+                <Divider />
+                <CardConfig
+                  titulo="Serviços"
+                  subtitulo="Cadastre, edite e exclua os tipos de serviços disponíveis"
+                  nav="servicos"
+                />
+                <Divider />
+                <CardConfig
+                  titulo="Equipe"
+                  subtitulo="Cadastre, edite e exclua os colaboradores da barbearia"
+                  nav="equipe"
+                />
+              </Box>
             </Paper>
           </Grid>
           <Grid item xs={12} lg={8} mb={2}>
