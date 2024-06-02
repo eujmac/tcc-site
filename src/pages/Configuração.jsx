@@ -73,7 +73,7 @@ const Configuração = () => {
             <Paper variant="outlined">
               <Box p={3}>
                 <Typography variant="h5" fontWeight={"bold"}>
-                  Configurações da empresa
+                  Configurações
                 </Typography>
                 <Typography
                   variant="subtitle1"

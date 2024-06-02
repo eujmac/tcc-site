@@ -1,8 +1,19 @@
 import { Delete, Edit } from "@mui/icons-material"
-import { Box, IconButton, Tooltip } from "@mui/material"
+import { Avatar, Box, IconButton, Tooltip } from "@mui/material"
 import { useDialog } from "../context/DialogContext"
 import { useDrawer } from "../context/DrawerContext"
 import { useId } from "../context/IdContext"
+import { differenceInYears, parse } from "date-fns"
+
+export const diasOptionsObj = [
+  { dia: "Segunda", valor: 1 },
+  { dia: "Terça", valor: 2 },
+  { dia: "Quarta", valor: 3 },
+  { dia: "Quinta", valor: 4 },
+  { dia: "Sexta", valor: 5 },
+  { dia: "Sábado", valor: 6 },
+  { dia: "Domingo", valor: 0 },
+]
 export const diasOptions = [
   "Segunda",
   "Terça",
@@ -74,21 +85,27 @@ export const colunasCliente = [
   },
   { field: "email", headerName: "Email", flex: 1 },
   {
-    field: "idade",
+    field: "data_nascimento",
     headerName: "Idade",
     type: "number",
     headerAlign: "left",
     align: "left",
     flex: 1,
+    valueGetter: value => {
+      const nascimento = parse(value, "dd/MM/yyyy", new Date())
+      const hoje = new Date()
+      return differenceInYears(hoje, nascimento)
+    },
   },
-  { field: "celular", headerName: "Celular", flex: 1 },
+  { field: "telefone", headerName: "Celular", flex: 1 },
   {
     field: "access",
     headerName: "Ações",
     flex: 1,
-    renderCell: () => {
-      const { setIsDialogOpen } = useDialog()
-      const { setIsDrawerTabelaOpen } = useDrawer()
+    renderCell: params => {
+      const { setId } = useId()
+      const { setIsDialogExcluirClienteOpen } = useDialog()
+      const { setIsDrawerEditarClienteOpen } = useDrawer()
 
       return (
         <Box>
@@ -97,7 +114,8 @@ export const colunasCliente = [
               variant="contained"
               color="success"
               onClick={() => {
-                setIsDrawerTabelaOpen(true)
+                setId(params.id)
+                setIsDrawerEditarClienteOpen(true)
               }}
             >
               <Edit />
@@ -108,7 +126,8 @@ export const colunasCliente = [
               variant="contained"
               color="error"
               onClick={() => {
-                setIsDialogOpen(true)
+                setId(params.id)
+                setIsDialogExcluirClienteOpen(true)
               }}
             >
               <Delete />
@@ -117,134 +136,6 @@ export const colunasCliente = [
         </Box>
       )
     },
-  },
-]
-export const linhasCliente = [
-  {
-    id: 1,
-    nome: "Jon Snow",
-    idade: 14,
-    email: "teste@gmail.com",
-    celular: "(21) 99999-9999",
-  },
-  {
-    id: 2,
-    nome: "Cersei Lannister",
-    idade: 31,
-    email: "teste@gmail.com",
-    celular: "(21) 99999-9999",
-  },
-  {
-    id: 3,
-    nome: "Jaime Lannister",
-    idade: 31,
-    email: "teste@gmail.com",
-    celular: "(21) 99999-9999",
-  },
-  {
-    id: 4,
-    nome: "Arya Stark",
-    idade: 11,
-    email: "teste@gmail.com",
-    celular: "(21) 99999-9999",
-  },
-  {
-    id: 5,
-    nome: "Daenerys Targaryen",
-    idade: null,
-    email: "teste@gmail.com",
-    celular: "(21) 99999-9999",
-  },
-  {
-    id: 6,
-    nome: "Melisandre",
-    idade: 150,
-    email: "teste@gmail.com",
-    celular: "(21) 99999-9999",
-  },
-  {
-    id: 7,
-    nome: "Ferrara Clifford",
-    idade: 44,
-    email: "teste@gmail.com",
-    celular: "(21) 99999-9999",
-  },
-  {
-    id: 8,
-    nome: "Rossini Frances",
-    idade: 36,
-    email: "teste@gmail.com",
-    celular: "(21) 99999-9999",
-  },
-  {
-    id: 9,
-    nome: "Harvey ",
-    idade: 65,
-    email: "teste@gmail.com",
-    celular: "(21) 99999-9999",
-  },
-  {
-    id: 10,
-    nome: "Jon Snow",
-    idade: 14,
-    email: "teste@gmail.com",
-    celular: "(21) 99999-9999",
-  },
-  {
-    id: 11,
-    nome: "Cersei Lannister",
-    idade: 31,
-    email: "teste@gmail.com",
-    celular: "(21) 99999-9999",
-  },
-  {
-    id: 12,
-    nome: "Jaime Lannister",
-    idade: 31,
-    email: "teste@gmail.com",
-    celular: "(21) 99999-9999",
-  },
-  {
-    id: 13,
-    nome: "Arya Stark",
-    idade: 11,
-    email: "teste@gmail.com",
-    celular: "(21) 99999-9999",
-  },
-  {
-    id: 14,
-    nome: "Daenerys Targaryen",
-    idade: null,
-    email: "teste@gmail.com",
-    celular: "(21) 99999-9999",
-  },
-  {
-    id: 15,
-    nome: "Melisandre",
-    idade: 150,
-    email: "teste@gmail.com",
-    celular: "(21) 99999-9999",
-  },
-  {
-    id: 16,
-    nome: "Ferrara Clifford",
-    idade: 44,
-    email: "teste@gmail.com",
-    celular: "(21) 99999-9999",
-  },
-  {
-    id: 17,
-    nome: "Rossini Frances",
-    idade: 36,
-    email: "teste@gmail.com",
-    celular: "(21) 99999-9999",
-  },
-  {
-    id: 18,
-    nome: "Harvey ",
-    idade: 65,
-    email: "teste@gmail.com",
-    celular: "(21) 99999-9999",
   },
 ]
 export const colunasServicos = [
@@ -274,9 +165,9 @@ export const colunasServicos = [
     headerName: "Ações",
     flex: 1,
     renderCell: params => {
-      const { setIsDialogOpen } = useDialog()
-      const { setIsDrawerEditarServicoOpen } = useDrawer()
       const { setId } = useId()
+      const { setIsDialogServicoOpen } = useDialog()
+      const { setIsDrawerEditarServicoOpen } = useDrawer()
       return (
         <Box>
           <Tooltip title="Editar Serviço">
@@ -297,7 +188,7 @@ export const colunasServicos = [
               color="error"
               onClick={() => {
                 setId(params.id)
-                setIsDialogOpen(true)
+                setIsDialogServicoOpen(true)
               }}
             >
               <Delete />
@@ -310,6 +201,13 @@ export const colunasServicos = [
 ]
 export const colunasEquipe = [
   {
+    field: "foto",
+    headerName: "Foto",
+    renderCell: params => (
+      <Avatar alt="Foto" src={params.value} sx={{ mt: 0.6 }} />
+    ),
+  },
+  {
     field: "nome",
     headerName: "Nome",
     flex: 1,
@@ -320,17 +218,18 @@ export const colunasEquipe = [
     flex: 1,
   },
   {
-    field: "senha",
-    headerName: "Senha",
+    field: "celular",
+    headerName: "Celular",
     flex: 1,
   },
   {
     field: "acoes",
     headerName: "Ações",
     flex: 1,
-    renderCell: () => {
-      const { setIsDialogOpen } = useDialog()
-      const { setIsDrawerTabelaOpen } = useDrawer()
+    renderCell: params => {
+      const { setId } = useId()
+      const { setIsDialogExcluirEquipeOpen } = useDialog()
+      const { setIsDrawerEditarEquipeOpen } = useDrawer()
 
       return (
         <Box>
@@ -339,7 +238,8 @@ export const colunasEquipe = [
               variant="contained"
               color="success"
               onClick={() => {
-                setIsDrawerTabelaOpen(true)
+                setId(params.id)
+                setIsDrawerEditarEquipeOpen(true)
               }}
             >
               <Edit />
@@ -350,7 +250,8 @@ export const colunasEquipe = [
               variant="contained"
               color="error"
               onClick={() => {
-                setIsDialogOpen(true)
+                setId(params.id)
+                setIsDialogExcluirEquipeOpen(true)
               }}
             >
               <Delete />
@@ -359,25 +260,5 @@ export const colunasEquipe = [
         </Box>
       )
     },
-  },
-]
-export const linhasEquipe = [
-  {
-    id: 1,
-    nome: "João Marcos",
-    email: "joao@teste.com",
-    senha: "123456",
-  },
-  {
-    id: 2,
-    nome: "Pedro Henrique",
-    email: "pedro@teste.com",
-    senha: "pedro12345",
-  },
-  {
-    id: 3,
-    nome: "Jon Snow",
-    email: "jonsnow@teste.com",
-    senha: "123456789",
   },
 ]

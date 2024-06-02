@@ -3,13 +3,21 @@ import { createContext, useContext, useState } from "react"
 const DialogContext = createContext()
 
 const DialogProvider = ({ children }) => {
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [isDialogServicoOpen, setIsDialogServicoOpen] = useState(false)
+  const [isDialogExcluirEquipeOpen, setIsDialogExcluirEquipeOpen] =
+    useState(false)
+  const [isDialogExcluirClienteOpen, setIsDialogExcluirClienteOpen] =
+    useState(false)
 
   return (
     <DialogContext.Provider
       value={{
-        isDialogOpen,
-        setIsDialogOpen,
+        isDialogServicoOpen,
+        setIsDialogServicoOpen,
+        isDialogExcluirEquipeOpen,
+        setIsDialogExcluirEquipeOpen,
+        isDialogExcluirClienteOpen,
+        setIsDialogExcluirClienteOpen,
       }}
     >
       {children}

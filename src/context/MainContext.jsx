@@ -10,6 +10,8 @@ import { IdContext } from "./IdContext"
 import { DrawerProvider } from "./DrawerContext"
 import { DialogProvider } from "./DialogContext"
 import { AuthContext } from "./AuthContext"
+import { EquipeContext } from "./EquipeContext"
+import { ClienteContext } from "./ClienteContext"
 
 const MainContext = ({ children }) => {
   return (
@@ -19,20 +21,24 @@ const MainContext = ({ children }) => {
         adapterLocale={ptBRDateFns}
       >
         <BarbeariaContext>
-          <ServicosContext>
-            <SnackbarGlobalProvider>
-              <IdContext>
-                <DrawerProvider>
-                  <DialogProvider>
-                    <AuthContext>
-                      <CssBaseline />
-                      {children}
-                    </AuthContext>
-                  </DialogProvider>
-                </DrawerProvider>
-              </IdContext>
-            </SnackbarGlobalProvider>
-          </ServicosContext>
+          <ClienteContext>
+            <ServicosContext>
+              <EquipeContext>
+                <SnackbarGlobalProvider>
+                  <IdContext>
+                    <DrawerProvider>
+                      <DialogProvider>
+                        <AuthContext>
+                          <CssBaseline />
+                          {children}
+                        </AuthContext>
+                      </DialogProvider>
+                    </DrawerProvider>
+                  </IdContext>
+                </SnackbarGlobalProvider>
+              </EquipeContext>
+            </ServicosContext>
+          </ClienteContext>
         </BarbeariaContext>
       </LocalizationProvider>
     </ThemeProvider>

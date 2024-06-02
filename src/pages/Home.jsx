@@ -10,7 +10,7 @@ import {
 import NavBar from "../components/NavBar"
 import { useDrawer } from "../context/DrawerContext"
 import { ArrowForwardIosSharp } from "@mui/icons-material"
-import GraficoLinha from "../components/GraficoLinha"
+import GraficoLinha from "../components/grafico/GraficoLinha"
 
 const Corte = () => {
   const { setIsDrawerCheckoutOpen } = useDrawer()

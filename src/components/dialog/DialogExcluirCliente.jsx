@@ -6,33 +6,33 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Typography,
 } from "@mui/material"
-import { useDialog } from "../context/DialogContext"
+import { useDialog } from "../../context/DialogContext"
 import { useEffect, useState } from "react"
 import { get, ref, remove } from "firebase/database"
-import { db } from "../services/firebase"
-import { useId } from "../context/IdContext"
-import { useSnackbarGlobal } from "../context/SnackbarGlobalContext"
+import { db } from "../../services/firebase"
+import { useId } from "../../context/IdContext"
+import { useSnackbarGlobal } from "../../context/SnackbarGlobalContext"
+import { useCliente } from "../../context/ClienteContext"
 
-const DialogExcluirServico = () => {
-  const { isDialogOpen, setIsDialogOpen } = useDialog()
-  const [nome, setNome] = useState(null)
+const DialogExcluirCliente = () => {
+  const { clientesRealTime } = useCliente()
+  const { isDialogExcluirClienteOpen, setIsDialogExcluirClienteOpen } =
+    useDialog()
+  const [nome, setNome] = useState("")
   const { id } = useId()
   const { handleClick, dispatch } = useSnackbarGlobal()
 
   useEffect(() => {
-    const getServico = async id => {
-      const dbRef = ref(db, `servicos/${id}`)
-      const snapshot = await get(dbRef)
-      if (snapshot.exists()) {
-        // popula os campos
-        const obj = snapshot.val()
-        setNome(obj.nome)
+    const getCliente = async id => {
+      if (id) {
+        const dbRef = ref(db, `clientes/${id}`)
+        const snapshot = await get(dbRef)
+        setNome(snapshot.val().nome)
       }
     }
-    getServico(id)
-  }, [id])
+    getCliente(id)
+  }, [id, clientesRealTime])
 
   const mostraSnackbar = tipoDispatch => {
     dispatch(tipoDispatch)
@@ -40,9 +40,9 @@ const DialogExcluirServico = () => {
   }
   const deletar = async () => {
     try {
-      const servicoRef = ref(db, `servicos/${id}`)
-      remove(servicoRef)
-      setIsDialogOpen(false)
+      const clienteRef = ref(db, `clientes/${id}`)
+      remove(clienteRef)
+      setIsDialogExcluirClienteOpen(false)
       mostraSnackbar("sucessoExcluir")
     } catch (error) {
       console.log(error)
@@ -58,15 +58,15 @@ const DialogExcluirServico = () => {
           padding: "0",
         },
       }}
-      open={isDialogOpen}
-      onClose={() => setIsDialogOpen(false)}
+      open={isDialogExcluirClienteOpen}
+      onClose={() => setIsDialogExcluirClienteOpen(false)}
     >
       <DialogTitle alignSelf="center" fontWeight="bold">
         Deletar serviço?
       </DialogTitle>
       <DialogContent>
         <DialogContentText mb={2} color="black">
-          Você tem certeza que deseja deletar o serviço &quot;{nome}&quot;?
+          Você tem certeza que deseja deletar o cliente &quot;{nome}&quot;?
         </DialogContentText>
         <Alert severity="warning">Cuidado. Essa ação é irreversível.</Alert>
         <DialogActions sx={{ mt: 3 }}>
@@ -74,7 +74,7 @@ const DialogExcluirServico = () => {
             color="bgDark"
             sx={{ color: "white" }}
             variant="contained"
-            onClick={() => setIsDialogOpen(false)}
+            onClick={() => setIsDialogExcluirClienteOpen(false)}
             fullWidth
           >
             Cancelar
@@ -94,4 +94,4 @@ const DialogExcluirServico = () => {
   )
 }
 
-export default DialogExcluirServico
+export default DialogExcluirCliente

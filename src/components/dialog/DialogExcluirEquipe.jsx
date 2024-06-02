@@ -7,31 +7,34 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material"
-import { useDialog } from "../context/DialogContext"
+import { useDialog } from "../../context/DialogContext"
 import { useEffect, useState } from "react"
 import { get, ref, remove } from "firebase/database"
-import { db } from "../services/firebase"
-import { useId } from "../context/IdContext"
-import { useSnackbarGlobal } from "../context/SnackbarGlobalContext"
+import { db } from "../../services/firebase"
+import { useId } from "../../context/IdContext"
+import { useSnackbarGlobal } from "../../context/SnackbarGlobalContext"
+import { useEquipe } from "../../context/EquipeContext"
 
 const DialogExcluirEquipe = () => {
-  const { isDialogOpen, setIsDialogOpen } = useDialog()
+  const { equipeRealTime } = useEquipe()
+
+  const { isDialogExcluirEquipeOpen, setIsDialogExcluirEquipeOpen } =
+    useDialog()
   const [nome, setNome] = useState(null)
   const { id } = useId()
   const { handleClick, dispatch } = useSnackbarGlobal()
 
   useEffect(() => {
-    const getServico = async id => {
-      const dbRef = ref(db, `servicos/${id}`)
-      const snapshot = await get(dbRef)
-      if (snapshot.exists()) {
-        // popula os campos
+    const getEquipe = async id => {
+      if (id) {
+        const dbRef = ref(db, `equipe/${id}`)
+        const snapshot = await get(dbRef)
         const obj = snapshot.val()
         setNome(obj.nome)
       }
     }
-    getServico(id)
-  }, [id])
+    getEquipe(id)
+  }, [id, equipeRealTime])
 
   const mostraSnackbar = tipoDispatch => {
     dispatch(tipoDispatch)
@@ -39,9 +42,9 @@ const DialogExcluirEquipe = () => {
   }
   const deletar = async () => {
     try {
-      const servicoRef = ref(db, `servicos/${id}`)
-      remove(servicoRef)
-      setIsDialogOpen(false)
+      const equipeRef = ref(db, `equipe/${id}`)
+      remove(equipeRef)
+      setIsDialogExcluirEquipeOpen(false)
       mostraSnackbar("sucessoExcluir")
     } catch (error) {
       console.log(error)
@@ -57,15 +60,15 @@ const DialogExcluirEquipe = () => {
           padding: "0",
         },
       }}
-      open={isDialogOpen}
-      onClose={() => setIsDialogOpen(false)}
+      open={isDialogExcluirEquipeOpen}
+      onClose={() => setIsDialogExcluirEquipeOpen(false)}
     >
       <DialogTitle alignSelf="center" fontWeight="bold">
-        Deletar serviço?
+        Deletar barbeiro?
       </DialogTitle>
       <DialogContent>
         <DialogContentText mb={2} color="black">
-          Você tem certeza que deseja deletar o serviço &quot;{nome}&quot;?
+          Você tem certeza que deseja deletar o barbeiro &quot;{nome}&quot;?
         </DialogContentText>
         <Alert severity="warning">Cuidado. Essa ação é irreversível.</Alert>
         <DialogActions sx={{ mt: 3 }}>
@@ -73,7 +76,7 @@ const DialogExcluirEquipe = () => {
             color="bgDark"
             sx={{ color: "white" }}
             variant="contained"
-            onClick={() => setIsDialogOpen(false)}
+            onClick={() => setIsDialogExcluirEquipeOpen(false)}
             fullWidth
           >
             Cancelar

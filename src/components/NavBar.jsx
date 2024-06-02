@@ -36,7 +36,6 @@ const navBarItems = [
 ]
 const NavBar = () => {
   const navigate = useNavigate()
-
   const { nomeBarbeariaRealTime, abertoRealtime, idBarbearia } = useBarbearia()
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
@@ -156,7 +155,7 @@ const NavBar = () => {
               anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
             >
               <MenuItem>
-                <Avatar /> Gerente
+                <Avatar /> {nomeBarbeariaRealTime}
               </MenuItem>
               <Divider />
               <MenuItem

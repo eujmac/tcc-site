@@ -11,8 +11,10 @@ import { useState } from "react"
 import { signInWithEmailAndPassword } from "firebase/auth"
 import { auth } from "../services/firebase"
 import { useAuth } from "../context/AuthContext"
-import { useForm } from "react-hook-form"
+import { Controller, useForm } from "react-hook-form"
 import { useSnackbarGlobal } from "../context/SnackbarGlobalContext"
+import TextfieldSenhaLogin from "../components/textfields/TextfieldSenhaLogin"
+import TextfieldEmail from "../components/textfields/TextfieldEmail"
 
 export default function Login() {
   const navigate = useNavigate()
@@ -21,10 +23,15 @@ export default function Login() {
   const { handleClick, dispatch } = useSnackbarGlobal()
 
   const {
-    register,
     handleSubmit,
+    control,
     formState: { errors },
-  } = useForm()
+  } = useForm({
+    defaultValues: {
+      email: "",
+      senha: "",
+    },
+  })
 
   const login = async data => {
     try {
@@ -76,40 +83,12 @@ export default function Login() {
                   onSubmit={handleSubmit(login)}
                   noValidate
                 >
-                  <TextField
-                    {...register("email", {
-                      required: "Digite um e-mail",
-                      pattern: {
-                        value:
-                          /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                        message: "E-mail inválido",
-                      },
-                    })}
-                    error={!!errors.email}
-                    helperText={errors.email?.message}
-                    margin="normal"
-                    fullWidth
-                    id="email"
-                    label="Email"
-                    autoComplete="email"
-                    autoFocus
+                  <TextfieldEmail
+                    control={control}
+                    errors={errors}
+                    required="Digite um e-mail"
                   />
-                  <TextField
-                    {...register("senha", {
-                      required: "Digite uma senha",
-                      minLength: {
-                        value: 6,
-                        message: "A senha deve conter no mínimo 6 dígitos",
-                      },
-                    })}
-                    error={!!errors.senha}
-                    helperText={errors.senha?.message}
-                    margin="normal"
-                    fullWidth
-                    label="Senha"
-                    type="password"
-                    autoComplete="password"
-                  />
+                  <TextfieldSenhaLogin control={control} errors={errors} />
                   <Button
                     type="submit"
                     fullWidth

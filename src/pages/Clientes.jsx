@@ -12,21 +12,40 @@ import {
 import NavBar from "../components/NavBar"
 import { DataGrid } from "@mui/x-data-grid"
 import { Search } from "@mui/icons-material"
-import { colunasCliente, linhasCliente } from "../utils/dados"
+import { colunasCliente } from "../utils/dados"
 import { useDrawer } from "../context/DrawerContext"
-import DialogExcluir from "../components/DialogExcluirServico"
+import { useCliente } from "../context/ClienteContext"
+import { useEffect, useState } from "react"
 
 const Clientes = () => {
-  const { isDrawerTabelaOpen, setIsDrawerTabelaOpen } = useDrawer()
+  const { setIsDrawerAdicionarClienteOpen } = useDrawer()
+  const { clientesRealTime } = useCliente()
+  const [procurar, setProcurar] = useState("")
+  const [linhas, setLinhas] = useState(clientesRealTime)
 
+  useEffect(() => {
+    setLinhas(clientesRealTime)
+  }, [clientesRealTime])
+
+  const handleFilter = e => {
+    const value = e.target.value.toLowerCase()
+    setProcurar(value)
+
+    if (value !== "") {
+      const filteredRows = linhas.filter(
+        row =>
+          row.nome.toLowerCase().includes(value) ||
+          row.email.toLowerCase().includes(value) ||
+          row.telefone.toLowerCase().includes(value)
+      )
+      setLinhas(filteredRows)
+    } else {
+      setLinhas(clientesRealTime)
+    }
+  }
   return (
     <Box>
       <NavBar />
-      <DialogExcluir
-        titulo={"Excluir Cliente?"}
-        mensagem={"Você tem certeza que deseja excluir o cliente?"}
-      />
-
       <Container maxWidth="xl" sx={{ mt: 10 }}>
         <Paper variant="outlined">
           <Stack spacing={2} p={2}>
@@ -37,7 +56,8 @@ const Clientes = () => {
             >
               <Box>
                 <Typography variant="h5" fontWeight={"bold"}>
-                  Lista de Clientes <Chip label="18" variant="outlined" />
+                  Lista de Clientes{" "}
+                  <Chip label={clientesRealTime.length} variant="outlined" />
                 </Typography>
                 <Typography variant="h6">
                   Visualizar, adicionar, editar e excluir dados dos clientes.
@@ -46,7 +66,7 @@ const Clientes = () => {
               <Box>
                 <Button
                   variant="contained"
-                  onClick={() => setIsDrawerTabelaOpen(true)}
+                  onClick={() => setIsDrawerAdicionarClienteOpen(true)}
                 >
                   Adicionar
                 </Button>
@@ -56,6 +76,8 @@ const Clientes = () => {
               <Paper variant="outlined" sx={{ display: "flex", flex: 1 }}>
                 <InputBase
                   sx={{ ml: 1, flex: 1 }}
+                  value={procurar}
+                  onChange={handleFilter}
                   placeholder="Procurar pelo nome, email ou celular"
                   inputProps={{ "aria-label": "search google maps" }}
                 />
@@ -70,7 +92,7 @@ const Clientes = () => {
             </Box>
             <Box sx={{ height: "70vh", width: "100%" }}>
               <DataGrid
-                rows={linhasCliente}
+                rows={linhas}
                 columns={colunasCliente}
                 disableRowSelectionOnClick
                 disableColumnFilter

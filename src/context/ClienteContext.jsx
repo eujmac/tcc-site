@@ -4,16 +4,15 @@ import { db } from "../services/firebase"
 
 const Context = createContext()
 
-export const ServicosContext = ({ children }) => {
-  const [servicosRealTime, setServicosRealTime] = useState([])
+export const ClienteContext = ({ children }) => {
+  const [clientesRealTime, setClientesRealTime] = useState([])
   const [isLoading, setIsLoading] = useState(true)
-
   useEffect(() => {
     const getDados = async () => {
-      const servicosRef = ref(db, `servicos`)
-      onValue(servicosRef, snapshot => {
+      const clientesRef = ref(db, `clientes`)
+      onValue(clientesRef, snapshot => {
         var data = []
-        var listaServico = []
+        var listaClientes = []
         snapshot.forEach(childSnapshot => {
           const childKey = childSnapshot.key
           const childData = childSnapshot.val()
@@ -24,9 +23,9 @@ export const ServicosContext = ({ children }) => {
           const key = Object.entries(e)[0]
           const lista = Object.entries(e)[0][1]
           lista.id = key[0]
-          listaServico.push(lista)
+          listaClientes.push(lista)
         })
-        setServicosRealTime(listaServico)
+        setClientesRealTime(listaClientes)
         setIsLoading(false)
       })
     }
@@ -35,13 +34,13 @@ export const ServicosContext = ({ children }) => {
 
   const values = {
     isLoading,
-    servicosRealTime,
+    clientesRealTime,
   }
   return <Context.Provider value={values}>{children}</Context.Provider>
 }
 
-const useServicos = () => {
+const useCliente = () => {
   const context = useContext(Context)
   return context
 }
-export { useServicos }
+export { useCliente }

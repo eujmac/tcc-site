@@ -13,9 +13,10 @@ import NavBar from "../components/NavBar"
 import { useState } from "react"
 import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
-import CalendarioPopover from "../components/CalendarioPopover"
+import CalendarioPopover from "../components/calendario/CalendarioPopover"
 import GridHorarios from "../components/GridHorarios"
 import { useEffect } from "react"
+import { useEquipe } from "../context/EquipeContext"
 
 const formataDataPeloTipo = (data, tipo) => {
   switch (tipo) {
@@ -26,7 +27,7 @@ const formataDataPeloTipo = (data, tipo) => {
   }
 }
 
-const CardBarbeiro = ({ nome, isLoading }) => {
+const CardBarbeiro = ({ nome, foto, isLoading }) => {
   return (
     <Grid item xs={12} md={6}>
       <Paper variant="outlined">
@@ -39,7 +40,9 @@ const CardBarbeiro = ({ nome, isLoading }) => {
               justifyContent: "center",
             }}
           >
-            <Avatar sx={{ width: 50, height: 50 }}>J</Avatar>
+            <Avatar srcSet={foto} sx={{ width: 60, height: 60 }}>
+              {nome[0]}
+            </Avatar>
             <Typography variant="h5">{nome}</Typography>
           </Stack>
           <Box>
@@ -56,7 +59,7 @@ const CardBarbeiro = ({ nome, isLoading }) => {
 const Agendamento = () => {
   const [dataAtual, setDataAtual] = useState(new Date())
   const [isLoading, setIsLoading] = useState(true)
-
+  const { equipeRealTime } = useEquipe()
   useEffect(() => {
     setIsLoading(true)
     const timeout = setTimeout(() => {
@@ -94,9 +97,14 @@ const Agendamento = () => {
       {/* Grid com os barbeiros e os horários */}
       <Container maxWidth="xl" sx={{ mt: 3 }}>
         <Grid container spacing={2}>
-          <CardBarbeiro nome="João Marcos" isLoading={isLoading} />
-          <CardBarbeiro nome="Pedro Henrique" isLoading={isLoading} />
-          <CardBarbeiro nome="John Snow" isLoading={isLoading} />
+          {equipeRealTime.map(item => (
+            <CardBarbeiro
+              key={item.id}
+              foto={item.foto}
+              nome={item.nome}
+              isLoading={isLoading}
+            />
+          ))}
         </Grid>
       </Container>
     </Box>

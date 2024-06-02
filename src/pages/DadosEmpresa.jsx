@@ -202,9 +202,9 @@ const DadosEmpresa = () => {
       <Divider />
       <Box m={3}>
         <TituloSubtitulo
-          titulo="Configurações do login gerente"
-          subtitulo="Para a troca de email ou senha do login gerente é preciso entrar com a
-          senha Atual, para validação."
+          titulo="Configurações do login"
+          subtitulo="Para a troca de email ou senha do login é preciso entrar com a
+          senha atual, para validação."
         />
         <TextField
           {...register("senhaAtual", {

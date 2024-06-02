@@ -1,20 +1,46 @@
-import { Box, Button, Divider, Typography } from "@mui/material"
+import {
+  Box,
+  Button,
+  Divider,
+  IconButton,
+  InputBase,
+  Paper,
+  Typography,
+} from "@mui/material"
 import { DataGrid } from "@mui/x-data-grid"
 import { colunasServicos } from "../utils/dados"
 import { useDrawer } from "../context/DrawerContext"
 import { useServicos } from "../context/ServicosContext"
+import { useEffect, useState } from "react"
+import { Search } from "@mui/icons-material"
 
 const Servicos = () => {
-  const linhasServicos = []
   const { setIsDrawerAdicionarServicoOpen } = useDrawer()
-  const { servicosRealTime } = useServicos()
 
-  servicosRealTime.forEach(e => {
-    const key = Object.entries(e)[0]
-    const lista = Object.entries(e)[0][1]
-    lista.id = key[0]
-    linhasServicos.push(lista)
-  })
+  const { servicosRealTime } = useServicos()
+  const [procurar, setProcurar] = useState("")
+  const [linhas, setLinhas] = useState(servicosRealTime)
+
+  useEffect(() => {
+    setLinhas(servicosRealTime)
+  }, [servicosRealTime])
+
+  const handleFilter = e => {
+    const value = e.target.value.toLowerCase()
+    setProcurar(value)
+
+    if (value !== "") {
+      const filteredRows = linhas.filter(
+        row =>
+          row.nome.toLowerCase().includes(value) ||
+          row.tipo.toLowerCase().includes(value) ||
+          row.preco.toLowerCase().includes(value)
+      )
+      setLinhas(filteredRows)
+    } else {
+      setLinhas(servicosRealTime)
+    }
+  }
   return (
     <>
       <Box
@@ -40,8 +66,21 @@ const Servicos = () => {
       </Box>
       <Divider />
       <Box sx={{ height: "75vh", width: "100%", p: 2 }}>
+        <Paper variant="outlined" sx={{ display: "flex", flex: 1, mb: 2 }}>
+          <InputBase
+            sx={{ ml: 1, flex: 1 }}
+            value={procurar}
+            onChange={handleFilter}
+            placeholder="Procurar pelo nome, tipo de produto ou preço"
+            inputProps={{ "aria-label": "search google maps" }}
+          />
+          <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
+            <Search />
+          </IconButton>
+        </Paper>
         <DataGrid
-          rows={linhasServicos}
+          sx={{ height: "65vh" }}
+          rows={linhas}
           columns={colunasServicos}
           disableRowSelectionOnClick
           disableColumnFilter
