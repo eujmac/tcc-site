@@ -1,14 +1,12 @@
 import Drawer from "@mui/material/Drawer"
-import { Box, Button, TextField, Typography } from "@mui/material"
+import { Box, Button, Typography } from "@mui/material"
 import { useDrawer } from "../../context/DrawerContext"
-
-import { Controller, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { useEffect } from "react"
 import { db } from "../../services/firebase"
 import { get, ref, update } from "firebase/database"
 import { useSnackbarGlobal } from "../../context/SnackbarGlobalContext"
 import { useId } from "../../context/IdContext"
-import InputMask from "react-input-mask"
 import TextfieldNome from "../textfields/TextfieldNome"
 import TextfieldDataNascimento from "../textfields/TextfieldDataNascimento"
 import TextfieldEmail from "../textfields/TextfieldEmail"
@@ -20,7 +18,6 @@ export default function DrawerEditarCliente() {
   const {
     control,
     setValue,
-    reset,
     handleSubmit,
     formState: { errors },
   } = useForm({
@@ -32,13 +29,8 @@ export default function DrawerEditarCliente() {
     },
   })
 
-  const { handleClick, dispatch } = useSnackbarGlobal()
+  const { mostraSnackbar } = useSnackbarGlobal()
   const { id } = useId()
-
-  const mostraSnackbar = tipoDispatch => {
-    dispatch(tipoDispatch)
-    handleClick()
-  }
 
   useEffect(() => {
     const getCliente = async id => {
@@ -101,7 +93,7 @@ export default function DrawerEditarCliente() {
         <Box p={3} component="form" onSubmit={handleSubmit(editar)} noValidate>
           <Typography variant="h5">Informações Básicas</Typography>
           <Typography variant="subtitle2">
-            Edite o nome, data de nascimento, e-mail e celular
+            Edite o nome, data de nascimento, e-mail e celular do cliente.
           </Typography>
           <TextfieldNome
             control={control}

@@ -11,6 +11,16 @@ import {
 import { useDrawer } from "../../context/DrawerContext"
 
 import { Add } from "@mui/icons-material"
+import { useAgendaLocal } from "../../context/AgendaLocalContext"
+import { format, parse } from "date-fns"
+import { ptBR } from "date-fns/locale"
+import { useCliente } from "../../context/ClienteContext"
+import { Controller, useForm } from "react-hook-form"
+import { useDialog } from "../../context/DialogContext"
+import ListaServicosAgenda from "../ListaServicosAgenda"
+import { push, ref, set } from "firebase/database"
+import { db } from "../../services/firebase"
+import { useSnackbarGlobal } from "../../context/SnackbarGlobalContext"
 
 const GroupHeader = styled("div")(({ theme }) => ({
   position: "sticky",
@@ -23,33 +33,83 @@ const GroupHeader = styled("div")(({ theme }) => ({
 const GroupItems = styled("ul")({
   padding: 0,
 })
-const nomes = [
-  { nome: "Antonio" },
-  { nome: "João Marcos" },
-  { nome: "Pedro Henrique" },
-  { nome: "John Sow" },
-  { nome: "Fernando" },
-  { nome: "Lucas" },
-]
 
 export default function DrawerAgendar() {
   const { isDrawerAgendarOpen, setIsDrawerAgendarOpen } = useDrawer()
-  const options = nomes.map(option => {
+  const { setIsDialogServico } = useDialog()
+  const {
+    dataAgendaLocal,
+    horaAgendaLocal,
+    servicosAgendaLocal,
+    setServicosAgendaLocal,
+    barbeiro,
+  } = useAgendaLocal()
+  const { clientesRealTime } = useCliente()
+  const { mostraSnackbar } = useSnackbarGlobal()
+
+  const date = parse(dataAgendaLocal, "dd/MM/yyyy", new Date())
+  const formattedDate = format(date, "eeee, d 'de' MMMM", { locale: ptBR })
+
+  const options = clientesRealTime.map(option => {
     const firstLetter = option.nome[0].toUpperCase()
     return {
       firstLetter: /[0-9]/.test(firstLetter) ? "0-9" : firstLetter,
       ...option,
     }
   })
+  const {
+    control,
+    setValue,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      cliente: { nome: "Escolha um cliente" },
+    },
+  })
+  const handleForm = dados => {
+    delete dados["cliente"]["firstLetter"]
+
+    const objAgenda = {
+      status: "agendado",
+      cliente: { ...dados["cliente"] },
+      barbeiro,
+      data: dataAgendaLocal,
+      hora: horaAgendaLocal,
+      servicos: servicosAgendaLocal,
+    }
+    if (objAgenda.servicos.length === 0) {
+      mostraSnackbar("agendar.servicosVazio")
+      return
+    }
+    const agendaRef = ref(db, "agenda")
+    const newAgendaRef = push(agendaRef)
+    set(newAgendaRef, objAgenda)
+    setIsDrawerAgendarOpen(false)
+    setServicosAgendaLocal([])
+    reset()
+    mostraSnackbar("sucessoAdicionar")
+  }
   return (
     <Drawer
       variant="temporary"
       anchor="right"
       open={isDrawerAgendarOpen}
-      onClose={() => setIsDrawerAgendarOpen(false)}
+      onClose={() => {
+        setIsDrawerAgendarOpen(false)
+        setServicosAgendaLocal([])
+        reset()
+      }}
       height={"100%"}
     >
-      <Box width="50vw" role="presentation">
+      <Box
+        width="50vw"
+        role="presentation"
+        component={"form"}
+        onSubmit={handleSubmit(handleForm)}
+        noValidate
+      >
         <Box
           sx={{
             height: "100px",
@@ -62,50 +122,85 @@ export default function DrawerAgendar() {
         >
           <Box>
             <Typography variant="h4" color="white">
-              Segunda-feira, 99 maio
+              {formattedDate}
             </Typography>
             <Typography variant="h6" color="white">
-              10:00
+              {horaAgendaLocal}
             </Typography>
           </Box>
         </Box>
-        <Box p={3} display={"flex"} gap={4} alignItems="center">
-          <Typography variant="h5">Cliente</Typography>
-          <Autocomplete
-            id="grouped-demo"
-            options={options.sort(
-              (a, b) => -b.firstLetter.localeCompare(a.firstLetter)
-            )}
-            groupBy={option => option.firstLetter}
-            getOptionLabel={option => option.nome}
-            sx={{ width: "100%" }}
-            renderInput={params => <TextField {...params} label="" />}
-            renderGroup={params => (
-              <li key={params.key}>
-                <GroupHeader>{params.group}</GroupHeader>
-                <GroupItems>{params.children}</GroupItems>
-              </li>
+        <Box px={3} pt={2} display={"flex"} gap={2} alignItems="center">
+          <Typography variant="h5">
+            <b>Barbeiro</b>:
+          </Typography>
+          <Typography variant="h5">{barbeiro.nome}</Typography>
+        </Box>
+        <Box px={3} py={2} display={"flex"} gap={4} alignItems="center" mt={0}>
+          <Typography alignSelf="start" variant="h5">
+            <b>Cliente</b>:
+          </Typography>
+          <Controller
+            name="cliente"
+            control={control}
+            rules={{
+              required: "Por favor, escolha um cliente.",
+              validate: value =>
+                value.nome !== "Escolha um cliente" ||
+                "Por favor, escolha um cliente.",
+            }}
+            render={({ field: { onChange, value } }) => (
+              <Autocomplete
+                value={value}
+                onChange={(event, newValue) => {
+                  onChange(newValue)
+                }}
+                options={options.sort(
+                  (a, b) => -b.firstLetter.localeCompare(a.firstLetter)
+                )}
+                groupBy={option => option.firstLetter}
+                getOptionLabel={option => option.nome}
+                sx={{ width: "100%" }}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label=""
+                    error={!!errors.cliente}
+                    helperText={errors.cliente ? errors.cliente.message : null}
+                  />
+                )}
+                renderGroup={params => (
+                  <li key={params.key}>
+                    <GroupHeader>{params.group}</GroupHeader>
+                    <GroupItems>{params.children}</GroupItems>
+                  </li>
+                )}
+                isOptionEqualToValue={(option, value) => option.id === value.id}
+              />
             )}
           />
         </Box>
         <Box p={3} pt={0}>
-          <Typography variant="h5">Serviços</Typography>
+          <Typography variant="h5">
+            <b>Serviços</b>
+          </Typography>
+          <ListaServicosAgenda />
           <Button
             sx={{ mt: 2 }}
             variant="outlined"
             startIcon={<Add />}
             color="bgDark"
+            onClick={() => setIsDialogServico(true)}
           >
             Adicionar Serviço
           </Button>
         </Box>
         <Box p={3} pt={0}>
           <Button
+            type="submit"
             variant="contained"
             fullWidth
             color="bgDark"
             sx={{ color: "white" }}
-            onClick={() => setIsDrawerAgendarOpen(false)}
           >
             Agendar
           </Button>

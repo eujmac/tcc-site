@@ -4,6 +4,7 @@ import { useDialog } from "../context/DialogContext"
 import { useDrawer } from "../context/DrawerContext"
 import { useId } from "../context/IdContext"
 import { differenceInYears, parse } from "date-fns"
+import { SocialIcon } from "react-social-icons"
 
 export const diasOptionsObj = [
   { dia: "Segunda", valor: 1 },
@@ -13,6 +14,43 @@ export const diasOptionsObj = [
   { dia: "Sexta", valor: 5 },
   { dia: "Sábado", valor: 6 },
   { dia: "Domingo", valor: 0 },
+]
+export const dadosBarraMes = [
+  {
+    country: "AD",
+    "hot dog": 35,
+    "hot dogColor": "hsl(151, 70%, 50%)",
+  },
+  {
+    country: "AE",
+    "hot dog": 45,
+    "hot dogColor": "hsl(254, 70%, 50%)",
+  },
+  {
+    country: "AF",
+    "hot dog": 159,
+    "hot dogColor": "hsl(166, 70%, 50%)",
+  },
+  {
+    country: "AG",
+    "hot dog": 62,
+    "hot dogColor": "hsl(138, 70%, 50%)",
+  },
+  {
+    country: "AI",
+    "hot dog": 169,
+    "hot dogColor": "hsl(6, 70%, 50%)",
+  },
+  {
+    country: "AL",
+    "hot dog": 188,
+    "hot dogColor": "hsl(27, 70%, 50%)",
+  },
+  {
+    country: "AM",
+    "hot dog": 68,
+    "hot dogColor": "hsl(168, 70%, 50%)",
+  },
 ]
 export const diasOptions = [
   "Segunda",
@@ -41,42 +79,6 @@ export const horasOptions = [
   "21:00",
   "22:00",
 ]
-export const dadosGrafico = [
-  {
-    id: "cortes",
-    color: "hsl(106, 70%, 50%)",
-    data: [
-      {
-        x: "01/05",
-        y: 5,
-      },
-      {
-        x: "02/05",
-        y: 6,
-      },
-      {
-        x: "03/05",
-        y: 2,
-      },
-      {
-        x: "04/05",
-        y: 4,
-      },
-      {
-        x: "05/05",
-        y: 7,
-      },
-      {
-        x: "06/05",
-        y: 6,
-      },
-      {
-        x: "07/05",
-        y: 5,
-      },
-    ],
-  },
-]
 export const colunasCliente = [
   {
     field: "nome",
@@ -90,7 +92,6 @@ export const colunasCliente = [
     type: "number",
     headerAlign: "left",
     align: "left",
-    flex: 1,
     valueGetter: value => {
       const nascimento = parse(value, "dd/MM/yyyy", new Date())
       const hoje = new Date()
@@ -103,12 +104,11 @@ export const colunasCliente = [
     headerName: "Ações",
     flex: 1,
     renderCell: params => {
-      const { setId } = useId()
+      const { setId, setIdTabela } = useId()
       const { setIsDialogExcluirClienteOpen } = useDialog()
       const { setIsDrawerEditarClienteOpen } = useDrawer()
-
       return (
-        <Box>
+        <>
           <Tooltip title="Editar Cliente">
             <IconButton
               variant="contained"
@@ -126,6 +126,7 @@ export const colunasCliente = [
               variant="contained"
               color="error"
               onClick={() => {
+                setIdTabela("clientes")
                 setId(params.id)
                 setIsDialogExcluirClienteOpen(true)
               }}
@@ -133,7 +134,23 @@ export const colunasCliente = [
               <Delete />
             </IconButton>
           </Tooltip>
-        </Box>
+          <Tooltip title="Entrar em contato">
+            <IconButton
+              variant="contained"
+              color="success"
+              onClick={() => {
+                const celularLimpo = params.row.telefone.replace(/[()\s-]/g, "")
+                const celularInternacional = `+55${celularLimpo}`
+                window.open(`https://wa.me/${celularInternacional}/`, "_blank")
+              }}
+            >
+              <SocialIcon
+                network="whatsapp"
+                style={{ height: 24, width: 24 }}
+              />
+            </IconButton>
+          </Tooltip>
+        </>
       )
     },
   },
@@ -165,7 +182,7 @@ export const colunasServicos = [
     headerName: "Ações",
     flex: 1,
     renderCell: params => {
-      const { setId } = useId()
+      const { setId, setIdTabela } = useId()
       const { setIsDialogServicoOpen } = useDialog()
       const { setIsDrawerEditarServicoOpen } = useDrawer()
       return (
@@ -188,6 +205,7 @@ export const colunasServicos = [
               color="error"
               onClick={() => {
                 setId(params.id)
+                setIdTabela("servicos")
                 setIsDialogServicoOpen(true)
               }}
             >
@@ -227,7 +245,7 @@ export const colunasEquipe = [
     headerName: "Ações",
     flex: 1,
     renderCell: params => {
-      const { setId } = useId()
+      const { setId, setIdTabela } = useId()
       const { setIsDialogExcluirEquipeOpen } = useDialog()
       const { setIsDrawerEditarEquipeOpen } = useDrawer()
 
@@ -251,6 +269,7 @@ export const colunasEquipe = [
               color="error"
               onClick={() => {
                 setId(params.id)
+                setIdTabela("equipe")
                 setIsDialogExcluirEquipeOpen(true)
               }}
             >

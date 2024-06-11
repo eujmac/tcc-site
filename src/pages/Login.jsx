@@ -1,17 +1,16 @@
 import Avatar from "@mui/material/Avatar"
 import Button from "@mui/material/Button"
-import TextField from "@mui/material/TextField"
 import Grid from "@mui/material/Grid"
 import Box from "@mui/material/Box"
 import LockOpenIcon from "@mui/icons-material/LockOpen"
 import Typography from "@mui/material/Typography"
-import { Alert, CircularProgress, Paper } from "@mui/material"
+import { CircularProgress, Paper } from "@mui/material"
 import { Navigate, useNavigate } from "react-router-dom"
 import { useState } from "react"
 import { signInWithEmailAndPassword } from "firebase/auth"
 import { auth } from "../services/firebase"
 import { useAuth } from "../context/AuthContext"
-import { Controller, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { useSnackbarGlobal } from "../context/SnackbarGlobalContext"
 import TextfieldSenhaLogin from "../components/textfields/TextfieldSenhaLogin"
 import TextfieldEmail from "../components/textfields/TextfieldEmail"
@@ -20,7 +19,7 @@ export default function Login() {
   const navigate = useNavigate()
   const { user } = useAuth()
   const [isLoading, setIsLoading] = useState(false)
-  const { handleClick, dispatch } = useSnackbarGlobal()
+  const { mostraSnackbar } = useSnackbarGlobal()
 
   const {
     handleSubmit,
@@ -44,8 +43,7 @@ export default function Login() {
       navigate("/home")
     } catch (error) {
       setIsLoading(false)
-      dispatch("login.error")
-      handleClick()
+      mostraSnackbar("login.error")
     }
   }
   return (

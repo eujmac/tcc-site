@@ -1,5 +1,4 @@
 import { Autocomplete, TextField } from "@mui/material"
-import React from "react"
 import { Controller } from "react-hook-form"
 
 const tipos = ["Barbearia", "Venda"]

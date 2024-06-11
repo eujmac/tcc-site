@@ -46,6 +46,28 @@ const reducer = (state, action) => {
         tipo: "error",
         mensagem: "Campos email e senha estão vazios!",
       }
+    case "cliente.existe":
+      return {
+        tipo: "error",
+        mensagem:
+          "Já existe um cliente com esse nome/email/celular cadastrado!",
+      }
+    case "servico.existe":
+      return {
+        tipo: "error",
+        mensagem: "Já existe um serviço com esse nome cadastrado!",
+      }
+    case "equipe.existe":
+      return {
+        tipo: "error",
+        mensagem:
+          "Já existe um barbeiro com esse nome/email/celular cadastrado!",
+      }
+    case "agendar.servicosVazio":
+      return {
+        tipo: "error",
+        mensagem: "Adicione pelo menos um serviço na lista de serviços!",
+      }
     default:
       return state
   }

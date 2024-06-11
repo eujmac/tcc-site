@@ -17,6 +17,7 @@ import CalendarioPopover from "../components/calendario/CalendarioPopover"
 import GridHorarios from "../components/GridHorarios"
 import { useEffect } from "react"
 import { useEquipe } from "../context/EquipeContext"
+import { useAgendaRealTime } from "../context/AgendaRealTimeContext"
 
 const formataDataPeloTipo = (data, tipo) => {
   switch (tipo) {
@@ -27,7 +28,7 @@ const formataDataPeloTipo = (data, tipo) => {
   }
 }
 
-const CardBarbeiro = ({ nome, foto, isLoading }) => {
+const CardBarbeiro = ({ nome, foto, isLoading, id, dataAtual }) => {
   return (
     <Grid item xs={12} md={6}>
       <Paper variant="outlined">
@@ -50,7 +51,7 @@ const CardBarbeiro = ({ nome, foto, isLoading }) => {
               Selecione um horário de atendimento:
             </Typography>
           </Box>
-          <GridHorarios isLoading={isLoading} />
+          <GridHorarios isLoading={isLoading} id={id} dataAtual={dataAtual} />
         </Stack>
       </Paper>
     </Grid>
@@ -58,19 +59,19 @@ const CardBarbeiro = ({ nome, foto, isLoading }) => {
 }
 const Agendamento = () => {
   const [dataAtual, setDataAtual] = useState(new Date())
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
   const { equipeRealTime } = useEquipe()
+  const { agendaRealTime } = useAgendaRealTime()
   useEffect(() => {
     setIsLoading(true)
     const timeout = setTimeout(() => {
       setIsLoading(false)
-    }, 1000)
+    }, 500)
 
     return () => {
       clearTimeout(timeout)
     }
-  }, [dataAtual])
-
+  }, [dataAtual, agendaRealTime])
   return (
     <Box>
       <NavBar />
@@ -100,9 +101,11 @@ const Agendamento = () => {
           {equipeRealTime.map(item => (
             <CardBarbeiro
               key={item.id}
+              id={item.id}
               foto={item.foto}
               nome={item.nome}
               isLoading={isLoading}
+              dataAtual={dataAtual}
             />
           ))}
         </Grid>

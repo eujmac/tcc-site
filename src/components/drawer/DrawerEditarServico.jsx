@@ -1,9 +1,8 @@
 import Drawer from "@mui/material/Drawer"
-import { Autocomplete, Box, Button, TextField, Typography } from "@mui/material"
+import { Box, Button, Typography } from "@mui/material"
 import { useDrawer } from "../../context/DrawerContext"
 
-import { NumericFormat } from "react-number-format"
-import { Controller, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { useEffect } from "react"
 import { db } from "../../services/firebase"
 import { get, ref, update } from "firebase/database"
@@ -31,13 +30,8 @@ export default function DrawerEditarServico() {
     },
   })
 
-  const { handleClick, dispatch } = useSnackbarGlobal()
+  const { mostraSnackbar } = useSnackbarGlobal()
   const { id } = useId()
-
-  const mostraSnackbar = tipoDispatch => {
-    dispatch(tipoDispatch)
-    handleClick()
-  }
 
   useEffect(() => {
     const getServico = async id => {
@@ -98,7 +92,7 @@ export default function DrawerEditarServico() {
         <Box p={3} component="form" onSubmit={handleSubmit(editar)} noValidate>
           <Typography variant="h5">Informações Básicas</Typography>
           <Typography variant="subtitle2">
-            Edite nome de serviço, tipo e o seu preço.
+            Edite o nome, tipo e o preço do serviço.
           </Typography>
           <TextfieldNome
             control={control}

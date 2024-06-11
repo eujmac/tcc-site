@@ -7,6 +7,7 @@ import {
   Divider,
   TextField,
   Typography,
+  createFilterOptions,
 } from "@mui/material"
 import {
   EmailAuthProvider,
@@ -25,7 +26,7 @@ import { diasOptions, horasOptions } from "../utils/dados"
 
 const DadosEmpresa = () => {
   const { user } = useAuth()
-  const { handleClick, dispatch } = useSnackbarGlobal()
+  const { mostraSnackbar } = useSnackbarGlobal()
   const { nomeBarbeariaRealTime, diasRealTime, horasRealTime, isLoading } =
     useBarbearia()
   const {
@@ -41,11 +42,6 @@ const DadosEmpresa = () => {
     setValue("dias", diasRealTime)
     setValue("horas", horasRealTime)
   }, [nomeBarbeariaRealTime, diasRealTime, horasRealTime, setValue])
-
-  const mostraSnackbar = tipoDispatch => {
-    dispatch(tipoDispatch)
-    handleClick()
-  }
 
   const salvar = async dados => {
     update(ref(db, "barbearia/-NyuqtGr_WyCGrmZk_oz"), {
@@ -87,7 +83,6 @@ const DadosEmpresa = () => {
       mostraSnackbar("sucesso")
     }
   }
-
   return (
     <Box component={"form"} onSubmit={handleSubmit(handleForm)} noValidate>
       <Box
@@ -116,8 +111,8 @@ const DadosEmpresa = () => {
       <Box>
         <Box m={3}>
           <TituloSubtitulo
-            titulo="Informações da empresa"
-            subtitulo="O nome da sua empresa é exibido em diversas áreas, incluindo na
+            titulo="Informações da barbearia"
+            subtitulo="O nome da barbearia é exibido em diversas áreas, incluindo na
             barra de navegação, na aba do navegador, e dentro do aplicativo."
           />
           <Controller

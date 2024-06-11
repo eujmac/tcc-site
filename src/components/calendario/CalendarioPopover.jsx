@@ -20,7 +20,11 @@ export default function CalendarioPopover({ dataAtual, setDataAtual, data }) {
     <PopupState variant="popover" popupId="demo-popup-popover">
       {popupState => (
         <div>
-          <Button variant="contained" {...bindTrigger(popupState)}>
+          <Button
+            variant="contained"
+            {...bindTrigger(popupState)}
+            sx={{ px: 5.5 }}
+          >
             {data}
           </Button>
           <Popover

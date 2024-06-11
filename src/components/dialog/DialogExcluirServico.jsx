@@ -6,7 +6,6 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Typography,
 } from "@mui/material"
 import { useDialog } from "../../context/DialogContext"
 import { useEffect, useState } from "react"
@@ -20,24 +19,21 @@ const DialogExcluirServico = () => {
   const { servicosRealTime } = useServicos()
   const { isDialogServicoOpen, setIsDialogServicoOpen } = useDialog()
   const [nome, setNome] = useState("")
-  const { id } = useId()
-  const { handleClick, dispatch } = useSnackbarGlobal()
+  const { id, idTabela } = useId()
+
+  const { mostraSnackbar } = useSnackbarGlobal()
 
   useEffect(() => {
     const getServico = async id => {
-      if (id) {
-        const dbRef = ref(db, `servicos/${id}`)
+      const dbRef = ref(db, `servicos/${id}`)
+      if (idTabela === "servicos") {
         const snapshot = await get(dbRef)
         setNome(snapshot.val().nome)
       }
     }
     getServico(id)
-  }, [id, servicosRealTime])
+  }, [id, servicosRealTime, idTabela])
 
-  const mostraSnackbar = tipoDispatch => {
-    dispatch(tipoDispatch)
-    handleClick()
-  }
   const deletar = async () => {
     try {
       const servicoRef = ref(db, `servicos/${id}`)

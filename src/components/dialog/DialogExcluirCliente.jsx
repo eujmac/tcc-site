@@ -20,24 +20,19 @@ const DialogExcluirCliente = () => {
   const { isDialogExcluirClienteOpen, setIsDialogExcluirClienteOpen } =
     useDialog()
   const [nome, setNome] = useState("")
-  const { id } = useId()
-  const { handleClick, dispatch } = useSnackbarGlobal()
-
+  const { id, idTabela } = useId()
+  const { mostraSnackbar } = useSnackbarGlobal()
   useEffect(() => {
     const getCliente = async id => {
-      if (id) {
-        const dbRef = ref(db, `clientes/${id}`)
+      const dbRef = ref(db, `clientes/${id}`)
+      if (idTabela === "clientes") {
         const snapshot = await get(dbRef)
         setNome(snapshot.val().nome)
       }
     }
     getCliente(id)
-  }, [id, clientesRealTime])
+  }, [id, clientesRealTime, idTabela])
 
-  const mostraSnackbar = tipoDispatch => {
-    dispatch(tipoDispatch)
-    handleClick()
-  }
   const deletar = async () => {
     try {
       const clienteRef = ref(db, `clientes/${id}`)
@@ -62,7 +57,7 @@ const DialogExcluirCliente = () => {
       onClose={() => setIsDialogExcluirClienteOpen(false)}
     >
       <DialogTitle alignSelf="center" fontWeight="bold">
-        Deletar serviço?
+        Deletar cliente?
       </DialogTitle>
       <DialogContent>
         <DialogContentText mb={2} color="black">

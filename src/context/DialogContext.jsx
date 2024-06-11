@@ -8,6 +8,9 @@ const DialogProvider = ({ children }) => {
     useState(false)
   const [isDialogExcluirClienteOpen, setIsDialogExcluirClienteOpen] =
     useState(false)
+  const [isDialogSair, setIsDialogSair] = useState(false)
+  const [isDialogServico, setIsDialogServico] = useState(false)
+  const [isDialogServicoCheckout, setIsDialogServicoCheckout] = useState(false)
 
   return (
     <DialogContext.Provider
@@ -18,6 +21,12 @@ const DialogProvider = ({ children }) => {
         setIsDialogExcluirEquipeOpen,
         isDialogExcluirClienteOpen,
         setIsDialogExcluirClienteOpen,
+        isDialogSair,
+        setIsDialogSair,
+        isDialogServico,
+        setIsDialogServico,
+        isDialogServicoCheckout,
+        setIsDialogServicoCheckout,
       }}
     >
       {children}

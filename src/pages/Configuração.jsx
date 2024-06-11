@@ -81,7 +81,7 @@ const Configuração = () => {
                     display: { xs: "none", lg: "block" },
                   }}
                 >
-                  Gerencie todas as configurações em um só lugar.
+                  Gerencie todas as configurações da barbearia em um só lugar.
                 </Typography>
               </Box>
               <Divider />
@@ -92,20 +92,19 @@ const Configuração = () => {
               >
                 <CardConfig
                   titulo="Empresa"
-                  subtitulo="Gerencie definições como o nome da barbearia, horários e dias de
-          funcionamento"
+                  subtitulo="Gerencie definições como o nome da barbearia, horários e dias de funcionamento"
                   nav="dados"
                 />
                 <Divider />
                 <CardConfig
                   titulo="Serviços"
-                  subtitulo="Cadastre, edite e exclua os tipos de serviços disponíveis"
+                  subtitulo="Cadastre, edite e exclua os tipos de serviços disponíveis para agendamento"
                   nav="servicos"
                 />
                 <Divider />
                 <CardConfig
                   titulo="Equipe"
-                  subtitulo="Cadastre, edite e exclua os colaboradores da barbearia"
+                  subtitulo="Adicione, edite e exclua os membros da equipe."
                   nav="equipe"
                 />
               </Box>

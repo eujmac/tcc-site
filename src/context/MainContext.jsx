@@ -12,6 +12,8 @@ import { DialogProvider } from "./DialogContext"
 import { AuthContext } from "./AuthContext"
 import { EquipeContext } from "./EquipeContext"
 import { ClienteContext } from "./ClienteContext"
+import { AgendaLocalContext } from "./AgendaLocalContext"
+import { AgendaRealTimeContext } from "./AgendaRealTimeContext"
 
 const MainContext = ({ children }) => {
   return (
@@ -21,24 +23,28 @@ const MainContext = ({ children }) => {
         adapterLocale={ptBRDateFns}
       >
         <BarbeariaContext>
-          <ClienteContext>
-            <ServicosContext>
-              <EquipeContext>
-                <SnackbarGlobalProvider>
-                  <IdContext>
-                    <DrawerProvider>
-                      <DialogProvider>
-                        <AuthContext>
-                          <CssBaseline />
-                          {children}
-                        </AuthContext>
-                      </DialogProvider>
-                    </DrawerProvider>
-                  </IdContext>
-                </SnackbarGlobalProvider>
-              </EquipeContext>
-            </ServicosContext>
-          </ClienteContext>
+          <AgendaRealTimeContext>
+            <AgendaLocalContext>
+              <ClienteContext>
+                <ServicosContext>
+                  <EquipeContext>
+                    <SnackbarGlobalProvider>
+                      <IdContext>
+                        <DrawerProvider>
+                          <DialogProvider>
+                            <AuthContext>
+                              <CssBaseline />
+                              {children}
+                            </AuthContext>
+                          </DialogProvider>
+                        </DrawerProvider>
+                      </IdContext>
+                    </SnackbarGlobalProvider>
+                  </EquipeContext>
+                </ServicosContext>
+              </ClienteContext>
+            </AgendaLocalContext>
+          </AgendaRealTimeContext>
         </BarbeariaContext>
       </LocalizationProvider>
     </ThemeProvider>

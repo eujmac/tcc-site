@@ -71,7 +71,7 @@ const Servicos = () => {
             sx={{ ml: 1, flex: 1 }}
             value={procurar}
             onChange={handleFilter}
-            placeholder="Procurar pelo nome, tipo de produto ou preço"
+            placeholder="Procurar pelo nome, tipo ou preço"
             inputProps={{ "aria-label": "search google maps" }}
           />
           <IconButton type="button" sx={{ p: "10px" }} aria-label="search">

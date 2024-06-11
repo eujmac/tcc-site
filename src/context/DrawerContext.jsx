@@ -17,6 +17,7 @@ const DrawerProvider = ({ children }) => {
     useState(false)
   const [isDrawerEditarClienteOpen, setIsDrawerEditarClienteOpen] =
     useState(false)
+  const [isDrawerConcluidoOpen, setIsDrawerConcluidoOpen] = useState(false)
 
   const values = {
     isDrawerCheckoutOpen,
@@ -35,6 +36,8 @@ const DrawerProvider = ({ children }) => {
     setIsDrawerAdicionarClienteOpen,
     isDrawerEditarClienteOpen,
     setIsDrawerEditarClienteOpen,
+    isDrawerConcluidoOpen,
+    setIsDrawerConcluidoOpen,
   }
   return (
     <DrawerContext.Provider value={values}>{children}</DrawerContext.Provider>

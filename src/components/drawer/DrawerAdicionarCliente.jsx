@@ -1,23 +1,25 @@
 import Drawer from "@mui/material/Drawer"
-import { Box, Button, TextField, Typography } from "@mui/material"
+import { Box, Button, Typography } from "@mui/material"
 import { useDrawer } from "../../context/DrawerContext"
 
-import { Controller, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { db } from "../../services/firebase"
 import { push, ref, set } from "firebase/database"
 import { useSnackbarGlobal } from "../../context/SnackbarGlobalContext"
-import InputMask from "react-input-mask"
 import TextfieldNome from "../textfields/TextfieldNome"
 import TextfieldDataNascimento from "../textfields/TextfieldDataNascimento"
 import TextfieldEmail from "../textfields/TextfieldEmail"
 import TextfieldCelular from "../textfields/TextfieldCelular"
+import { useCliente } from "../../context/ClienteContext"
 
 export default function DrawerAdicionarCliente() {
   const { isDrawerAdicionarClienteOpen, setIsDrawerAdicionarClienteOpen } =
     useDrawer()
+  const { clientesRealTime } = useCliente()
   const {
     control,
     reset,
+    setError,
     handleSubmit,
     formState: { errors },
   } = useForm({
@@ -29,30 +31,50 @@ export default function DrawerAdicionarCliente() {
     },
   })
 
-  const { handleClick, dispatch } = useSnackbarGlobal()
-
-  const mostraSnackbar = tipoDispatch => {
-    dispatch(tipoDispatch)
-    handleClick()
-  }
+  const { mostraSnackbar } = useSnackbarGlobal()
 
   const adicionar = async dados => {
-    try {
-      const clientesListRef = ref(db, "clientes")
-      const newClientesRef = push(clientesListRef)
-      // verificar se o barbeiro já existe
-
-      set(newClientesRef, {
-        nome: dados.nome,
-        data_nascimento: dados.data_nascimento,
-        email: dados.email,
-        telefone: dados.celular,
-      })
-      setIsDrawerAdicionarClienteOpen(false)
-      mostraSnackbar("sucessoAdicionar")
-      reset()
-    } catch (error) {
-      console.log(error)
+    const objetoEncontrado = clientesRealTime.find(
+      obj =>
+        obj.nome === dados.nome ||
+        obj.email === dados.email ||
+        obj.telefone === dados.celular
+    )
+    if (objetoEncontrado) {
+      if (objetoEncontrado.nome === dados.nome) {
+        setError("nome", {
+          type: "manual",
+          message: "Nome já cadastrado",
+        })
+      }
+      if (objetoEncontrado.email === dados.email) {
+        setError("email", {
+          type: "manual",
+          message: "E-mail já cadastrado",
+        })
+      }
+      if (objetoEncontrado.telefone === dados.celular) {
+        setError("celular", {
+          type: "manual",
+          message: "Celular já cadastrado",
+        })
+      }
+    } else {
+      try {
+        const clientesListRef = ref(db, "clientes")
+        const newClientesRef = push(clientesListRef)
+        set(newClientesRef, {
+          nome: dados.nome,
+          data_nascimento: dados.data_nascimento,
+          email: dados.email,
+          telefone: dados.celular,
+        })
+        setIsDrawerAdicionarClienteOpen(false)
+        mostraSnackbar("sucessoAdicionar")
+        reset()
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
   return (
@@ -91,8 +113,7 @@ export default function DrawerAdicionarCliente() {
         >
           <Typography variant="h5">Informações Básicas</Typography>
           <Typography variant="subtitle2">
-            Adicione o nome do cliente, data de nascimento, email, celular e
-            escolha a sua foto
+            Adicione o nome, data de nascimento, e-mail, celular do cliente.
           </Typography>
           <TextfieldNome
             control={control}

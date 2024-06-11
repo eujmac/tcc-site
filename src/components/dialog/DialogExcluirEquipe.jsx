@@ -21,25 +21,22 @@ const DialogExcluirEquipe = () => {
   const { isDialogExcluirEquipeOpen, setIsDialogExcluirEquipeOpen } =
     useDialog()
   const [nome, setNome] = useState(null)
-  const { id } = useId()
-  const { handleClick, dispatch } = useSnackbarGlobal()
+  const { id, idTabela } = useId()
+
+  const { mostraSnackbar } = useSnackbarGlobal()
 
   useEffect(() => {
     const getEquipe = async id => {
-      if (id) {
-        const dbRef = ref(db, `equipe/${id}`)
+      const dbRef = ref(db, `equipe/${id}`)
+      if (idTabela === "equipe") {
         const snapshot = await get(dbRef)
         const obj = snapshot.val()
         setNome(obj.nome)
       }
     }
     getEquipe(id)
-  }, [id, equipeRealTime])
+  }, [id, equipeRealTime, idTabela])
 
-  const mostraSnackbar = tipoDispatch => {
-    dispatch(tipoDispatch)
-    handleClick()
-  }
   const deletar = async () => {
     try {
       const equipeRef = ref(db, `equipe/${id}`)

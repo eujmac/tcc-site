@@ -1,11 +1,48 @@
 import { ResponsiveLine } from "@nivo/line"
-import { dadosGrafico } from "../../utils/dados"
+import { format, isAfter, parse, subDays } from "date-fns"
+import { useAgendaRealTime } from "../../context/AgendaRealTimeContext"
 
 const GraficoLinha = () => {
+  const { agendaRealTime } = useAgendaRealTime()
+
+  const today = new Date()
+  const groupAndFilterData = data => {
+    const lastWeek = subDays(today, 8)
+    const groupedData = {}
+
+    data.forEach(item => {
+      if (item.status !== "concluido") return
+      const data = parse(item.data, "dd/MM/yyyy", new Date())
+      if (isAfter(data, lastWeek)) {
+        const formattedDate = format(data, "dd/MM/yyyy")
+        if (!groupedData[formattedDate]) {
+          groupedData[formattedDate] = 0
+        }
+        groupedData[formattedDate]++
+      }
+    })
+
+    return groupedData
+  }
+
+  const grupo = groupAndFilterData(agendaRealTime)
+
+  const transformedData = Object.entries(grupo).map(([date, count]) => ({
+    x: date,
+    y: count,
+  }))
+
+  const dadosGrafico = [
+    {
+      id: "cortes",
+      color: "hsl(106, 70%, 50%)",
+      data: transformedData,
+    },
+  ]
   return (
     <ResponsiveLine
       data={dadosGrafico}
-      margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
+      margin={{ top: 50, right: 50, bottom: 50, left: 50 }}
       xScale={{ type: "point" }}
       yScale={{
         type: "linear",

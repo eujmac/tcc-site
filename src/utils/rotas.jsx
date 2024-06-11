@@ -9,6 +9,7 @@ import DadosEmpresa from "../pages/DadosEmpresa"
 import Servicos from "../pages/Servicos"
 import Equipe from "../pages/Equipe"
 import Protected from "../components/Protected"
+import Dashboard from "../pages/Dashboard"
 
 export const router = createBrowserRouter([
   {
@@ -25,6 +26,14 @@ export const router = createBrowserRouter([
     element: (
       <Protected>
         <Home />
+      </Protected>
+    ),
+  },
+  {
+    path: "/dashboard",
+    element: (
+      <Protected>
+        <Dashboard />
       </Protected>
     ),
   },

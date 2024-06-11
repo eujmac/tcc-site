@@ -1,28 +1,20 @@
 import Drawer from "@mui/material/Drawer"
-import { Box, Button, Grid, Tooltip, Typography } from "@mui/material"
+import { Box, Button, Grid, Typography } from "@mui/material"
 import { useDrawer } from "../../context/DrawerContext"
 
-import {
-  Add,
-  AttachMoney,
-  CreditCard,
-  DeleteForever,
-} from "@mui/icons-material"
+import { AttachMoney, CreditCard } from "@mui/icons-material"
 import { useEffect, useState } from "react"
 
-import { useDialog } from "../../context/DialogContext"
-import ListaServicosCheckout from "../ListaServicosCheckout"
 import { useAgendaRealTime } from "../../context/AgendaRealTimeContext"
-import { get, ref, update } from "firebase/database"
+import { get, ref } from "firebase/database"
 import { db } from "../../services/firebase"
 import { format, parse } from "date-fns"
 import { ptBR } from "date-fns/locale"
-import { useSnackbarGlobal } from "../../context/SnackbarGlobalContext"
+import ListaServicosConcluido from "../ListaServicosConcluido"
 
-export default function DrawerCheckout() {
-  const { isDrawerCheckoutOpen, setIsDrawerCheckoutOpen } = useDrawer()
-  const { setIsDialogServicoCheckout } = useDialog()
-  const [formaPagamentoSelecionada, setFormaPagamentoSelecionada] = useState()
+export default function DrawerConcluido() {
+  const { isDrawerConcluidoOpen, setIsDrawerConcluidoOpen } = useDrawer()
+
   const {
     agendaRealTime,
     idAgendaRealtime,
@@ -30,11 +22,12 @@ export default function DrawerCheckout() {
     calculaTotal,
     servicosAgendaRealTime,
   } = useAgendaRealTime()
+
   const [objAgenda, setObjAgenda] = useState({})
   const [dataFormatada, setDataFormatada] = useState("")
+  const [formaPagamentoSelecionada, setFormaPagamentoSelecionada] = useState("")
   const [valorTotal, setValorTotal] = useState("")
   const agendaRef = ref(db, `agenda/${idAgendaRealtime}`)
-  const { mostraSnackbar } = useSnackbarGlobal()
 
   useEffect(() => {
     const getAgenda = async () => {
@@ -43,16 +36,13 @@ export default function DrawerCheckout() {
         // popula os campos
         const obj = snapshot.val()
         setObjAgenda(obj)
-        setFormaPagamentoSelecionada(
-          obj.formaDePagamento ? obj.formaDePagamento : "dinheiro"
-        )
+        setFormaPagamentoSelecionada(obj.formaDePagamento)
         const date = parse(obj.data, "dd/MM/yyyy", new Date())
         setDataFormatada(
           format(date, "eeee, d 'de' MMMM", {
             locale: ptBR,
           })
         )
-        setServicosAgendaRealTime(obj.servicos)
       }
     }
     getAgenda()
@@ -63,62 +53,13 @@ export default function DrawerCheckout() {
     setValorTotal(total)
   }, [servicosAgendaRealTime, calculaTotal])
 
-  const salvar = () => {
-    try {
-      if (servicosAgendaRealTime.length === 0) {
-        mostraSnackbar("agendar.servicosVazio")
-        return
-      }
-      setIsDrawerCheckoutOpen(false)
-      update(agendaRef, {
-        ...objAgenda,
-        servicos:
-          servicosAgendaRealTime.length !== 0
-            ? [...servicosAgendaRealTime]
-            : ["vazio"],
-        formaDePagamento: formaPagamentoSelecionada,
-      })
-    } catch (error) {
-      console.log(error)
-    }
-  }
-  const checkout = () => {
-    try {
-      if (servicosAgendaRealTime.length === 0) {
-        mostraSnackbar("agendar.servicosVazio")
-        return
-      }
-      setIsDrawerCheckoutOpen(false)
-      update(agendaRef, {
-        ...objAgenda,
-        servicos: [...servicosAgendaRealTime],
-        formaDePagamento: formaPagamentoSelecionada,
-        status: "concluido",
-      })
-    } catch (error) {
-      console.log(error)
-    }
-  }
-  const cancelar = async () => {
-    try {
-      setIsDrawerCheckoutOpen(false)
-      update(agendaRef, {
-        ...objAgenda,
-        servicos: [...servicosAgendaRealTime],
-        formaDePagamento: formaPagamentoSelecionada,
-        status: "cancelado",
-      })
-    } catch (error) {
-      console.log(error)
-    }
-  }
   return (
     <Drawer
       variant="temporary"
       anchor="right"
-      open={isDrawerCheckoutOpen}
+      open={isDrawerConcluidoOpen}
       onClose={() => {
-        setIsDrawerCheckoutOpen(false)
+        setIsDrawerConcluidoOpen(false)
         setServicosAgendaRealTime(objAgenda.servicos)
       }}
       height={"100%"}
@@ -157,7 +98,7 @@ export default function DrawerCheckout() {
           <Typography variant="h5">
             <b>Serviços</b>
           </Typography>
-          <ListaServicosCheckout />
+          <ListaServicosConcluido />
           {servicosAgendaRealTime?.length !== 0 && (
             <Box display="flex" justifyContent="space-between">
               <Typography mt={1} variant="h6">
@@ -168,15 +109,6 @@ export default function DrawerCheckout() {
               </Typography>
             </Box>
           )}
-          <Button
-            sx={{ mt: 2 }}
-            variant="outlined"
-            startIcon={<Add />}
-            color="bgDark"
-            onClick={() => setIsDialogServicoCheckout(true)}
-          >
-            Adicionar Serviço
-          </Button>
         </Box>
         <Box p={3} pt={0}>
           <Typography variant="h5" mb={2}>
@@ -185,7 +117,6 @@ export default function DrawerCheckout() {
           <Grid container spacing={4} alignItems="center" justifyItems="center">
             <Grid item xs={6}>
               <Button
-                onClick={() => setFormaPagamentoSelecionada("dinheiro")}
                 variant={
                   formaPagamentoSelecionada === "dinheiro"
                     ? "contained"
@@ -200,7 +131,6 @@ export default function DrawerCheckout() {
             </Grid>
             <Grid item xs={6}>
               <Button
-                onClick={() => setFormaPagamentoSelecionada("pix")}
                 variant={
                   formaPagamentoSelecionada === "pix" ? "contained" : "outlined"
                 }
@@ -213,7 +143,6 @@ export default function DrawerCheckout() {
             </Grid>
             <Grid item xs={6}>
               <Button
-                onClick={() => setFormaPagamentoSelecionada("debito")}
                 variant={
                   formaPagamentoSelecionada === "debito"
                     ? "contained"
@@ -228,7 +157,6 @@ export default function DrawerCheckout() {
             </Grid>
             <Grid item xs={6}>
               <Button
-                onClick={() => setFormaPagamentoSelecionada("credito")}
                 variant={
                   formaPagamentoSelecionada === "credito"
                     ? "contained"
@@ -242,31 +170,6 @@ export default function DrawerCheckout() {
               </Button>
             </Grid>
           </Grid>
-          <Box display={"flex"} gap={1} mt={3}>
-            <Tooltip title="Cancelar Agendamento">
-              <Button variant="contained" color="error">
-                <DeleteForever onClick={cancelar} />
-              </Button>
-            </Tooltip>
-            <Button
-              variant="contained"
-              fullWidth
-              color="bgDark"
-              sx={{ color: "white" }}
-              onClick={salvar}
-            >
-              salvar
-            </Button>
-            <Button
-              variant="contained"
-              fullWidth
-              color="bgDark"
-              sx={{ color: "white" }}
-              onClick={checkout}
-            >
-              Checkout
-            </Button>
-          </Box>
         </Box>
       </Box>
     </Drawer>

@@ -1,9 +1,9 @@
 import { IconButton, Stack, Typography } from "@mui/material"
 import { Delete } from "@mui/icons-material"
-import { useAgendaLocal } from "../context/AgendaLocalContext"
+import { useAgendaRealTime } from "../context/AgendaRealTimeContext"
 
-const Servico = ({ servico }) => {
-  const { deletarServico } = useAgendaLocal()
+const ServicoCheckout = ({ servico, index }) => {
+  const { deletarServico } = useAgendaRealTime()
 
   return (
     <>
@@ -18,14 +18,14 @@ const Servico = ({ servico }) => {
           },
         }}
       >
-        <Typography alignSelf={"center"}>{servico.nome || abc}</Typography>
+        <Typography alignSelf={"center"}>{servico.nome}</Typography>
         <Typography variant="h6" alignSelf={"center"} fontWeight={"bold"}>
-          R$ {servico.preco || 99}
+          R$ {servico.preco}
           <IconButton
             aria-label="delete"
             color="error"
             size="small"
-            onClick={() => deletarServico(servico)}
+            onClick={() => deletarServico(index)}
           >
             <Delete />
           </IconButton>
@@ -35,4 +35,4 @@ const Servico = ({ servico }) => {
   )
 }
 
-export default Servico
+export default ServicoCheckout

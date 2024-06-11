@@ -13,6 +13,7 @@ export const theme = createTheme({
       main: "#a9a9a9",
     },
   },
+
   dataGridptBr,
   ptBR,
 })

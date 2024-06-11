@@ -3,12 +3,11 @@ import {
   Box,
   Button,
   CircularProgress,
-  TextField,
   Typography,
+  styled,
 } from "@mui/material"
 import { useDrawer } from "../../context/DrawerContext"
-
-import { Controller, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { useEffect, useState } from "react"
 import { db, storage } from "../../services/firebase"
 import { get, ref, update } from "firebase/database"
@@ -19,17 +18,28 @@ import {
   ref as refStorage,
   uploadBytesResumable,
 } from "firebase/storage"
-import InputMask from "react-input-mask"
 import TextfieldNome from "./../textfields/TextfieldNome"
 import TextfieldEmail from "../textfields/TextfieldEmail"
 import TextfieldCelular from "../textfields/TextfieldCelular"
-
+import { CloudUpload } from "@mui/icons-material"
+import { useEquipe } from "../../context/EquipeContext"
+const VisuallyHiddenInput = styled("input")({
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
+  height: 1,
+  overflow: "hidden",
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  whiteSpace: "nowrap",
+  width: 1,
+})
 export default function DrawerEditarEquipe() {
   const { isDrawerEditarEquipeOpen, setIsDrawerEditarEquipeOpen } = useDrawer()
   const [imageFile, setImageFile] = useState(null)
   const [imagePreview, setImagePreview] = useState(null)
   const [isLoading, setIsLoading] = useState(null)
-
+  const { equipeRealTime } = useEquipe()
   const {
     control,
     setValue,
@@ -45,13 +55,8 @@ export default function DrawerEditarEquipe() {
     },
   })
 
-  const { handleClick, dispatch } = useSnackbarGlobal()
+  const { mostraSnackbar } = useSnackbarGlobal()
   const { id } = useId()
-
-  const mostraSnackbar = tipoDispatch => {
-    dispatch(tipoDispatch)
-    handleClick()
-  }
 
   useEffect(() => {
     const getEquipe = async id => {
@@ -66,7 +71,7 @@ export default function DrawerEditarEquipe() {
       }
     }
     getEquipe(id)
-  }, [id, setValue])
+  }, [equipeRealTime, id, setValue])
 
   const handleFileChange = e => {
     const file = e.target.files[0]
@@ -125,6 +130,9 @@ export default function DrawerEditarEquipe() {
           celular: dados.celular,
         })
         setIsDrawerEditarEquipeOpen(false)
+        setImagePreview(null)
+        setImageFile(null)
+        reset()
         mostraSnackbar("sucessoEditar")
       }
     } catch (error) {
@@ -138,6 +146,8 @@ export default function DrawerEditarEquipe() {
       open={isDrawerEditarEquipeOpen}
       onClose={() => {
         setIsDrawerEditarEquipeOpen(false)
+        setImagePreview(null)
+        setImageFile(null)
       }}
       height={"100%"}
     >
@@ -154,14 +164,14 @@ export default function DrawerEditarEquipe() {
         >
           <Box>
             <Typography variant="h4" color="white">
-              Editar Barbeiro
+              Editar membro da equipe.
             </Typography>
           </Box>
         </Box>
         <Box p={3} component="form" onSubmit={handleSubmit(editar)} noValidate>
           <Typography variant="h5">Informações Básicas</Typography>
           <Typography variant="subtitle2">
-            Edite nome, e-mail, celular e foto do barbeiro
+            Edite o nome, e-mail, celular e foto do barbeiro.
           </Typography>
           <TextfieldNome
             control={control}
@@ -179,21 +189,34 @@ export default function DrawerEditarEquipe() {
             required={"Digite o celular do barbeiro"}
           />
 
-          <Box display="flex">
-            <input
-              type="file"
-              accept="image/png, image/gif, image/jpeg"
-              onChange={handleFileChange}
-            />
-            {imagePreview && (
-              <div>
-                <img
-                  src={imagePreview}
-                  alt="Preview"
-                  style={{ width: "200px", height: "auto" }}
+          <Box display="flex" py={1}>
+            <Box>
+              <Button
+                component="label"
+                role={undefined}
+                variant="contained"
+                tabIndex={-1}
+                startIcon={<CloudUpload />}
+              >
+                Carregar Foto
+                <VisuallyHiddenInput
+                  accept="image/png, image/gif, image/jpeg"
+                  type="file"
+                  onChange={handleFileChange}
                 />
-              </div>
-            )}
+              </Button>
+            </Box>
+            <Box pl={3}>
+              {imagePreview && (
+                <div>
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    style={{ width: "200px", height: "auto" }}
+                  />
+                </div>
+              )}
+            </Box>
           </Box>
           <Button
             variant="contained"
