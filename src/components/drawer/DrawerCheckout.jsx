@@ -35,7 +35,6 @@ export default function DrawerCheckout() {
   const [valorTotal, setValorTotal] = useState("")
   const agendaRef = ref(db, `agenda/${idAgendaRealtime}`)
   const { mostraSnackbar } = useSnackbarGlobal()
-
   useEffect(() => {
     const getAgenda = async () => {
       const snapshot = await get(agendaRef)
@@ -46,6 +45,7 @@ export default function DrawerCheckout() {
         setFormaPagamentoSelecionada(
           obj.formaDePagamento ? obj.formaDePagamento : "dinheiro"
         )
+        if (!obj.data) return
         const date = parse(obj.data, "dd/MM/yyyy", new Date())
         setDataFormatada(
           format(date, "eeee, d 'de' MMMM", {
@@ -72,10 +72,7 @@ export default function DrawerCheckout() {
       setIsDrawerCheckoutOpen(false)
       update(agendaRef, {
         ...objAgenda,
-        servicos:
-          servicosAgendaRealTime.length !== 0
-            ? [...servicosAgendaRealTime]
-            : ["vazio"],
+        servicos: [...servicosAgendaRealTime],
         formaDePagamento: formaPagamentoSelecionada,
       })
     } catch (error) {
@@ -105,7 +102,7 @@ export default function DrawerCheckout() {
       update(agendaRef, {
         ...objAgenda,
         servicos: [...servicosAgendaRealTime],
-        formaDePagamento: formaPagamentoSelecionada,
+        formaDePagamento: null,
         status: "cancelado",
       })
     } catch (error) {
@@ -183,7 +180,7 @@ export default function DrawerCheckout() {
             <b>Forma de pagamento</b>
           </Typography>
           <Grid container spacing={4} alignItems="center" justifyItems="center">
-            <Grid item xs={6}>
+            <Grid item xs={6} lg={3}>
               <Button
                 onClick={() => setFormaPagamentoSelecionada("dinheiro")}
                 variant={
@@ -198,7 +195,7 @@ export default function DrawerCheckout() {
                 Dinheiro
               </Button>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={6} lg={3}>
               <Button
                 onClick={() => setFormaPagamentoSelecionada("pix")}
                 variant={
@@ -211,7 +208,7 @@ export default function DrawerCheckout() {
                 Pix
               </Button>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={6} lg={3}>
               <Button
                 onClick={() => setFormaPagamentoSelecionada("debito")}
                 variant={
@@ -223,10 +220,10 @@ export default function DrawerCheckout() {
                 sx={{ p: 4, width: "100%" }}
                 color="success"
               >
-                Cartão Débito
+                Débito
               </Button>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={6} lg={3}>
               <Button
                 onClick={() => setFormaPagamentoSelecionada("credito")}
                 variant={
@@ -238,7 +235,7 @@ export default function DrawerCheckout() {
                 sx={{ p: 4, width: "100%" }}
                 color="success"
               >
-                Cartão Crédito
+                Crédito
               </Button>
             </Grid>
           </Grid>

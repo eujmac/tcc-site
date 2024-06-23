@@ -13,6 +13,7 @@ import { useDrawer } from "../context/DrawerContext"
 import { useEquipe } from "../context/EquipeContext"
 import { useEffect, useState } from "react"
 import { Search } from "@mui/icons-material"
+import { ptBR } from "@mui/x-data-grid/locales"
 const Equipe = () => {
   const { setIsDrawerAdicionarEquipeOpen } = useDrawer()
   const { equipeRealTime } = useEquipe()
@@ -83,6 +84,7 @@ const Equipe = () => {
           disableRowSelectionOnClick
           disableColumnFilter
           hideFooter
+          localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
         />
       </Box>
     </>

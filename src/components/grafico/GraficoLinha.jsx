@@ -14,7 +14,7 @@ const GraficoLinha = () => {
       if (item.status !== "concluido") return
       const data = parse(item.data, "dd/MM/yyyy", new Date())
       if (isAfter(data, lastWeek)) {
-        const formattedDate = format(data, "dd/MM/yyyy")
+        const formattedDate = format(data, "dd/MM")
         if (!groupedData[formattedDate]) {
           groupedData[formattedDate] = 0
         }
@@ -31,7 +31,16 @@ const GraficoLinha = () => {
     x: date,
     y: count,
   }))
+  transformedData.sort((a, b) => {
+    const [dayA, monthA] = a.x.split("/").map(Number)
+    const [dayB, monthB] = b.x.split("/").map(Number)
 
+    if (monthA !== monthB) {
+      return monthA - monthB
+    }
+
+    return dayA - dayB
+  })
   const dadosGrafico = [
     {
       id: "cortes",
@@ -39,6 +48,7 @@ const GraficoLinha = () => {
       data: transformedData,
     },
   ]
+
   return (
     <ResponsiveLine
       data={dadosGrafico}
@@ -51,7 +61,7 @@ const GraficoLinha = () => {
         stacked: true,
         reverse: false,
       }}
-      yFormat=" >-.2f"
+      enablePointLabel={true}
       curve="linear"
       axisTop={null}
       axisRight={null}
@@ -83,6 +93,21 @@ const GraficoLinha = () => {
       pointLabelYOffset={-12}
       enableCrosshair={false}
       useMesh={true}
+      tooltip={props => (
+        <div
+          style={{
+            padding: "12px 16px",
+            background: "#fff",
+            border: "1px solid #ccc",
+            borderRadius: "4px",
+            boxShadow: "0 3px 6px rgba(0, 0, 0, 0.1)",
+          }}
+        >
+          <strong>{props.point.data.x}</strong>
+          <br />
+          Quantidade: {props.point.data.y}
+        </div>
+      )}
       animate={false}
     />
   )

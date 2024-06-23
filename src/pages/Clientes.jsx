@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Chip,
   Container,
   IconButton,
   InputBase,
@@ -16,6 +15,7 @@ import { colunasCliente } from "../utils/dados"
 import { useDrawer } from "../context/DrawerContext"
 import { useCliente } from "../context/ClienteContext"
 import { useEffect, useState } from "react"
+import { ptBR } from "@mui/x-data-grid/locales"
 
 const Clientes = () => {
   const { setIsDrawerAdicionarClienteOpen } = useDrawer()
@@ -57,7 +57,6 @@ const Clientes = () => {
               <Box>
                 <Typography variant="h5" fontWeight={"bold"}>
                   Lista de Clientes{" "}
-                  <Chip label={clientesRealTime.length} variant="outlined" />
                 </Typography>
                 <Typography variant="h6">
                   Visualizar, adicionar, editar e excluir dados dos clientes.
@@ -92,6 +91,7 @@ const Clientes = () => {
             </Box>
             <Box sx={{ height: "70vh", width: "100%" }}>
               <DataGrid
+                localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
                 rows={linhas}
                 columns={colunasCliente}
                 disableRowSelectionOnClick

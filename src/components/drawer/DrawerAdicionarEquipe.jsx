@@ -3,10 +3,11 @@ import {
   Box,
   Button,
   CircularProgress,
+  IconButton,
+  Tooltip,
   Typography,
   styled,
 } from "@mui/material"
-
 import { useDrawer } from "../../context/DrawerContext"
 import { useForm } from "react-hook-form"
 import { useState } from "react"
@@ -22,7 +23,7 @@ import TextfieldNome from "../textfields/TextfieldNome"
 import TextfieldEmail from "../textfields/TextfieldEmail"
 import TextfieldCelular from "../textfields/TextfieldCelular"
 import { useEquipe } from "../../context/EquipeContext"
-import { CloudUpload } from "@mui/icons-material"
+import { Close, CloudUpload } from "@mui/icons-material"
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
   clipPath: "inset(50%)",
@@ -155,6 +156,10 @@ export default function DrawerAdicionarEquipe() {
       }
     }
   }
+  const deletarFoto = () => {
+    setImageFile(null)
+    setImagePreview(null)
+  }
   return (
     <Drawer
       variant="temporary"
@@ -193,7 +198,7 @@ export default function DrawerAdicionarEquipe() {
         >
           <Typography variant="h5">Informações Básicas</Typography>
           <Typography variant="subtitle2">
-            Adicione o nome, e-mail, celular e escolha a sua foto do barbeiro.
+            Adicione o nome, e-mail, celular e escolha a foto do barbeiro.
           </Typography>
           <TextfieldNome
             control={control}
@@ -228,17 +233,35 @@ export default function DrawerAdicionarEquipe() {
                 />
               </Button>
             </Box>
-            <Box pl={3}>
-              {imagePreview && (
+            {imagePreview && (
+              <Box
+                ml={3}
+                sx={{
+                  position: "relative",
+                }}
+              >
+                <Tooltip title="Excluir foto">
+                  <IconButton
+                    aria-label="delete"
+                    sx={{ position: "absolute", top: 2, right: 2 }}
+                    onClick={deletarFoto}
+                  >
+                    <Close color="error" />
+                  </IconButton>
+                </Tooltip>
                 <div>
-                  <img
-                    src={imagePreview}
-                    alt="Preview"
-                    style={{ width: "200px", height: "auto" }}
-                  />
+                  {imagePreview ? (
+                    <img
+                      src={imagePreview}
+                      alt="Preview"
+                      style={{ width: "200px", height: "auto" }}
+                    />
+                  ) : (
+                    <Typography>Sem foto</Typography>
+                  )}
                 </div>
-              )}
-            </Box>
+              </Box>
+            )}
           </Box>
           <Button
             variant="contained"

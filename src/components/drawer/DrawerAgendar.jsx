@@ -59,7 +59,6 @@ export default function DrawerAgendar() {
   })
   const {
     control,
-    setValue,
     reset,
     handleSubmit,
     formState: { errors },
@@ -154,6 +153,10 @@ export default function DrawerAgendar() {
                 onChange={(event, newValue) => {
                   onChange(newValue)
                 }}
+                noOptionsText="Sem clientes cadastrados"
+                clearText="Limpar"
+                closeText="Fechar"
+                openText="Abrir"
                 options={options.sort(
                   (a, b) => -b.firstLetter.localeCompare(a.firstLetter)
                 )}

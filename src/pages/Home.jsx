@@ -10,7 +10,6 @@ import {
 import NavBar from "../components/NavBar"
 import { useDrawer } from "../context/DrawerContext"
 import { ArrowForwardIosSharp } from "@mui/icons-material"
-import GraficoLinha from "../components/grafico/GraficoLinha"
 import { format, isBefore, isFuture, parse, subDays } from "date-fns"
 import { useAgendaRealTime } from "../context/AgendaRealTimeContext"
 import { ptBR } from "date-fns/locale"
@@ -133,9 +132,19 @@ const CardAgendamentosDeHoje = () => {
   return (
     <Paper variant="outlined">
       <Stack height="480px" overflow="auto">
-        <Typography variant="h6" fontWeight={"bold"} p={3}>
-          Agendamentos de hoje
-        </Typography>
+        <Box
+          sx={{
+            position: "sticky",
+            top: 0,
+            zIndex: 1,
+            backgroundColor: "white",
+          }}
+        >
+          <Typography variant="h6" fontWeight={"bold"} p={3}>
+            Agendamentos de hoje
+          </Typography>
+          <Divider />
+        </Box>
         {agenda.map(item => {
           if (item.data === dataAtualBrasilFormatada) {
             return (
@@ -178,9 +187,19 @@ const CardHistorico = () => {
   return (
     <Paper variant="outlined">
       <Stack height="480px" overflow="auto">
-        <Typography variant="h6" fontWeight={"bold"} p={3}>
-          Histórico de agendamentos
-        </Typography>
+        <Box
+          sx={{
+            position: "sticky",
+            top: 0,
+            zIndex: 1,
+            backgroundColor: "white",
+          }}
+        >
+          <Typography variant="h6" fontWeight={"bold"} p={3}>
+            Histórico de agendamentos
+          </Typography>
+          <Divider />
+        </Box>
         {dadosPassados.map(item => {
           return (
             <Box key={item.id}>
@@ -220,9 +239,19 @@ const CardProximosAgendamentos = () => {
   return (
     <Paper variant="outlined">
       <Stack height="480px" overflow="auto">
-        <Typography variant="h6" fontWeight={"bold"} p={3}>
-          Próximos agendamentos
-        </Typography>
+        <Box
+          sx={{
+            position: "sticky",
+            top: 0,
+            zIndex: 1,
+            backgroundColor: "white",
+          }}
+        >
+          <Typography variant="h6" fontWeight={"bold"} p={3}>
+            Próximos agendamentos
+          </Typography>
+          <Divider />
+        </Box>
         {dadosPassados.map(item => {
           return (
             <Box key={item.id}>

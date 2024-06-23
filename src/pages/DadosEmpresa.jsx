@@ -7,7 +7,6 @@ import {
   Divider,
   TextField,
   Typography,
-  createFilterOptions,
 } from "@mui/material"
 import {
   EmailAuthProvider,
@@ -23,6 +22,7 @@ import { useBarbearia } from "../context/BarbeariaContext"
 import { ref, update } from "firebase/database"
 import { db } from "../services/firebase"
 import { diasOptions, horasOptions } from "../utils/dados"
+import AutocompleteEmpresa from "../components/textfields/AutocompleteEmpresa"
 
 const DadosEmpresa = () => {
   const { user } = useAuth()
@@ -34,8 +34,15 @@ const DadosEmpresa = () => {
     control,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors },
-  } = useForm({})
+  } = useForm({
+    defaultValues: {
+      email: "",
+      senhaNova: "",
+      senhaAtual: "",
+    },
+  })
 
   useEffect(() => {
     setValue("nome", nomeBarbeariaRealTime)
@@ -56,14 +63,22 @@ const DadosEmpresa = () => {
       const cred = EmailAuthProvider.credential(user.email, dados.senhaAtual)
       const auth = await reauthenticateWithCredential(user, cred)
       if (auth) {
-        if (dados.email !== "") {
+        if (
+          (dados.email.length == 0 || dados.senhaNova.length == 0) &&
+          dados.senhaAtual.length > 1
+        ) {
+          mostraSnackbar("dadosEmpresa.errorEmailSenhaVazio")
+        }
+        if (dados.email.length > 1) {
           await updateEmail(user, dados.email)
+          mostraSnackbar("sucesso")
+          salvar(dados)
         }
-        if (dados.senhaNova !== "") {
+        if (dados.senhaNova.length > 1) {
           await updatePassword(user, dados.senhaNova)
+          mostraSnackbar("sucesso")
+          salvar(dados)
         }
-        mostraSnackbar("sucesso")
-        salvar(dados)
       }
     } catch (error) {
       if (error.code === "auth/wrong-password") {
@@ -76,8 +91,11 @@ const DadosEmpresa = () => {
   const handleForm = async dados => {
     if (dados.senhaAtual.length > 1) {
       trocaEmailSenha(dados)
-    } else if (dados.nome.length === 0) {
-      mostraSnackbar("dadosEmpresa.errorNomeVazio")
+    } else if (
+      (dados.email.length > 1 || dados.senhaNova.length > 1) &&
+      dados.senhaAtual.length === 0
+    ) {
+      mostraSnackbar("dadosEmpresa.errorDigiteSenhaAtual")
     } else {
       salvar(dados)
       mostraSnackbar("sucesso")
@@ -113,12 +131,12 @@ const DadosEmpresa = () => {
           <TituloSubtitulo
             titulo="Informações da barbearia"
             subtitulo="O nome da barbearia é exibido em diversas áreas, incluindo na
-            barra de navegação, na aba do navegador, e dentro do aplicativo."
+            barra de navegação, na aba do navegador e dentro do aplicativo."
           />
           <Controller
             name="nome"
             control={control}
-            rules={{ required: false }}
+            rules={{ required: "Digite o nome da barbearia" }}
             render={({ field: { onChange, value } }) => (
               <TextField
                 fullWidth
@@ -139,59 +157,17 @@ const DadosEmpresa = () => {
           titulo="Configurações de dias e horas de funcionamento"
           subtitulo="Escolha as horas e os dias onde a barbearia ira funcionar."
         />
-        <Controller
-          name="dias"
+        <AutocompleteEmpresa
+          name={"dias"}
           control={control}
-          rules={{ required: false }}
-          render={({ field: { onChange, value } }) => (
-            <Autocomplete
-              multiple
-              filterSelectedOptions
-              options={diasOptions}
-              value={value || []}
-              getOptionLabel={option => option}
-              isOptionEqualToValue={(option, value) => option === value}
-              renderTags={(tagValue, getTagProps) =>
-                tagValue.map((option, index) => {
-                  const { key, ...rest } = getTagProps({ index })
-                  return <Chip label={option} {...rest} key={key} />
-                })
-              }
-              onChange={(event, newValue) => {
-                onChange(newValue)
-              }}
-              renderInput={params => (
-                <TextField {...params} label="Dias da semana" margin="normal" />
-              )}
-            />
-          )}
+          options={diasOptions}
+          label={"Dias da semana"}
         />
-        <Controller
-          name="horas"
+        <AutocompleteEmpresa
+          name={"horas"}
           control={control}
-          rules={{ required: false }}
-          render={({ field: { onChange, value } }) => (
-            <Autocomplete
-              multiple
-              filterSelectedOptions
-              options={horasOptions}
-              value={value || []}
-              getOptionLabel={option => option}
-              isOptionEqualToValue={(option, value) => option === value}
-              renderTags={(tagValue, getTagProps) =>
-                tagValue.map((option, index) => {
-                  const { key, ...rest } = getTagProps({ index })
-                  return <Chip label={option} {...rest} key={key} />
-                })
-              }
-              onChange={(event, newValue) => {
-                onChange(newValue)
-              }}
-              renderInput={params => (
-                <TextField {...params} label="Horas" margin="normal" />
-              )}
-            />
-          )}
+          options={horasOptions}
+          label={"Horas"}
         />
       </Box>
       <Divider />
@@ -213,7 +189,6 @@ const DadosEmpresa = () => {
           helperText={errors.senhaAtual?.message}
           sx={{ my: 2 }}
           fullWidth
-          required
           type="password"
           label="Senha Atual"
         />

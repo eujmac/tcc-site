@@ -61,7 +61,8 @@ const DialogExcluirCliente = () => {
       </DialogTitle>
       <DialogContent>
         <DialogContentText mb={2} color="black">
-          Você tem certeza que deseja deletar o cliente &quot;{nome}&quot;?
+          Você tem certeza que deseja deletar o cliente{" "}
+          <b>&quot;{nome}&quot;</b>?
         </DialogContentText>
         <Alert severity="warning">Cuidado. Essa ação é irreversível.</Alert>
         <DialogActions sx={{ mt: 3 }}>

@@ -12,8 +12,11 @@ export const AgendaLocalContext = ({ children }) => {
     if (servicosAgendaLocal.includes(servico)) return
     setServicosAgendaLocal(past => [...past, servico])
   }
-  const deletarServico = servico => {
-    setServicosAgendaLocal(past => past.filter(e => e !== servico))
+  const deletarServico = index => {
+    const novosServicos = servicosAgendaLocal.filter(
+      (servico, i) => i !== index
+    )
+    setServicosAgendaLocal(novosServicos)
   }
 
   const values = {

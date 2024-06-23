@@ -6,7 +6,7 @@ const ListagemServicos = () => {
   const { servicosRealTime } = useServicos()
 
   return (
-    <Box height="400px">
+    <Box height="600px">
       {servicosRealTime.map(servico => {
         if (servico.tipo === "Barbearia") {
           return (

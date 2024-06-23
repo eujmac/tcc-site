@@ -2,7 +2,7 @@ import { IconButton, Stack, Typography } from "@mui/material"
 import { Delete } from "@mui/icons-material"
 import { useAgendaLocal } from "../context/AgendaLocalContext"
 
-const Servico = ({ servico }) => {
+const Servico = ({ servico, index }) => {
   const { deletarServico } = useAgendaLocal()
 
   return (
@@ -25,7 +25,7 @@ const Servico = ({ servico }) => {
             aria-label="delete"
             color="error"
             size="small"
-            onClick={() => deletarServico(servico)}
+            onClick={() => deletarServico(index)}
           >
             <Delete />
           </IconButton>

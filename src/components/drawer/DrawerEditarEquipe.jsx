@@ -3,6 +3,8 @@ import {
   Box,
   Button,
   CircularProgress,
+  IconButton,
+  Tooltip,
   Typography,
   styled,
 } from "@mui/material"
@@ -21,7 +23,7 @@ import {
 import TextfieldNome from "./../textfields/TextfieldNome"
 import TextfieldEmail from "../textfields/TextfieldEmail"
 import TextfieldCelular from "../textfields/TextfieldCelular"
-import { CloudUpload } from "@mui/icons-material"
+import { Close, CloudUpload } from "@mui/icons-material"
 import { useEquipe } from "../../context/EquipeContext"
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -56,7 +58,7 @@ export default function DrawerEditarEquipe() {
   })
 
   const { mostraSnackbar } = useSnackbarGlobal()
-  const { id } = useId()
+  const { id, setId } = useId()
 
   useEffect(() => {
     const getEquipe = async id => {
@@ -68,6 +70,9 @@ export default function DrawerEditarEquipe() {
         setValue("nome", obj.nome)
         setValue("email", obj.email)
         setValue("celular", obj.celular)
+        setImageFile(null)
+        setImagePreview(null)
+        if (obj.foto) setImagePreview(obj.foto)
       }
     }
     getEquipe(id)
@@ -122,6 +127,19 @@ export default function DrawerEditarEquipe() {
             mostraSnackbar("sucessoAdicionar")
           }
         )
+      } else if (!imageFile && !imagePreview) {
+        const equipeRef = ref(db, `equipe/${id}`)
+        update(equipeRef, {
+          nome: dados.nome,
+          email: dados.email,
+          celular: dados.celular,
+          foto: null,
+        })
+        setIsDrawerEditarEquipeOpen(false)
+        setImagePreview(null)
+        setImageFile(null)
+        reset()
+        mostraSnackbar("sucessoEditar")
       } else {
         const equipeRef = ref(db, `equipe/${id}`)
         update(equipeRef, {
@@ -139,6 +157,10 @@ export default function DrawerEditarEquipe() {
       console.log(error)
     }
   }
+  const deletarFoto = () => {
+    setImageFile(null)
+    setImagePreview(null)
+  }
   return (
     <Drawer
       variant="temporary"
@@ -148,6 +170,7 @@ export default function DrawerEditarEquipe() {
         setIsDrawerEditarEquipeOpen(false)
         setImagePreview(null)
         setImageFile(null)
+        setId(null)
       }}
       height={"100%"}
     >
@@ -206,17 +229,35 @@ export default function DrawerEditarEquipe() {
                 />
               </Button>
             </Box>
-            <Box pl={3}>
-              {imagePreview && (
+            {imagePreview && (
+              <Box
+                ml={3}
+                sx={{
+                  position: "relative",
+                }}
+              >
+                <Tooltip title="Excluir foto">
+                  <IconButton
+                    aria-label="delete"
+                    sx={{ position: "absolute", top: 2, right: 2 }}
+                    onClick={deletarFoto}
+                  >
+                    <Close color="error" />
+                  </IconButton>
+                </Tooltip>
                 <div>
-                  <img
-                    src={imagePreview}
-                    alt="Preview"
-                    style={{ width: "200px", height: "auto" }}
-                  />
+                  {imagePreview ? (
+                    <img
+                      src={imagePreview}
+                      alt="Preview"
+                      style={{ width: "200px", height: "auto" }}
+                    />
+                  ) : (
+                    <Typography>Sem foto</Typography>
+                  )}
                 </div>
-              )}
-            </Box>
+              </Box>
+            )}
           </Box>
           <Button
             variant="contained"

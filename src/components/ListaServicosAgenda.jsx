@@ -13,9 +13,9 @@ const ListaServicosAgenda = () => {
   }
   return (
     <Box>
-      {servicosAgendaLocal.map(servico => (
-        <Box key={servico.id}>
-          <Servico servico={servico} />
+      {servicosAgendaLocal.map((servico, i) => (
+        <Box key={i}>
+          <Servico servico={servico} index={i} />
           <Divider />
         </Box>
       ))}

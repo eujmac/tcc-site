@@ -13,6 +13,9 @@ const TextfieldTipo = ({ control, errors }) => {
         <Autocomplete
           options={tipos}
           value={value}
+          clearText="Limpar"
+          closeText="Fechar"
+          openText="Abrir"
           onChange={(event, newValue) => onChange(newValue)}
           isOptionEqualToValue={(option, value) => option === value}
           renderInput={params => (

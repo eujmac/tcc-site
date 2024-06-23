@@ -81,10 +81,11 @@ const CardGraficoBarraAgendamentosPorDia = () => {
       <CardContent>
         <Stack display={"flex"} justifyContent={"space-between"}>
           <Typography variant="h5" fontWeight={"bold"}>
-            Valor recebido nos últimos 7 dias
+            Valores recebidos
           </Typography>
+          <Typography variant="body2">Últimos 7 dias</Typography>
         </Stack>
-        <Box height={450}>
+        <Box height={420}>
           <GraficoBarraDia />
         </Box>
       </CardContent>
@@ -97,10 +98,11 @@ const CardGraficoBarraAgendamentosPorMes = () => {
       <CardContent>
         <Stack display={"flex"} justifyContent={"space-between"}>
           <Typography variant="h5" fontWeight={"bold"}>
-            Valores recebido nos últimos ano
+            Valores recebidos
           </Typography>
+          <Typography variant="body2">Último ano</Typography>
         </Stack>
-        <Box height={450}>
+        <Box height={420}>
           <GraficoBarraMes />
         </Box>
       </CardContent>

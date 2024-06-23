@@ -9,12 +9,9 @@ const DialogServicoCheckout = () => {
   return (
     <Dialog
       sx={{
-        "& .MuiDialogContent-root": {
-          width: "550px",
-          padding: "2rem",
-        },
-        "& .MuiDialogActions-root": {
-          padding: "0",
+        "& .MuiDialog-paper": {
+          width: 900, // Ajuste a largura conforme necessário
+          maxWidth: "none", // Certifique-se de que o maxWidth padrão não está limitando a largura
         },
       }}
       open={isDialogServicoCheckout}

@@ -49,7 +49,7 @@ export default function DrawerAdicionarServico() {
         const newServicosRef = push(servicosListRef)
         set(newServicosRef, {
           nome: dados.nome,
-          preco: parseFloat(dados.preco),
+          preco: dados.preco,
           tipo: dados.tipo,
         })
         setIsDrawerAdicionarServicoOpen(false)

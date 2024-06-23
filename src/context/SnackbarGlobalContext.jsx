@@ -29,28 +29,28 @@ const reducer = (state, action) => {
     case "login.error":
       return {
         tipo: "error",
-        mensagem: "Credenciais Inválidas!",
+        mensagem: "Credenciais inválidas!",
       }
-    case "dadosEmpresa.errorNomeVazio":
+    case "dadosEmpresa.errorDigiteSenhaAtual":
       return {
         tipo: "error",
-        mensagem: "O campo nome deve ser preenchido!",
+        mensagem: "O campo senha atual deve ser preenchido!",
       }
     case "dadosEmpresa.errorSenhaAtual":
       return {
         tipo: "error",
-        mensagem: "Senha Atual incorreta!",
+        mensagem: "Senha atual incorreta!",
       }
     case "dadosEmpresa.errorEmailSenhaVazio":
       return {
         tipo: "error",
-        mensagem: "Campos email e senha estão vazios!",
+        mensagem: "Campos e-mail ou nova senha deve ser preenchido!",
       }
     case "cliente.existe":
       return {
         tipo: "error",
         mensagem:
-          "Já existe um cliente com esse nome/email/celular cadastrado!",
+          "Já existe um cliente com esse nome/e-mail/celular cadastrado!",
       }
     case "servico.existe":
       return {

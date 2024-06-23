@@ -42,7 +42,7 @@ const CardBarbeiro = ({ nome, foto, isLoading, id, dataAtual }) => {
             }}
           >
             <Avatar srcSet={foto} sx={{ width: 60, height: 60 }}>
-              {nome[0]}
+              {nome[0].toUpperCase()}
             </Avatar>
             <Typography variant="h5">{nome}</Typography>
           </Stack>
@@ -84,6 +84,9 @@ const Agendamento = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          position: "sticky",
+          top: 64,
+          zIndex: 1,
         }}
       >
         <ButtonGroup variant="contained">

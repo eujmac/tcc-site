@@ -14,9 +14,9 @@ const ListaServicosCheckout = () => {
   }
   return (
     <Box>
-      {servicosAgendaRealTime.map((servico, index) => (
-        <Box key={servico.id}>
-          <ServicoCheckout servico={servico} index={index} />
+      {servicosAgendaRealTime.map((servico, i) => (
+        <Box key={i}>
+          <ServicoCheckout servico={servico} index={i} />
           <Divider />
         </Box>
       ))}

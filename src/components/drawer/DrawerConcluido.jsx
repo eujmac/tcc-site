@@ -27,6 +27,8 @@ export default function DrawerConcluido() {
   const [dataFormatada, setDataFormatada] = useState("")
   const [formaPagamentoSelecionada, setFormaPagamentoSelecionada] = useState("")
   const [valorTotal, setValorTotal] = useState("")
+  const [isCancelado, setIsCancelado] = useState(false)
+
   const agendaRef = ref(db, `agenda/${idAgendaRealtime}`)
 
   useEffect(() => {
@@ -36,7 +38,10 @@ export default function DrawerConcluido() {
         // popula os campos
         const obj = snapshot.val()
         setObjAgenda(obj)
+        setIsCancelado(false)
+        if (obj.status === "cancelado") setIsCancelado(true)
         setFormaPagamentoSelecionada(obj.formaDePagamento)
+        if (!obj.data) return
         const date = parse(obj.data, "dd/MM/yyyy", new Date())
         setDataFormatada(
           format(date, "eeee, d 'de' MMMM", {
@@ -110,67 +115,76 @@ export default function DrawerConcluido() {
             </Box>
           )}
         </Box>
-        <Box p={3} pt={0}>
-          <Typography variant="h5" mb={2}>
-            <b>Forma de pagamento</b>
-          </Typography>
-          <Grid container spacing={4} alignItems="center" justifyItems="center">
-            <Grid item xs={6}>
-              <Button
-                variant={
-                  formaPagamentoSelecionada === "dinheiro"
-                    ? "contained"
-                    : "outlined"
-                }
-                startIcon={<AttachMoney />}
-                sx={{ p: 4, width: "100%" }}
-                color="success"
-              >
-                Dinheiro
-              </Button>
+        {!isCancelado && (
+          <Box p={3} pt={0}>
+            <Typography variant="h5" mb={2}>
+              <b>Forma de pagamento</b>
+            </Typography>
+            <Grid
+              container
+              spacing={4}
+              alignItems="center"
+              justifyItems="center"
+            >
+              <Grid item xs={6} lg={3}>
+                <Button
+                  variant={
+                    formaPagamentoSelecionada === "dinheiro"
+                      ? "contained"
+                      : "outlined"
+                  }
+                  startIcon={<AttachMoney />}
+                  sx={{ p: 4, width: "100%" }}
+                  color="success"
+                >
+                  Dinheiro
+                </Button>
+              </Grid>
+              <Grid item xs={6} lg={3}>
+                <Button
+                  variant={
+                    formaPagamentoSelecionada === "pix"
+                      ? "contained"
+                      : "outlined"
+                  }
+                  startIcon={<AttachMoney />}
+                  sx={{ p: 4, width: "100%" }}
+                  color="success"
+                >
+                  Pix
+                </Button>
+              </Grid>
+              <Grid item xs={6} lg={3}>
+                <Button
+                  variant={
+                    formaPagamentoSelecionada === "debito"
+                      ? "contained"
+                      : "outlined"
+                  }
+                  startIcon={<CreditCard />}
+                  sx={{ p: 4, width: "100%" }}
+                  color="success"
+                >
+                  Débito
+                </Button>
+              </Grid>
+              <Grid item xs={6} lg={3}>
+                <Button
+                  variant={
+                    formaPagamentoSelecionada === "credito"
+                      ? "contained"
+                      : "outlined"
+                  }
+                  startIcon={<CreditCard />}
+                  sx={{ p: 4, width: "100%" }}
+                  color="success"
+                >
+                  Crédito
+                </Button>
+              </Grid>
             </Grid>
-            <Grid item xs={6}>
-              <Button
-                variant={
-                  formaPagamentoSelecionada === "pix" ? "contained" : "outlined"
-                }
-                startIcon={<AttachMoney />}
-                sx={{ p: 4, width: "100%" }}
-                color="success"
-              >
-                Pix
-              </Button>
-            </Grid>
-            <Grid item xs={6}>
-              <Button
-                variant={
-                  formaPagamentoSelecionada === "debito"
-                    ? "contained"
-                    : "outlined"
-                }
-                startIcon={<CreditCard />}
-                sx={{ p: 4, width: "100%" }}
-                color="success"
-              >
-                Cartão Débito
-              </Button>
-            </Grid>
-            <Grid item xs={6}>
-              <Button
-                variant={
-                  formaPagamentoSelecionada === "credito"
-                    ? "contained"
-                    : "outlined"
-                }
-                startIcon={<CreditCard />}
-                sx={{ p: 4, width: "100%" }}
-                color="success"
-              >
-                Cartão Crédito
-              </Button>
-            </Grid>
-          </Grid>
-        </Box>
+          </Box>
+        )}
       </Box>
     </Drawer>
   )

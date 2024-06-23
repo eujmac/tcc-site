@@ -13,6 +13,7 @@ import { useDrawer } from "../context/DrawerContext"
 import { useServicos } from "../context/ServicosContext"
 import { useEffect, useState } from "react"
 import { Search } from "@mui/icons-material"
+import { ptBR } from "@mui/x-data-grid/locales"
 
 const Servicos = () => {
   const { setIsDrawerAdicionarServicoOpen } = useDrawer()
@@ -81,6 +82,7 @@ const Servicos = () => {
         <DataGrid
           sx={{ height: "65vh" }}
           rows={linhas}
+          localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
           columns={colunasServicos}
           disableRowSelectionOnClick
           disableColumnFilter

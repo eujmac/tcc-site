@@ -36,9 +36,6 @@ export default function Login() {
     try {
       setIsLoading(true)
       await signInWithEmailAndPassword(auth, data.email, data.senha)
-
-      // setar o tipo do user aki
-
       setIsLoading(false)
       navigate("/home")
     } catch (error) {

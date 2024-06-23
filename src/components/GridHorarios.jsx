@@ -8,12 +8,14 @@ import { db } from "../services/firebase"
 import { useAgendaRealTime } from "../context/AgendaRealTimeContext"
 import { format } from "date-fns"
 import { useEffect, useState } from "react"
-import { ca, ptBR } from "date-fns/locale"
+import { ptBR } from "date-fns/locale"
+import { wrap } from "lodash"
 
 const ButtonRealTime = ({ horaButton, idBarbeiro, dataAtual }) => {
   function capitalizeFirstLetter(str) {
     return str.charAt(0).toUpperCase() + str.slice(1)
   }
+
   let diaDaSemana = format(dataAtual, "eee", { locale: ptBR })
   diaDaSemana = capitalizeFirstLetter(diaDaSemana)
   dataAtual = format(dataAtual, "dd/MM/yyyy")
@@ -53,20 +55,17 @@ const ButtonRealTime = ({ horaButton, idBarbeiro, dataAtual }) => {
   }, [agendaRealTime, dataAtual, horaButton, idBarbeiro, setIdAgendaRealtime])
 
   const handleClick = async () => {
-    // teste concluido
     if (achouConcluido) {
       setIsDrawerConcluidoOpen(true)
       setIdAgendaRealtime(idAgenda)
       return
     }
-    // teste agendado
     if (achouAgendado) {
       setIsDrawerCheckoutOpen(true)
       setIdAgendaRealtime(idAgenda)
       return
     }
     if (achouCancelado) {
-      // resto livre
       const dbRef = ref(db, `equipe/${idBarbeiro}`)
       const snapshot = await get(dbRef)
       const novoObjBarbeiro = {
@@ -79,7 +78,6 @@ const ButtonRealTime = ({ horaButton, idBarbeiro, dataAtual }) => {
       setIsDrawerAgendarOpen(true)
       return
     }
-    // resto livre
     const dbRef = ref(db, `equipe/${idBarbeiro}`)
     const snapshot = await get(dbRef)
     const novoObjBarbeiro = {
@@ -92,15 +90,28 @@ const ButtonRealTime = ({ horaButton, idBarbeiro, dataAtual }) => {
     setIsDrawerAgendarOpen(true)
   }
 
+  const testaDisabled = (diaDaSemana, horaButton) => {
+    if (diasRealTime && horasRealTime) {
+      if (
+        !diasRealTime.includes(diaDaSemana) ||
+        !horasRealTime.includes(horaButton)
+      ) {
+        return true
+      } else {
+        return false
+      }
+    }
+
+    return true
+  }
   return (
     <Button
       variant={achouConcluido ? "contained" : "outlined"}
       color={achouConcluido ? "success" : achouAgendado ? "error" : "success"}
       onClick={handleClick}
-      disabled={
-        !diasRealTime.includes(diaDaSemana) ||
-        !horasRealTime.includes(horaButton)
-      }
+      sx={{
+        display: testaDisabled(diaDaSemana, horaButton) ? "none" : "block",
+      }}
     >
       {horaButton}
     </Button>
@@ -114,19 +125,17 @@ const GridHorarios = ({ isLoading, id, dataAtual }) => {
         <CircularProgress color="primary" sx={{ alignSelf: "center" }} />
       ) : (
         <>
-          <Box display="flex" flexWrap="wrap" gap={2}>
+          <Box display="flex" flexWrap={"wrap"} gap={2}>
             {horasOptions.map(hora => (
-              <Box key={hora}>
-                <ButtonRealTime
-                  horaButton={hora}
-                  idBarbeiro={id}
-                  dataAtual={dataAtual}
-                />
-              </Box>
+              <ButtonRealTime
+                key={hora}
+                horaButton={hora}
+                idBarbeiro={id}
+                dataAtual={dataAtual}
+              />
             ))}
           </Box>
           <Box display="flex" gap={2}>
-            <Chip label="Indisponível" size="small" sx={{ fontSize: 12 }} />
             <Chip
               variant="outlined"
               label="Livre"

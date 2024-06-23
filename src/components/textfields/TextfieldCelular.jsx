@@ -19,7 +19,7 @@ const TextfieldCelular = ({ control, errors, required }) => {
         <ReactInputMask
           {...field}
           maskPlaceholder=""
-          mask={"(99) 99999-9999"}
+          mask={"(99) \\99999-9999"}
           onChange={e => field.onChange(e.target.value)}
         >
           <TextField

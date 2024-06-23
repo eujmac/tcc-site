@@ -9,12 +9,18 @@ export default function CalendarioPopover({ dataAtual, setDataAtual, data }) {
   const { diasRealTime } = useBarbearia()
 
   const shouldDisableDate = date => {
-    const day = date.getDay()
-    const allowedDays = diasRealTime.map(dayString => {
-      const dayObject = diasOptionsObj.find(dayObj => dayObj.dia === dayString)
-      return dayObject ? dayObject.valor : null
-    })
-    return !allowedDays.includes(day)
+    if (diasRealTime) {
+      const day = date.getDay()
+      const allowedDays = diasRealTime.map(dayString => {
+        const dayObject = diasOptionsObj.find(
+          dayObj => dayObj.dia === dayString
+        )
+        return dayObject ? dayObject.valor : null
+      })
+      return !allowedDays.includes(day)
+    } else {
+      return true
+    }
   }
   return (
     <PopupState variant="popover" popupId="demo-popup-popover">

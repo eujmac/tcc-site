@@ -1,8 +1,8 @@
 import { onValue, ref } from "firebase/database"
 import { createContext, useContext, useEffect, useState } from "react"
 import { db } from "../services/firebase"
-import { differenceInDays, parse, parseISO } from "date-fns"
-
+import { differenceInDays, parse } from "date-fns"
+import _ from "lodash"
 const Context = createContext()
 
 export const AgendaRealTimeContext = ({ children }) => {
@@ -12,21 +12,19 @@ export const AgendaRealTimeContext = ({ children }) => {
   const [servicosAgendaRealTime, setServicosAgendaRealTime] = useState([])
   const [total, setTotal] = useState(0)
   const [total30Dias, setTotal30Dias] = useState(0)
-
   const adicionarServico = servico => {
     if (
-      servicosAgendaRealTime.includes(servico) &&
+      servicosAgendaRealTime.some(item => _.isEqual(item, servico)) &&
       servico.tipo === "Barbearia"
     )
       return
     setServicosAgendaRealTime(past => [...past, servico])
   }
   const deletarServico = index => {
-    const newServicosAgendaReal = servicosAgendaRealTime.filter(
-      (item, i) => i !== index
+    const novosServicos = servicosAgendaRealTime.filter(
+      (servico, i) => i !== index
     )
-
-    setServicosAgendaRealTime(newServicosAgendaReal)
+    setServicosAgendaRealTime(novosServicos)
   }
   const calculaTotal = servico => {
     const somaTotal = servicosAgendaRealTime.reduce((acumulador, servico) => {
