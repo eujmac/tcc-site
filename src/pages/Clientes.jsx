@@ -36,7 +36,7 @@ const Clientes = () => {
         row =>
           row.nome.toLowerCase().includes(value) ||
           row.email.toLowerCase().includes(value) ||
-          row.telefone.toLowerCase().includes(value)
+          row.celular.toLowerCase().includes(value)
       )
       setLinhas(filteredRows)
     } else {

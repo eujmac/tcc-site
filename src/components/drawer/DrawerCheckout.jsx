@@ -43,7 +43,7 @@ export default function DrawerCheckout() {
         const obj = snapshot.val()
         setObjAgenda(obj)
         setFormaPagamentoSelecionada(
-          obj.formaDePagamento ? obj.formaDePagamento : "dinheiro"
+          obj.formaDePagamento ? obj.formaDePagamento : ""
         )
         if (!obj.data) return
         const date = parse(obj.data, "dd/MM/yyyy", new Date())
@@ -73,8 +73,9 @@ export default function DrawerCheckout() {
       update(agendaRef, {
         ...objAgenda,
         servicos: [...servicosAgendaRealTime],
-        formaDePagamento: formaPagamentoSelecionada,
+        formaDePagamento: null,
       })
+      setFormaPagamentoSelecionada("")
     } catch (error) {
       console.log(error)
     }
@@ -83,6 +84,10 @@ export default function DrawerCheckout() {
     try {
       if (servicosAgendaRealTime.length === 0) {
         mostraSnackbar("agendar.servicosVazio")
+        return
+      }
+      if (formaPagamentoSelecionada === "") {
+        mostraSnackbar("checkout.formaDePagamento")
         return
       }
       setIsDrawerCheckoutOpen(false)
@@ -117,6 +122,7 @@ export default function DrawerCheckout() {
       onClose={() => {
         setIsDrawerCheckoutOpen(false)
         setServicosAgendaRealTime(objAgenda.servicos)
+        setFormaPagamentoSelecionada("")
       }}
       height={"100%"}
     >

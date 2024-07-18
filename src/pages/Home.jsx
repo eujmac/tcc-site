@@ -22,7 +22,7 @@ const Corte = ({ id, data, hora, status, servicos, barbeiro, cliente }) => {
     const somaTotal = servicos.reduce((acumulador, servico) => {
       return acumulador + parseFloat(servico.preco)
     }, 0)
-    return somaTotal
+    return somaTotal.toFixed(2)
   }
   const handleClick = () => {
     // teste concluido

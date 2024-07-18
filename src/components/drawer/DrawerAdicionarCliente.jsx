@@ -38,7 +38,7 @@ export default function DrawerAdicionarCliente() {
       obj =>
         obj.nome === dados.nome ||
         obj.email === dados.email ||
-        obj.telefone === dados.celular
+        obj.celular === dados.celular
     )
     if (objetoEncontrado) {
       if (objetoEncontrado.nome === dados.nome) {
@@ -53,7 +53,7 @@ export default function DrawerAdicionarCliente() {
           message: "E-mail já cadastrado",
         })
       }
-      if (objetoEncontrado.telefone === dados.celular) {
+      if (objetoEncontrado.celular === dados.celular) {
         setError("celular", {
           type: "manual",
           message: "Celular já cadastrado",
@@ -67,7 +67,7 @@ export default function DrawerAdicionarCliente() {
           nome: dados.nome,
           data_nascimento: dados.data_nascimento,
           email: dados.email,
-          telefone: dados.celular,
+          celular: dados.celular,
         })
         setIsDrawerAdicionarClienteOpen(false)
         mostraSnackbar("sucessoAdicionar")

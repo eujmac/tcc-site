@@ -168,14 +168,14 @@ const Dashboard = () => {
               <Grid item xs={12} md={6} lg={3}>
                 <CardDashboard
                   titulo="Valor Recebido (Total)"
-                  valor={`R$ ${total}`}
+                  valor={`R$ ${total.toFixed(2)}`}
                   icon={<AttachMoney />}
                 />
               </Grid>
               <Grid item xs={12} md={6} lg={3}>
                 <CardDashboard
                   titulo="Valor Recebido (30 Dias)"
-                  valor={`R$ ${total30Dias}`}
+                  valor={`R$ ${total30Dias.toFixed(2)}`}
                   icon={<AttachMoney />}
                 />
               </Grid>

@@ -26,7 +26,10 @@ const GraficoBarraDia = () => {
     const formattedDate = format(date, "dd/MM", { locale: ptBR })
     const valor = somarPrecosPorData(formattedDate)
     daysArray.push(formattedDate)
-    dadosBarraDia.push({ dia: formattedDate, [formattedDate]: valor })
+    dadosBarraDia.push({
+      dia: formattedDate,
+      [formattedDate]: valor.toFixed(2),
+    })
   }
   return (
     <ResponsiveBar

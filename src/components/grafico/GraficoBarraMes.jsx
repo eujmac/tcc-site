@@ -52,7 +52,7 @@ const GraficoBarraMes = () => {
     const mesFormatado = format(data, "MMM/yyyy", { locale: ptBR })
     const valor = somaPrecosPeloMes(mesFormatado)
     arrayMeses.push(mesFormatado)
-    dadosBarraMes.push({ mes: mesFormatado, [mesFormatado]: valor })
+    dadosBarraMes.push({ mes: mesFormatado, [mesFormatado]: valor.toFixed(2) })
   }
 
   return (

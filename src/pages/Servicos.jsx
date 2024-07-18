@@ -35,7 +35,7 @@ const Servicos = () => {
         row =>
           row.nome.toLowerCase().includes(value) ||
           row.tipo.toLowerCase().includes(value) ||
-          row.preco.toLowerCase().includes(value)
+          row.preco.toString().includes(value)
       )
       setLinhas(filteredRows)
     } else {

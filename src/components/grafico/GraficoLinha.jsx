@@ -1,5 +1,5 @@
 import { ResponsiveLine } from "@nivo/line"
-import { format, isAfter, parse, subDays } from "date-fns"
+import { format, isAfter, isBefore, parse, subDays } from "date-fns"
 import { useAgendaRealTime } from "../../context/AgendaRealTimeContext"
 
 const GraficoLinha = () => {
@@ -7,13 +7,13 @@ const GraficoLinha = () => {
 
   const today = new Date()
   const groupAndFilterData = data => {
-    const lastWeek = subDays(today, 8)
+    const lastWeek = subDays(today, 7)
     const groupedData = {}
 
     data.forEach(item => {
       if (item.status !== "concluido") return
       const data = parse(item.data, "dd/MM/yyyy", new Date())
-      if (isAfter(data, lastWeek)) {
+      if (isAfter(data, lastWeek) && isBefore(data, today)) {
         const formattedDate = format(data, "dd/MM")
         if (!groupedData[formattedDate]) {
           groupedData[formattedDate] = 0

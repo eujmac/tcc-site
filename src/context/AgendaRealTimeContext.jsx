@@ -30,7 +30,7 @@ export const AgendaRealTimeContext = ({ children }) => {
     const somaTotal = servicosAgendaRealTime.reduce((acumulador, servico) => {
       return acumulador + parseFloat(servico.preco)
     }, 0)
-    return somaTotal
+    return somaTotal.toFixed(2)
   }
   useEffect(() => {
     const getDados = async () => {

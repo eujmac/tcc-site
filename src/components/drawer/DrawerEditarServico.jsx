@@ -19,7 +19,6 @@ export default function DrawerEditarServico() {
   const {
     control,
     setValue,
-    reset,
     handleSubmit,
     formState: { errors },
   } = useForm({
@@ -54,6 +53,7 @@ export default function DrawerEditarServico() {
       update(servicoRef, {
         tipo: dados.tipo,
         nome: dados.nome,
+        // preco: parseFloat(dados.preco),
         preco: dados.preco,
       })
       setIsDrawerEditarServicoOpen(false)

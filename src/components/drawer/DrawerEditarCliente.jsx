@@ -42,7 +42,7 @@ export default function DrawerEditarCliente() {
         setValue("nome", obj.nome)
         setValue("data_nascimento", obj.data_nascimento)
         setValue("email", obj.email)
-        setValue("celular", obj.telefone)
+        setValue("celular", obj.celular)
       }
     }
     getCliente(id)
@@ -55,7 +55,7 @@ export default function DrawerEditarCliente() {
         nome: dados.nome,
         email: dados.email,
         data_nascimento: dados.data_nascimento,
-        telefone: dados.celular,
+        celular: dados.celular,
       })
       setIsDrawerEditarClienteOpen(false)
       mostraSnackbar("sucessoEditar")

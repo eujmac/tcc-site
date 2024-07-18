@@ -34,7 +34,6 @@ const DadosEmpresa = () => {
     control,
     handleSubmit,
     setValue,
-    reset,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -174,7 +173,7 @@ const DadosEmpresa = () => {
       <Box m={3}>
         <TituloSubtitulo
           titulo="Configurações do login"
-          subtitulo="Para a troca de email ou senha do login é preciso entrar com a
+          subtitulo="Para a troca de e-mail ou senha do login é preciso entrar com a
           senha atual, para validação."
         />
         <TextField
@@ -205,7 +204,7 @@ const DadosEmpresa = () => {
           sx={{ my: 2 }}
           fullWidth
           type="text"
-          label="Novo Email"
+          label="Novo E-mail"
         />
         <TextField
           {...register("senhaNova", {

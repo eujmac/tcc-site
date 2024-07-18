@@ -29,7 +29,7 @@ const reducer = (state, action) => {
     case "login.error":
       return {
         tipo: "error",
-        mensagem: "Credenciais inválidas!",
+        mensagem: "Credenciais estão inválidas!",
       }
     case "dadosEmpresa.errorDigiteSenhaAtual":
       return {
@@ -44,7 +44,7 @@ const reducer = (state, action) => {
     case "dadosEmpresa.errorEmailSenhaVazio":
       return {
         tipo: "error",
-        mensagem: "Campos e-mail ou nova senha deve ser preenchido!",
+        mensagem: "Digite o novo e-mail ou a nova senha!",
       }
     case "cliente.existe":
       return {
@@ -67,6 +67,11 @@ const reducer = (state, action) => {
       return {
         tipo: "error",
         mensagem: "Adicione pelo menos um serviço na lista de serviços!",
+      }
+    case "checkout.formaDePagamento":
+      return {
+        tipo: "error",
+        mensagem: "Selecione a forma de pagamento do cliente!",
       }
     default:
       return state

@@ -98,7 +98,7 @@ export const colunasCliente = [
       return differenceInYears(hoje, nascimento)
     },
   },
-  { field: "telefone", headerName: "Celular", flex: 1 },
+  { field: "celular", headerName: "Celular", flex: 1 },
   {
     field: "access",
     headerName: "Ações",
@@ -139,7 +139,7 @@ export const colunasCliente = [
               variant="contained"
               color="success"
               onClick={() => {
-                const celularLimpo = params.row.telefone.replace(/[()\s-]/g, "")
+                const celularLimpo = params.row.celular.replace(/[()\s-]/g, "")
                 const celularInternacional = `+55${celularLimpo}`
                 window.open(`https://wa.me/${celularInternacional}/`, "_blank")
               }}
